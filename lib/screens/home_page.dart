@@ -18,6 +18,7 @@ import '../main.dart';
 import 'manage_plant.dart';
 import 'care_plant.dart';
 import 'settings.dart';
+import 'wiki.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -175,35 +176,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget pageWikis() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SvgPicture.asset(
-              "assets/undraw_fall_thyk.svg",
-              semanticsLabel: 'Fall',
-              alignment: Alignment.center,
-              height: 250,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              //apply padding to all four sides
-              child: Text(
-                AppLocalizations.of(context)!.mainNoWikis,
-                style: TextStyle(
-                  fontFamily: 'NotoSans',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 0.065 * MediaQuery.of(context).size.width,
-                  color: const Color(0x78000000),
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-      ),
+    return const Center(
+           child: ExampleParallax(),
     );
   }
 
