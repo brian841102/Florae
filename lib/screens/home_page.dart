@@ -174,6 +174,39 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Widget pageWikis() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(
+              "assets/undraw_fall_thyk.svg",
+              semanticsLabel: 'Fall',
+              alignment: Alignment.center,
+              height: 250,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              //apply padding to all four sides
+              child: Text(
+                AppLocalizations.of(context)!.mainNoWikis,
+                style: TextStyle(
+                  fontFamily: 'NotoSans',
+                  fontWeight: FontWeight.w500,
+                  fontSize: 0.065 * MediaQuery.of(context).size.width,
+                  color: const Color(0x78000000),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget noPlants() {
     return Center(
       child: Padding(
@@ -219,6 +252,8 @@ class _MyHomePageState extends State<MyHomePage> {
           DateFormat('d').format(_dateFilter);
     } else if (_selectedIndex == 1) {
       return AppLocalizations.of(context)!.buttonGarden;
+    } else if (_selectedIndex == 2) {
+      return AppLocalizations.of(context)!.buttonWiki;
     } else {
       return AppLocalizations.of(context)!.buttonToday;
     }
@@ -244,7 +279,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: FittedBox(fit: BoxFit.fitWidth, child: Text(title)),
         titleTextStyle: const TextStyle(
             color: Colors.black54,
-            fontSize: 40,
+            fontSize: 30,
             fontWeight: FontWeight.w800,
             fontFamily: "NotoSans"),
         actions: <Widget>[
@@ -303,43 +338,93 @@ class _MyHomePageState extends State<MyHomePage> {
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0.0,
       ),
-      body: _plants.isEmpty
-          ? noPlants()
-          : ResponsiveGridList(
-              // Horizontal space between grid items
-              horizontalGridSpacing: 10,
-              // Vertical space between grid items
-              verticalGridSpacing: 10,
-              // Horizontal space around the grid
-              horizontalGridMargin: 10,
-              // Vertical space around the grid
-              verticalGridMargin: 10,
-              // The minimum item width (can be smaller, if the layout constraints are smaller)
-              minItemWidth: 300,
-              // The minimum items to show in a single row. Takes precedence over minItemWidth
-              minItemsPerRow: 2,
-              // The maximum items to show in a single row. Can be useful on large screens
-              maxItemsPerRow: 2,
-              children: _buildPlantCards(context) // Changed code
-              ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: [ _plants.isEmpty
+            ? noPlants()
+            : ResponsiveGridList(
+            // Horizontal space between grid items
+            horizontalGridSpacing: 10,
+            // Vertical space between grid items
+            verticalGridSpacing: 10,
+            // Horizontal space around the grid
+            horizontalGridMargin: 10,
+            // Vertical space around the grid
+            verticalGridMargin: 10,
+            // The minimum item width (can be smaller, if the layout constraints are smaller)
+            minItemWidth: 300,
+            // The minimum items to show in a single row. Takes precedence over minItemWidth
+            minItemsPerRow: 2,
+            // The maximum items to show in a single row. Can be useful on large screens
+            maxItemsPerRow: 2,
+            children: _buildPlantCards(context) // Changed code
+            ),_plants.isEmpty
+            ? noPlants()
+            : ResponsiveGridList(
+            // Horizontal space between grid items
+            horizontalGridSpacing: 10,
+            // Vertical space between grid items
+            verticalGridSpacing: 10,
+            // Horizontal space around the grid
+            horizontalGridMargin: 10,
+            // Vertical space around the grid
+            verticalGridMargin: 10,
+            // The minimum item width (can be smaller, if the layout constraints are smaller)
+            minItemWidth: 300,
+            // The minimum items to show in a single row. Takes precedence over minItemWidth
+            minItemsPerRow: 2,
+            // The maximum items to show in a single row. Can be useful on large screens
+            maxItemsPerRow: 2,
+            children: _buildPlantCards(context) // Changed code
+            ),
+            pageWikis(),
+        ],
+      ),
+      // body: _plants.isEmpty
+      //     ? noPlants()
+      //     : ResponsiveGridList(
+      //         // Horizontal space between grid items
+      //         horizontalGridSpacing: 10,
+      //         // Vertical space between grid items
+      //         verticalGridSpacing: 10,
+      //         // Horizontal space around the grid
+      //         horizontalGridMargin: 10,
+      //         // Vertical space around the grid
+      //         verticalGridMargin: 10,
+      //         // The minimum item width (can be smaller, if the layout constraints are smaller)
+      //         minItemWidth: 300,
+      //         // The minimum items to show in a single row. Takes precedence over minItemWidth
+      //         minItemsPerRow: 2,
+      //         // The maximum items to show in a single row. Can be useful on large screens
+      //         maxItemsPerRow: 2,
+      //         children: _buildPlantCards(context) // Changed code
+      //         ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: const Icon(Icons.eco),
+            icon: const Icon(Icons.work),
             label: AppLocalizations.of(context)!.buttonToday,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.grass),
+            icon: const Icon(Icons.pest_control),
             label: AppLocalizations.of(context)!.buttonGarden,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.book),
+            label: AppLocalizations.of(context)!.buttonWiki,
           ),
         ],
         selectedItemColor: Colors.teal,
+        selectedIconTheme: const IconThemeData(size: 26),
+        unselectedIconTheme: const IconThemeData(size: 26),
+        selectedLabelStyle: const TextStyle(fontSize: 16),
+        unselectedLabelStyle: const TextStyle(fontSize: 16),
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
 
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: FloatingActionButton(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: _selectedIndex==1 ? FloatingActionButton(
         onPressed: () async {
           await Navigator.push(
               context,
@@ -355,7 +440,7 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: AppLocalizations.of(context)!.tooltipNewPlant,
         child: const Icon(Icons.add),
         backgroundColor: Colors.teal,
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ):null, // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
@@ -532,5 +617,14 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ));
     }).toList();
+  }
+}
+
+class Screen1 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text('Screen 1'),
+    );
   }
 }
