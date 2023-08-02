@@ -15,7 +15,7 @@ class ExampleParallax extends StatelessWidget {
         children: [
           for (final location in locations)
             LocationListItem(
-              imageUrl: location.imageUrl,
+              imagePath: location.imagePath,
               name: location.name,
               country: location.place,
             ),
@@ -28,12 +28,12 @@ class ExampleParallax extends StatelessWidget {
 class LocationListItem extends StatelessWidget {
   LocationListItem({
     super.key,
-    required this.imageUrl,
+    required this.imagePath,
     required this.name,
     required this.country,
   });
 
-  final String imageUrl;
+  final String imagePath;
   final String name;
   final String country;
   final GlobalKey _backgroundImageKey = GlobalKey();
@@ -66,8 +66,8 @@ class LocationListItem extends StatelessWidget {
         backgroundImageKey: _backgroundImageKey,
       ),
       children: [
-        Image.network(
-          imageUrl,
+        Image.asset(
+          imagePath,
           key: _backgroundImageKey,
           fit: BoxFit.cover,
         ),
@@ -80,7 +80,7 @@ class LocationListItem extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
+            colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             stops: const [0.6, 0.95],
@@ -110,7 +110,7 @@ class LocationListItem extends StatelessWidget {
             country,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 14,
+              fontSize: 16,
             ),
           ),
         ],
@@ -298,50 +298,50 @@ class Location {
   const Location({
     required this.name,
     required this.place,
-    required this.imageUrl,
+    required this.imagePath,
   });
 
   final String name;
   final String place;
-  final String imageUrl;
+  final String imagePath;
 }
 
-const urlPrefix =
-    'https://docs.flutter.dev/cookbook/img-files/effects/parallax';
+const pathPrefix =
+    'assets';
 const locations = [
   Location(
-    name: 'Mount Rushmore',
-    place: 'U.S.A',
-    imageUrl: '$urlPrefix/01-mount-rushmore.jpg',
+    name: 'Cyclommatus',
+    place: '細身屬',
+    imagePath: 'assets/cyclommatus.png',
   ),
   Location(
-    name: 'Gardens By The Bay',
-    place: 'Singapore',
-    imageUrl: '$urlPrefix/02-singapore.jpg',
+    name: 'Dorcus',
+    place: '大鍬屬',
+    imagePath: 'assets/dorcus.png',
   ),
   Location(
-    name: 'Machu Picchu',
-    place: 'Peru',
-    imageUrl: '$urlPrefix/03-machu-picchu.jpg',
+    name: 'Odontolabis',
+    place: '艷鍬屬',
+    imagePath: 'assets/odontolabis.png',
   ),
   Location(
     name: 'Vitznau',
     place: 'Switzerland',
-    imageUrl: '$urlPrefix/04-vitznau.jpg',
+    imagePath: 'assets/cyclommatus.png',
   ),
   Location(
     name: 'Bali',
     place: 'Indonesia',
-    imageUrl: '$urlPrefix/05-bali.jpg',
+    imagePath: 'assets/dorcus.png',
   ),
   Location(
     name: 'Mexico City',
     place: 'Mexico',
-    imageUrl: '$urlPrefix/06-mexico-city.jpg',
+    imagePath: 'assets/odontolabis.png',
   ),
   Location(
     name: 'Cairo',
     place: 'Egypt',
-    imageUrl: '$urlPrefix/07-cairo.jpg',
+    imagePath: 'assets/dorcus.png',
   ),
 ];

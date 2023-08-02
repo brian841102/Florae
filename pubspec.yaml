@@ -87,6 +87,9 @@ flutter:
     - assets/florae_avatar_6.png
     - assets/florae_avatar_7.png
     - assets/florae_avatar_8.png
+    - assets/cyclommatus.png
+    - assets/dorcus.png
+    - assets/odontolabis.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

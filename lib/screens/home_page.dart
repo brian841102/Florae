@@ -593,12 +593,3 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 }
-
-class Screen1 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Screen 1'),
-    );
-  }
-}
