@@ -18,6 +18,7 @@ class ExampleParallax extends StatelessWidget {
               imagePath: location.imagePath,
               name: location.name,
               country: location.place,
+              context: context,
             ),
         ],
       ),
@@ -31,12 +32,21 @@ class LocationListItem extends StatelessWidget {
     required this.imagePath,
     required this.name,
     required this.country,
+    required this.context,
   });
 
   final String imagePath;
   final String name;
   final String country;
+  final BuildContext context;
   final GlobalKey _backgroundImageKey = GlobalKey();
+
+  void _openNewPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => NewPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +96,14 @@ class LocationListItem extends StatelessWidget {
             stops: const [0.6, 0.95],
           ),
         ),
+        // child: SizedBox(
+        //   height: 60.0,
+          child: InkWell(
+            onTap: () {
+              _openNewPage(context);
+            },
+          ),
+        // ),
       ),
     );
   }
@@ -155,7 +173,8 @@ class ParallaxFlowDelegate extends FlowDelegate {
 
     // Calculate the vertical alignment of the background
     // based on the scroll percent.
-    final verticalAlignment = Alignment(0.0, scrollFraction * 2 - 1);
+    final verticalAlignment = Alignment(0.0, scrollFraction * 1.7 - 1);
+    // Decide scroll speed of image
 
     // Convert the background alignment into a pixel offset for
     // painting purposes.
@@ -320,28 +339,42 @@ const locations = [
     imagePath: 'assets/dorcus.png',
   ),
   Location(
+    name: 'Lucanus',
+    place: '深山屬',
+    imagePath: 'assets/lucanus.png',
+  ),
+  Location(
+    name: 'Neolucanus',
+    place: '圓翅屬',
+    imagePath: 'assets/neolucanus.png',
+  ),
+  Location(
     name: 'Odontolabis',
     place: '艷鍬屬',
     imagePath: 'assets/odontolabis.png',
   ),
   Location(
-    name: 'Vitznau',
-    place: 'Switzerland',
-    imagePath: 'assets/cyclommatus.png',
+    name: 'Prosopocoilus',
+    place: '鋸鍬屬',
+    imagePath: 'assets/prosopocoilus.png',
   ),
   Location(
-    name: 'Bali',
-    place: 'Indonesia',
-    imagePath: 'assets/dorcus.png',
-  ),
-  Location(
-    name: 'Mexico City',
-    place: 'Mexico',
-    imagePath: 'assets/odontolabis.png',
-  ),
-  Location(
-    name: 'Cairo',
-    place: 'Egypt',
-    imagePath: 'assets/dorcus.png',
+    name: 'Rhaetulus',
+    place: '鹿角屬',
+    imagePath: 'assets/rhaetulus.png',
   ),
 ];
+
+class NewPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('New Page'),
+      ),
+      body: const Center(
+        child: Text('This is a new page!'),
+      ),
+    );
+  }
+}
