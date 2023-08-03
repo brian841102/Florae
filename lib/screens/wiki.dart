@@ -89,7 +89,7 @@ class LocationListItem extends StatelessWidget {
   Widget _buildGradient() {
     return Positioned.fill(
       child: Material(
-        color: Colors.transparent, // Set the color to transparent to avoid any background color from Material
+        color: Colors.transparent, // avoid any background color from Material
         child: InkWell(
           onTap: () {
             _openWikiChild(context);
@@ -366,21 +366,70 @@ const locations = [
   ),
 ];
 
-class WikiChild extends StatelessWidget {
-
-  const WikiChild({Key? key, required this.title,}) : super(key: key);
-
+class WikiChild extends StatefulWidget {
+  const WikiChild({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
+  _WikiChildState createState() => _WikiChildState();
+}
+
+class _WikiChildState extends State<WikiChild> {
+  late ScrollController _scrollController;
+  late double titleOpacity;
+  double _offset = 0.0;
+  final double zeroOpacityOffset = 0;
+  final double fullOpacityOffset = 100;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()
+      ..addListener(_setOffset);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_setOffset);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _setOffset() {
+    setState(() {
+      _offset = _scrollController.offset;
+    });
+  }
+
+  double _calculateOpacity() {
+    if (fullOpacityOffset == zeroOpacityOffset) return 1;
+    else if (fullOpacityOffset > zeroOpacityOffset) {
+      // fading in
+      if (_offset <= zeroOpacityOffset) return 0;
+      else if (_offset >= fullOpacityOffset) return 1;
+      else return (_offset - zeroOpacityOffset) / (fullOpacityOffset - zeroOpacityOffset);
+    } else {
+      // fading out
+      if (_offset <= fullOpacityOffset) return 1;
+      else if (_offset >= zeroOpacityOffset) return 0;
+      else return (_offset - fullOpacityOffset) / (zeroOpacityOffset - fullOpacityOffset);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Location location = locations.firstWhere((loc) => loc.name == title, orElse: () => const Location(name: '', place: '', imagePath: ''));
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [
-        _buildAppBar(location.imagePath),
-        _buildGridView(),
-      ],
+    Location location = locations.firstWhere(
+            (loc) => loc.name == widget.title,
+            orElse: () => const Location(name: '', place: '', imagePath: ''));
+    return Scaffold(
+      body: CustomScrollView(
+        controller: _scrollController,
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          _buildAppBar(location.imagePath),
+          _buildGridView(),
+        ],
+      ),
     );
   }
 
@@ -402,35 +451,41 @@ class WikiChild extends StatelessWidget {
   }
 
   Widget _buildAppBar(String imagePath) {
+    titleOpacity = _calculateOpacity();
     return SliverAppBar(
-      title: Text(title),
-      titleTextStyle: const TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.w600,
-        fontFamily: 'NotoSans',
-        fontSize: 20,
-      ),
       pinned: true,
       snap: true,
       backgroundColor: Colors.teal,
       floating: true,
       expandedHeight: 240.0,
       stretch: true,
-      flexibleSpace: FlexibleSpaceBar(
-        stretchModes: const <StretchMode>[
-          StretchMode.zoomBackground,
-        ],
-        background: Container(
-          width: double.infinity,
-          height: 340,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(imagePath),
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.darken),
+      flexibleSpace: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            imagePath,
+            fit: BoxFit.cover,
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: AppBar(
+              backgroundColor: Colors.teal.withOpacity(titleOpacity),
+              elevation: titleOpacity == 1 ? 2.0 : 0.0,
+              title: Opacity(
+                opacity: titleOpacity,
+                child: Text(widget.title),
+              ),
+              titleTextStyle: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'NotoSans',
+                fontSize: 20,
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
