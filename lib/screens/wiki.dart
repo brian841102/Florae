@@ -11,6 +11,7 @@ class ExampleParallax extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
       child: Column(
         children: [
           for (final location in locations)
@@ -41,19 +42,19 @@ class LocationListItem extends StatelessWidget {
   final BuildContext context;
   final GlobalKey _backgroundImageKey = GlobalKey();
 
-  void _openNewPage(BuildContext context) {
+  void _openWikiChild(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => NewPage()),
+      MaterialPageRoute(builder: (context) => WikiChild(title: name)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       child: AspectRatio(
-        aspectRatio: 16 / 9,
+        aspectRatio: 2 / 1,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(16),
           child: Stack(
@@ -87,23 +88,25 @@ class LocationListItem extends StatelessWidget {
 
   Widget _buildGradient() {
     return Positioned.fill(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: const [0.6, 0.95],
+      child: Material(
+        color: Colors.transparent, // Set the color to transparent to avoid any background color from Material
+        child: InkWell(
+          onTap: () {
+            _openWikiChild(context);
+          },
+          highlightColor: Colors.transparent,
+          splashColor: Colors.black.withOpacity(0.2), // Customize the splash color
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: const [0.6, 0.95],
+              ),
+            ),
           ),
         ),
-        // child: SizedBox(
-        //   height: 60.0,
-          child: InkWell(
-            onTap: () {
-              _openNewPage(context);
-            },
-          ),
-        // ),
       ),
     );
   }
@@ -325,8 +328,6 @@ class Location {
   final String imagePath;
 }
 
-const pathPrefix =
-    'assets';
 const locations = [
   Location(
     name: 'Cyclommatus',
@@ -365,15 +366,71 @@ const locations = [
   ),
 ];
 
-class NewPage extends StatelessWidget {
+class WikiChild extends StatelessWidget {
+
+  const WikiChild({Key? key, required this.title,}) : super(key: key);
+
+  final String title;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('New Page'),
+    Location location = locations.firstWhere((loc) => loc.name == title, orElse: () => const Location(name: '', place: '', imagePath: ''));
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
+        _buildAppBar(location.imagePath),
+        _buildGridView(),
+      ],
+    );
+  }
+
+  Widget _buildGridView() {
+    return SliverGrid(
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 150.0,
       ),
-      body: const Center(
-        child: Text('This is a new page!'),
+
+      delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(index.toString()),
+          );
+        },
+        childCount: 27,
+      ),
+    );
+  }
+
+  Widget _buildAppBar(String imagePath) {
+    return SliverAppBar(
+      title: Text(title),
+      titleTextStyle: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+        fontFamily: 'NotoSans',
+        fontSize: 20,
+      ),
+      pinned: true,
+      snap: true,
+      backgroundColor: Colors.teal,
+      floating: true,
+      expandedHeight: 240.0,
+      stretch: true,
+      flexibleSpace: FlexibleSpaceBar(
+        stretchModes: const <StretchMode>[
+          StretchMode.zoomBackground,
+        ],
+        background: Container(
+          width: double.infinity,
+          height: 340,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(imagePath),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.darken),
+            ),
+          ),
+        ),
       ),
     );
   }
