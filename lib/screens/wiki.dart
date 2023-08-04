@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-const Color darkBlue = Color.fromARGB(255, 18, 32, 47);
+const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
+const Color lightTeal = Color.fromARGB(195, 244, 255, 252);
 
 class ExampleParallax extends StatelessWidget {
   const ExampleParallax({
@@ -422,13 +423,16 @@ class _WikiChildState extends State<WikiChild> {
             (loc) => loc.name == widget.title,
             orElse: () => const Location(name: '', place: '', imagePath: ''));
     return Scaffold(
-      body: CustomScrollView(
-        controller: _scrollController,
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          _buildAppBar(location.imagePath),
-          _buildGridView(),
-        ],
+      body: Container(
+        color: lightTeal, // Set the background color here
+        child: CustomScrollView(
+          controller: _scrollController,
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            _buildAppBar(location.imagePath),
+            _buildGridView(),
+          ],
+        ),
       ),
     );
   }
@@ -436,49 +440,62 @@ class _WikiChildState extends State<WikiChild> {
   Widget _buildGridView() {
     return SliverGrid(
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 150.0,
+        maxCrossAxisExtent: 300.0,
       ),
-
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-          return Container(
-            alignment: Alignment.center,
-            child: Text(index.toString()),
+          return DecoratedBox(
+            decoration: const BoxDecoration(
+              color: Colors.black12,
+              borderRadius: BorderRadius.all(Radius.circular(16)),// Set the background color to white
+            ),
+            child: Container(
+              alignment: Alignment.center,
+              child: Text(index.toString()),
+            ),
           );
         },
-        childCount: 27,
+        childCount: 20,
       ),
     );
   }
 
   Widget _buildAppBar(String imagePath) {
     titleOpacity = _calculateOpacity();
+    ColorTween colorTween = ColorTween(begin: Colors.white, end: darkTeal);
+    Color? backButtonColor = colorTween.lerp(titleOpacity);
     return SliverAppBar(
+      elevation: 0.0,
       pinned: true,
-      snap: true,
-      backgroundColor: Colors.teal,
+      snap: false,
+      foregroundColor: backButtonColor, // back button color
+      backgroundColor: darkTeal,
       floating: true,
       expandedHeight: 240.0,
       stretch: true,
       flexibleSpace: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            imagePath,
-            fit: BoxFit.cover,
+          ColorFiltered(
+            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+            child: Image.asset(
+              imagePath,
+              fit: BoxFit.cover,
+            ),
           ),
           Positioned(
             top: 0,
             left: 0,
             right: 0,
             child: AppBar(
-              backgroundColor: Colors.teal.withOpacity(titleOpacity),
-              elevation: titleOpacity == 1 ? 2.0 : 0.0,
+              backgroundColor: lightTeal.withOpacity(titleOpacity),
+              //backgroundColor: Colors.white.withOpacity(titleOpacity),
+              elevation: 0.0,
               title: Opacity(
                 opacity: titleOpacity,
                 child: Text(widget.title),
               ),
               titleTextStyle: const TextStyle(
-                color: Colors.white,
+                color: darkTeal,
                 fontWeight: FontWeight.w600,
                 fontFamily: 'NotoSans',
                 fontSize: 20,
