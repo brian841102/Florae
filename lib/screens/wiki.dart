@@ -438,19 +438,52 @@ class _WikiChildState extends State<WikiChild> {
   }
 
   Widget _buildGridView() {
+    const double boxHeight = 10.0;
+    const double title1Height = 18.0;
+    const double title2Height = 16.0;
+    //const double containerHeight = 185.0;
+    const double horizontalEdge = 10.0;
+    double containerHeight = MediaQuery.of(context).size.width/2 - horizontalEdge*2;
+    double totalBoxHeight = boxHeight + title1Height + title2Height + containerHeight;
+    
     return SliverGrid(
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 300.0,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: (((MediaQuery.of(context).size.width)/2) / totalBoxHeight)/1.15,
       ),
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-          return DecoratedBox(
-            decoration: const BoxDecoration(
-              color: Colors.black12,
-              borderRadius: BorderRadius.all(Radius.circular(16)),// Set the background color to white
-            ),
-            child: Container(
-              alignment: Alignment.center,
-              child: Text(index.toString()),
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: horizontalEdge),
+            child: Column(
+              children: [
+                Container(
+                  height: containerHeight, // Adjust the height of the box
+                  decoration: const BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                  ),
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text(index.toString()),
+                  ),
+                ),
+                const SizedBox(height: boxHeight), // Space between the grid box and titles
+                const Text(
+                  'Title 1', // Your first title
+                  style: TextStyle(
+                    color: Colors.black, // Customize the color
+                    fontSize: title1Height, // Customize the font size
+                    fontWeight: FontWeight.bold, // Customize the font weight
+                  ),
+                ),
+                const Text(
+                  'Title 2', // Your second title
+                  style: TextStyle(
+                    color: Colors.red, // Customize the color
+                    fontSize: title2Height, // Customize the font size
+                  ),
+                ),
+              ],
             ),
           );
         },
