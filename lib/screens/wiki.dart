@@ -430,12 +430,46 @@ class _WikiChildState extends State<WikiChild> {
           physics: const BouncingScrollPhysics(),
           slivers: [
             _buildAppBar(location.imagePath),
-            _buildGridView(),
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+              sliver: _buildGridView(),
+            ),
           ],
         ),
       ),
     );
   }
+  //   return Scaffold(
+  //     body: Container(
+  //       color: lightTeal, // Set the background color here
+  //       child: CustomScrollView(
+  //         controller: _scrollController,
+  //         physics: const BouncingScrollPhysics(),
+  //         slivers: [
+  //           _buildAppBar(location.imagePath),
+  //           _buildGridView(),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+  //   return Scaffold(
+  //     body: Container(
+  //       color: lightTeal, // Set the background color here
+  //       child: NestedScrollView(
+  //             headerSliverBuilder:
+  //         (BuildContext context, bool innerBoxIsScrolled) {
+  //           return [
+  //           SliverPadding(
+  //             padding: new EdgeInsets.only(top: 5.0),
+  //             sliver: new SliverList(
+  //               delegate: new SliverChildListDelegate(
+  //                   [YOR_WIDGET()]),
+  //             ),
+  //           );
+  //   ]
+  //   );
+  // }
 
   Widget _buildGridView() {
     const double boxHeight = 10.0;
