@@ -416,7 +416,130 @@ class _WikiChildState extends State<WikiChild> {
       else return (_offset - fullOpacityOffset) / (zeroOpacityOffset - fullOpacityOffset);
     }
   }
+  // @override
+  // Widget build(BuildContext context) {
+  //   Location location = locations.firstWhere(
+  //         (loc) => loc.name == widget.title,
+  //     orElse: () => const Location(name: '', place: '', imagePath: ''),
+  //   );
+  //   const double boxHeight = 10.0;
+  //   const double title1Height =16.0;
+  //   const double title2Height = 13.0;
+  //   //const double containerHeight = 185.0;
+  //   const double horizontalEdge = 10.0;
+  //   double containerHeight = MediaQuery.of(context).size.width/2 - horizontalEdge*2;
+  //   return Scaffold(
+  //     body: Container(
+  //       color: lightTeal, // Set the background color here
+  //       child: CustomScrollView(
+  //         controller: _scrollController,
+  //         physics: const BouncingScrollPhysics(),
+  //         slivers: [
+  //           _buildAppBar(location.imagePath),
+  //           SliverPadding(
+  //             padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+  //             sliver: SliverPadding(
+  //               padding: const EdgeInsets.symmetric(horizontal: 16),
+  //               sliver: SliverGrid(
+  //                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+  //                   childAspectRatio: 1,
+  //                   crossAxisSpacing: 16,
+  //                   mainAxisSpacing: 10,
+  //                   crossAxisCount: 2,
+  //                 ),
+  //                 delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+  //                     return InkWell(
+  //                       onTap: () {},
+  //                       child: Column(
+  //                         crossAxisAlignment: CrossAxisAlignment.start,
+  //                         children: [
+  //                           Container(
+  //                             height: containerHeight, // Adjust the height of the box
+  //                             decoration: const BoxDecoration(
+  //                               color: Colors.black12,
+  //                               borderRadius: BorderRadius.all(Radius.circular(16)),
+  //                             ),
+  //                             child: Container(
+  //                               alignment: Alignment.center,
+  //                               child: Text(index.toString()),
+  //                             ),
+  //                           ),
+  //                           const SizedBox(height: boxHeight), // Space between the grid box and titles
+  //                           const Padding(
+  //                             padding: EdgeInsets.only(left: 10), // Add indentation to titles
+  //                             child: Text(
+  //                               '美他利佛細身赤鍬形蟲鍬形蟲',
+  //                               style: TextStyle(
+  //                               color: darkTeal,
+  //                               fontSize: title1Height,
+  //                               fontWeight: FontWeight.bold,
+  //                               ),
+  //                             ),
+  //                           ),
+  //                           const Padding(
+  //                             padding: EdgeInsets.only(left: 10), // Add indentation to titles
+  //                             child: Text(
+  //                               'Cyclommatus metallifer f.',
+  //                               style: TextStyle(
+  //                               color: Colors.grey,
+  //                               fontSize: title2Height,
+  //                               fontWeight: FontWeight.bold,
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),                        
+  //                       // child: ClipRRect(
+  //                       //   clipBehavior: Clip.antiAlias,
+  //                       //   borderRadius: BorderRadius.circular(16),
+  //                       //   child: Container(
+  //                       //     height: 200,
+  //                       //     width: double.infinity,
+  //                       //     decoration: BoxDecoration(
+  //                       //       image: DecorationImage(
+  //                       //         image: NetworkImage(
+  //                       //           'https://storage.googleapis.com/cms-storage-bucket/a9d6ce81aee44ae017ee.png',
+  //                       //         ),
+  //                       //       ),
+  //                       //       borderRadius: BorderRadius.circular(16),
+  //                       //       boxShadow: [
+  //                       //         BoxShadow(
+  //                       //           color: Colors.grey.shade900,
+  //                       //           offset: const Offset(1, 1),
+  //                       //           spreadRadius: 1,
+  //                       //           blurRadius: 50,
+  //                       //           blurStyle: BlurStyle.outer,
+  //                       //         ),
+  //                       //       ],
+  //                       //     ),
+  //                       //     child: Container(
+  //                       //       padding: const EdgeInsets.all(10),
+  //                       //       height: 100,
+  //                       //       color: Colors.red,
+  //                       //       alignment: Alignment.bottomLeft,
+  //                       //       width: double.infinity,
+  //                       //       child: Text(
+  //                       //         "title",
+  //                       //         //overflow: TextOverflow.ellipsis,
+  //                       //         style: Theme.of(context).textTheme.bodyText1!,
+  //                       //       ),
+  //                       //     ),
+  //                       //   ),
+  //                       // ),
+  //                     );
+  //                   },
+  //                   childCount: 20,
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
+  
   @override
   Widget build(BuildContext context) {
     Location location = locations.firstWhere(
@@ -473,22 +596,29 @@ class _WikiChildState extends State<WikiChild> {
 
   Widget _buildGridView() {
     const double boxHeight = 10.0;
-    const double title1Height = 18.0;
-    const double title2Height = 16.0;
+    const double title1Height =16.0;
+    const double title2Height = 13.0;
     //const double containerHeight = 185.0;
-    const double horizontalEdge = 10.0;
+    const double horizontalEdge = 16.0;
     double containerHeight = MediaQuery.of(context).size.width/2 - horizontalEdge*2;
     double totalBoxHeight = boxHeight + title1Height + title2Height + containerHeight;
     
-    return SliverGrid(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: (((MediaQuery.of(context).size.width)/2) / totalBoxHeight)/1.15,
-      ),
-      delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: horizontalEdge),
-            child: Column(
+    return SliverPadding(
+      padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+      sliver: SliverPadding(
+        padding: const EdgeInsets.symmetric(horizontal: horizontalEdge),
+        sliver: SliverGrid(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: horizontalEdge,
+          mainAxisSpacing: 0,
+          childAspectRatio: (((MediaQuery.of(context).size.width)/2) / totalBoxHeight)/1.3,
+        ),
+        delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+          return InkWell(
+            onTap: () {},
+            child:  Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   height: containerHeight, // Adjust the height of the box
@@ -502,19 +632,28 @@ class _WikiChildState extends State<WikiChild> {
                   ),
                 ),
                 const SizedBox(height: boxHeight), // Space between the grid box and titles
-                const Text(
-                  'Title 1', // Your first title
-                  style: TextStyle(
-                    color: Colors.black, // Customize the color
-                    fontSize: title1Height, // Customize the font size
-                    fontWeight: FontWeight.bold, // Customize the font weight
+                const Padding(
+                  padding: EdgeInsets.only(left: 10), // Add indentation to titles
+                  child: Text(
+                    '美他利佛細身赤鍬形蟲鍬形蟲鍬形蟲',
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                    color: darkTeal,
+                    fontSize: title1Height,
+                    fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                const Text(
-                  'Title 2', // Your second title
-                  style: TextStyle(
-                    color: Colors.red, // Customize the color
-                    fontSize: title2Height, // Customize the font size
+                const Padding(
+                  padding: EdgeInsets.only(left: 10), // Add indentation to titles
+                  child: Text(
+                    'Cyclommatus metallifer f.',
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: title2Height,
+                    fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],
@@ -522,6 +661,8 @@ class _WikiChildState extends State<WikiChild> {
           );
         },
         childCount: 20,
+        ),
+        ),
       ),
     );
   }
@@ -536,7 +677,7 @@ class _WikiChildState extends State<WikiChild> {
       snap: false,
       foregroundColor: backButtonColor, // back button color
       backgroundColor: darkTeal,
-      floating: true,
+      floating: false,
       expandedHeight: 240.0,
       stretch: true,
       flexibleSpace: Stack(
