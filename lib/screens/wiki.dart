@@ -148,7 +148,6 @@ class ParallaxFlowDelegate extends FlowDelegate {
     required this.backgroundImageKey,
   }) : super(repaint: scrollable.position);
 
-
   final ScrollableState scrollable;
   final BuildContext listItemContext;
   final GlobalKey backgroundImageKey;
@@ -165,15 +164,13 @@ class ParallaxFlowDelegate extends FlowDelegate {
     // Calculate the position of this list item within the viewport.
     final scrollableBox = scrollable.context.findRenderObject() as RenderBox;
     final listItemBox = listItemContext.findRenderObject() as RenderBox;
-    final listItemOffset = listItemBox.localToGlobal(
-        listItemBox.size.centerLeft(Offset.zero),
+    final listItemOffset = listItemBox.localToGlobal(listItemBox.size.centerLeft(Offset.zero),
         ancestor: scrollableBox);
 
     // Determine the percent position of this list item within the
     // scrollable area.
     final viewportDimension = scrollable.position.viewportDimension;
-    final scrollFraction =
-    (listItemOffset.dy / viewportDimension).clamp(0.0, 1.0);
+    final scrollFraction = (listItemOffset.dy / viewportDimension).clamp(0.0, 1.0);
 
     // Calculate the vertical alignment of the background
     // based on the scroll percent.
@@ -183,17 +180,14 @@ class ParallaxFlowDelegate extends FlowDelegate {
     // Convert the background alignment into a pixel offset for
     // painting purposes.
     final backgroundSize =
-        (backgroundImageKey.currentContext!.findRenderObject() as RenderBox)
-            .size;
+        (backgroundImageKey.currentContext!.findRenderObject() as RenderBox).size;
     final listItemSize = context.size;
-    final childRect =
-    verticalAlignment.inscribe(backgroundSize, Offset.zero & listItemSize);
+    final childRect = verticalAlignment.inscribe(backgroundSize, Offset.zero & listItemSize);
 
     // Paint the background.
     context.paintChild(
       0,
-      transform:
-      Transform.translate(offset: Offset(0.0, childRect.top)).transform,
+      transform: Transform.translate(offset: Offset(0.0, childRect.top)).transform,
     );
   }
 
@@ -217,8 +211,7 @@ class Parallax extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, covariant RenderParallax renderObject) {
+  void updateRenderObject(BuildContext context, covariant RenderParallax renderObject) {
     renderObject.scrollable = Scrollable.of(context);
   }
 }
@@ -273,8 +266,7 @@ class RenderParallax extends RenderBox
     // Force the background to take up all available width
     // and then scale its height based on the image's aspect ratio.
     final background = child!;
-    final backgroundImageConstraints =
-    BoxConstraints.tightFor(width: size.width);
+    final backgroundImageConstraints = BoxConstraints.tightFor(width: size.width);
     background.layout(backgroundImageConstraints, parentUsesSize: true);
 
     // Set the background's local offset, which is zero.
@@ -288,13 +280,11 @@ class RenderParallax extends RenderBox
 
     // Calculate the global position of this list item.
     final scrollableBox = scrollable.context.findRenderObject() as RenderBox;
-    final backgroundOffset =
-    localToGlobal(size.centerLeft(Offset.zero), ancestor: scrollableBox);
+    final backgroundOffset = localToGlobal(size.centerLeft(Offset.zero), ancestor: scrollableBox);
 
     // Determine the percent position of this list item within the
     // scrollable area.
-    final scrollFraction =
-    (backgroundOffset.dy / viewportDimension).clamp(0.0, 1.0);
+    final scrollFraction = (backgroundOffset.dy / viewportDimension).clamp(0.0, 1.0);
 
     // Calculate the vertical alignment of the background
     // based on the scroll percent.
@@ -305,15 +295,11 @@ class RenderParallax extends RenderBox
     final background = child!;
     final backgroundSize = background.size;
     final listItemSize = size;
-    final childRect =
-    verticalAlignment.inscribe(backgroundSize, Offset.zero & listItemSize);
+    final childRect = verticalAlignment.inscribe(backgroundSize, Offset.zero & listItemSize);
 
     // Paint the background.
-    context.paintChild(
-        background,
-        (background.parentData as ParallaxParentData).offset +
-            offset +
-            Offset(0.0, childRect.top));
+    context.paintChild(background,
+        (background.parentData as ParallaxParentData).offset + offset + Offset(0.0, childRect.top));
   }
 }
 
@@ -385,8 +371,7 @@ class _WikiChildState extends State<WikiChild> {
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController()
-      ..addListener(_setOffset);
+    _scrollController = ScrollController()..addListener(_setOffset);
   }
 
   @override
@@ -416,130 +401,7 @@ class _WikiChildState extends State<WikiChild> {
       else return (_offset - fullOpacityOffset) / (zeroOpacityOffset - fullOpacityOffset);
     }
   }
-  // @override
-  // Widget build(BuildContext context) {
-  //   Location location = locations.firstWhere(
-  //         (loc) => loc.name == widget.title,
-  //     orElse: () => const Location(name: '', place: '', imagePath: ''),
-  //   );
-  //   const double boxHeight = 10.0;
-  //   const double title1Height =16.0;
-  //   const double title2Height = 13.0;
-  //   //const double containerHeight = 185.0;
-  //   const double horizontalEdge = 10.0;
-  //   double containerHeight = MediaQuery.of(context).size.width/2 - horizontalEdge*2;
-  //   return Scaffold(
-  //     body: Container(
-  //       color: lightTeal, // Set the background color here
-  //       child: CustomScrollView(
-  //         controller: _scrollController,
-  //         physics: const BouncingScrollPhysics(),
-  //         slivers: [
-  //           _buildAppBar(location.imagePath),
-  //           SliverPadding(
-  //             padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
-  //             sliver: SliverPadding(
-  //               padding: const EdgeInsets.symmetric(horizontal: 16),
-  //               sliver: SliverGrid(
-  //                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-  //                   childAspectRatio: 1,
-  //                   crossAxisSpacing: 16,
-  //                   mainAxisSpacing: 10,
-  //                   crossAxisCount: 2,
-  //                 ),
-  //                 delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-  //                     return InkWell(
-  //                       onTap: () {},
-  //                       child: Column(
-  //                         crossAxisAlignment: CrossAxisAlignment.start,
-  //                         children: [
-  //                           Container(
-  //                             height: containerHeight, // Adjust the height of the box
-  //                             decoration: const BoxDecoration(
-  //                               color: Colors.black12,
-  //                               borderRadius: BorderRadius.all(Radius.circular(16)),
-  //                             ),
-  //                             child: Container(
-  //                               alignment: Alignment.center,
-  //                               child: Text(index.toString()),
-  //                             ),
-  //                           ),
-  //                           const SizedBox(height: boxHeight), // Space between the grid box and titles
-  //                           const Padding(
-  //                             padding: EdgeInsets.only(left: 10), // Add indentation to titles
-  //                             child: Text(
-  //                               '美他利佛細身赤鍬形蟲鍬形蟲',
-  //                               style: TextStyle(
-  //                               color: darkTeal,
-  //                               fontSize: title1Height,
-  //                               fontWeight: FontWeight.bold,
-  //                               ),
-  //                             ),
-  //                           ),
-  //                           const Padding(
-  //                             padding: EdgeInsets.only(left: 10), // Add indentation to titles
-  //                             child: Text(
-  //                               'Cyclommatus metallifer f.',
-  //                               style: TextStyle(
-  //                               color: Colors.grey,
-  //                               fontSize: title2Height,
-  //                               fontWeight: FontWeight.bold,
-  //                               ),
-  //                             ),
-  //                           ),
-  //                         ],
-  //                       ),                        
-  //                       // child: ClipRRect(
-  //                       //   clipBehavior: Clip.antiAlias,
-  //                       //   borderRadius: BorderRadius.circular(16),
-  //                       //   child: Container(
-  //                       //     height: 200,
-  //                       //     width: double.infinity,
-  //                       //     decoration: BoxDecoration(
-  //                       //       image: DecorationImage(
-  //                       //         image: NetworkImage(
-  //                       //           'https://storage.googleapis.com/cms-storage-bucket/a9d6ce81aee44ae017ee.png',
-  //                       //         ),
-  //                       //       ),
-  //                       //       borderRadius: BorderRadius.circular(16),
-  //                       //       boxShadow: [
-  //                       //         BoxShadow(
-  //                       //           color: Colors.grey.shade900,
-  //                       //           offset: const Offset(1, 1),
-  //                       //           spreadRadius: 1,
-  //                       //           blurRadius: 50,
-  //                       //           blurStyle: BlurStyle.outer,
-  //                       //         ),
-  //                       //       ],
-  //                       //     ),
-  //                       //     child: Container(
-  //                       //       padding: const EdgeInsets.all(10),
-  //                       //       height: 100,
-  //                       //       color: Colors.red,
-  //                       //       alignment: Alignment.bottomLeft,
-  //                       //       width: double.infinity,
-  //                       //       child: Text(
-  //                       //         "title",
-  //                       //         //overflow: TextOverflow.ellipsis,
-  //                       //         style: Theme.of(context).textTheme.bodyText1!,
-  //                       //       ),
-  //                       //     ),
-  //                       //   ),
-  //                       // ),
-  //                     );
-  //                   },
-  //                   childCount: 20,
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 
-  
   @override
   Widget build(BuildContext context) {
     Location location = locations.firstWhere(
@@ -553,50 +415,16 @@ class _WikiChildState extends State<WikiChild> {
           physics: const BouncingScrollPhysics(),
           slivers: [
             _buildAppBar(location.imagePath),
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
-              sliver: _buildGridView(),
-            ),
+            _buildGridView(),
           ],
         ),
       ),
     );
   }
-  //   return Scaffold(
-  //     body: Container(
-  //       color: lightTeal, // Set the background color here
-  //       child: CustomScrollView(
-  //         controller: _scrollController,
-  //         physics: const BouncingScrollPhysics(),
-  //         slivers: [
-  //           _buildAppBar(location.imagePath),
-  //           _buildGridView(),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-  //   return Scaffold(
-  //     body: Container(
-  //       color: lightTeal, // Set the background color here
-  //       child: NestedScrollView(
-  //             headerSliverBuilder:
-  //         (BuildContext context, bool innerBoxIsScrolled) {
-  //           return [
-  //           SliverPadding(
-  //             padding: new EdgeInsets.only(top: 5.0),
-  //             sliver: new SliverList(
-  //               delegate: new SliverChildListDelegate(
-  //                   [YOR_WIDGET()]),
-  //             ),
-  //           );
-  //   ]
-  //   );
-  // }
 
   Widget _buildGridView() {
-    const double boxHeight = 10.0;
-    const double title1Height =16.0;
+    const double boxHeight = 6.0;
+    const double title1Height = 16.0;
     const double title2Height = 13.0;
     //const double containerHeight = 185.0;
     const double horizontalEdge = 16.0;
@@ -604,64 +432,67 @@ class _WikiChildState extends State<WikiChild> {
     double totalBoxHeight = boxHeight + title1Height + title2Height + containerHeight;
     
     return SliverPadding(
-      padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+      padding: const EdgeInsets.only(top: 100.0),
       sliver: SliverPadding(
         padding: const EdgeInsets.symmetric(horizontal: horizontalEdge),
         sliver: SliverGrid(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: horizontalEdge,
-          mainAxisSpacing: 0,
-          childAspectRatio: (((MediaQuery.of(context).size.width)/2) / totalBoxHeight)/1.3,
-        ),
-        delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-          return InkWell(
-            onTap: () {},
-            child:  Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: containerHeight, // Adjust the height of the box
-                  decoration: const BoxDecoration(
-                    color: Colors.black12,
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                  ),
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text(index.toString()),
-                  ),
-                ),
-                const SizedBox(height: boxHeight), // Space between the grid box and titles
-                const Padding(
-                  padding: EdgeInsets.only(left: 10), // Add indentation to titles
-                  child: Text(
-                    '美他利佛細身赤鍬形蟲鍬形蟲鍬形蟲',
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                    color: darkTeal,
-                    fontSize: title1Height,
-                    fontWeight: FontWeight.bold,
+            crossAxisCount: 2,
+            crossAxisSpacing: horizontalEdge,
+            mainAxisSpacing: 0,
+            childAspectRatio: (((MediaQuery.of(context).size.width) / 2) / totalBoxHeight) / 1.3,
+          ),
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              return InkWell(
+                onTap: () {},
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: containerHeight, // Adjust the height of the box
+                      decoration: const BoxDecoration(
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                      ),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(index.toString()),
+                      ),
                     ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 10), // Add indentation to titles
-                  child: Text(
-                    'Cyclommatus metallifer f.',
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: title2Height,
-                    fontWeight: FontWeight.bold,
+                    const SizedBox(height: boxHeight), // Space between the grid box and titles
+                    const Padding(
+                      padding: EdgeInsets.only(left: 10), // Add indentation to titles
+                      child: Text(
+                        '美他利佛細身赤鍬形蟲',
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                        style: TextStyle(
+                          color: darkTeal,
+                          fontSize: title1Height,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 10), // Add indentation to titles
+                      child: Text(
+                        'Cyclommatus metallifer f.',
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: title2Height,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
-        childCount: 20,
-        ),
+              );
+            },
+            childCount: 20,
+          ),
         ),
       ),
     );
