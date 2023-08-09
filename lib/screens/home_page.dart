@@ -53,7 +53,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-
     super.initState();
     _loadPlants();
 
@@ -119,9 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       if (plants.isNotEmpty) {
         notify.singleNotification(
-            AppLocalizations.of(context)!.careNotificationTitle,
-            plants.join(' '),
-            7);
+            AppLocalizations.of(context)!.careNotificationTitle, plants.join(' '), 7);
       }
     }
     BackgroundFetch.finish(taskId);
@@ -177,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget pageWikis() {
     return const Center(
-           child: ExampleParallax(),
+      child: ExampleParallax(),
     );
   }
 
@@ -190,8 +187,8 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             SvgPicture.asset(
               _selectedIndex == 0
-                  ? "assets/undraw_fall_thyk.svg"
-                  : "assets/undraw_blooming_re_2kc4.svg",
+                  ? "assets/images/undraw_fall_thyk.svg"
+                  : "assets/images/undraw_blooming_re_2kc4.svg",
               semanticsLabel: 'Fall',
               alignment: Alignment.center,
               height: 250,
@@ -220,8 +217,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String titleSelector() {
     if (_dateFilterEnabled) {
-      return DateFormat.EEEE(Localizations.localeOf(context).languageCode)
-              .format(_dateFilter) +
+      return DateFormat.EEEE(Localizations.localeOf(context).languageCode).format(_dateFilter) +
           " " +
           DateFormat('d').format(_dateFilter);
     } else if (_selectedIndex == 1) {
@@ -277,15 +273,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () async {
                     DateTime? result = await showDatePicker(
                         context: context,
-                        initialDate:
-                            DateTime.now().add(const Duration(days: 1)),
+                        initialDate: DateTime.now().add(const Duration(days: 1)),
                         firstDate: DateTime.now().add(const Duration(days: 1)),
                         lastDate: DateTime.now().add(const Duration(days: 7)));
                     setState(() {
                       if (result != null) {
                         var time = TimeOfDay.now();
-                        _dateFilter = result.add(
-                            Duration(hours: time.hour, minutes: time.minute));
+                        _dateFilter = result.add(Duration(hours: time.hour, minutes: time.minute));
                         _dateFilterEnabled = true;
                         _loadPlants();
                       }
@@ -302,8 +296,7 @@ class _MyHomePageState extends State<MyHomePage> {
               await Navigator.push(
                   context,
                   MaterialPageRoute<void>(
-                    builder: (context) =>
-                        const SettingsScreen(title: "Settings Screen"),
+                    builder: (context) => const SettingsScreen(title: "Settings Screen"),
                   ));
             },
           ),
@@ -314,44 +307,46 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: IndexedStack(
         index: _selectedIndex,
-        children: [ _plants.isEmpty
-            ? noPlants()
-            : ResponsiveGridList(
-            // Horizontal space between grid items
-            horizontalGridSpacing: 10,
-            // Vertical space between grid items
-            verticalGridSpacing: 10,
-            // Horizontal space around the grid
-            horizontalGridMargin: 10,
-            // Vertical space around the grid
-            verticalGridMargin: 10,
-            // The minimum item width (can be smaller, if the layout constraints are smaller)
-            minItemWidth: 300,
-            // The minimum items to show in a single row. Takes precedence over minItemWidth
-            minItemsPerRow: 2,
-            // The maximum items to show in a single row. Can be useful on large screens
-            maxItemsPerRow: 2,
-            children: _buildPlantCards(context) // Changed code
-            ),_plants.isEmpty
-            ? noPlants()
-            : ResponsiveGridList(
-            // Horizontal space between grid items
-            horizontalGridSpacing: 10,
-            // Vertical space between grid items
-            verticalGridSpacing: 10,
-            // Horizontal space around the grid
-            horizontalGridMargin: 10,
-            // Vertical space around the grid
-            verticalGridMargin: 10,
-            // The minimum item width (can be smaller, if the layout constraints are smaller)
-            minItemWidth: 300,
-            // The minimum items to show in a single row. Takes precedence over minItemWidth
-            minItemsPerRow: 2,
-            // The maximum items to show in a single row. Can be useful on large screens
-            maxItemsPerRow: 2,
-            children: _buildPlantCards(context) // Changed code
-            ),
-            pageWikis(),
+        children: [
+          _plants.isEmpty
+              ? noPlants()
+              : ResponsiveGridList(
+                  // Horizontal space between grid items
+                  horizontalGridSpacing: 10,
+                  // Vertical space between grid items
+                  verticalGridSpacing: 10,
+                  // Horizontal space around the grid
+                  horizontalGridMargin: 10,
+                  // Vertical space around the grid
+                  verticalGridMargin: 10,
+                  // The minimum item width (can be smaller, if the layout constraints are smaller)
+                  minItemWidth: 300,
+                  // The minimum items to show in a single row. Takes precedence over minItemWidth
+                  minItemsPerRow: 2,
+                  // The maximum items to show in a single row. Can be useful on large screens
+                  maxItemsPerRow: 2,
+                  children: _buildPlantCards(context) // Changed code
+                  ),
+          _plants.isEmpty
+              ? noPlants()
+              : ResponsiveGridList(
+                  // Horizontal space between grid items
+                  horizontalGridSpacing: 10,
+                  // Vertical space between grid items
+                  verticalGridSpacing: 10,
+                  // Horizontal space around the grid
+                  horizontalGridMargin: 10,
+                  // Vertical space around the grid
+                  verticalGridMargin: 10,
+                  // The minimum item width (can be smaller, if the layout constraints are smaller)
+                  minItemWidth: 300,
+                  // The minimum items to show in a single row. Takes precedence over minItemWidth
+                  minItemsPerRow: 2,
+                  // The maximum items to show in a single row. Can be useful on large screens
+                  maxItemsPerRow: 2,
+                  children: _buildPlantCards(context) // Changed code
+                  ),
+          pageWikis(),
         ],
       ),
       // body: _plants.isEmpty
@@ -398,23 +393,25 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: _selectedIndex==1 ? FloatingActionButton(
-        onPressed: () async {
-          await Navigator.push(
-              context,
-              MaterialPageRoute<void>(
-                builder: (context) => const ManagePlantScreen(
-                    title: "Manage plant", update: false),
-              ));
-          setState(() {
-            _selectedIndex = 1;
-            _loadPlants();
-          });
-        },
-        tooltip: AppLocalizations.of(context)!.tooltipNewPlant,
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.teal,
-      ):null, // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: _selectedIndex == 1
+          ? FloatingActionButton(
+              onPressed: () async {
+                await Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (context) =>
+                          const ManagePlantScreen(title: "Manage plant", update: false),
+                    ));
+                setState(() {
+                  _selectedIndex = 1;
+                  _loadPlants();
+                });
+              },
+//        tooltip: AppLocalizations.of(context)!.tooltipNewPlant,
+              child: const Icon(Icons.add),
+              backgroundColor: Colors.teal,
+            )
+          : null, // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
@@ -438,13 +435,11 @@ class _MyHomePageState extends State<MyHomePage> {
           // If calendar day selected, add only the care that must be attended on a certain day.
           // Past care is assumed to have been correctly attended to in due time.
           if (_dateFilterEnabled) {
-            requiresInsert =
-                daysSinceLastCare != 0 && daysSinceLastCare % c.cycles == 0;
+            requiresInsert = daysSinceLastCare != 0 && daysSinceLastCare % c.cycles == 0;
           }
           // Else, add all unattended care, current and past
           else {
-            requiresInsert =
-                daysSinceLastCare != 0 && daysSinceLastCare / c.cycles >= 1;
+            requiresInsert = daysSinceLastCare != 0 && daysSinceLastCare / c.cycles >= 1;
           }
           if (requiresInsert) {
             if (!inserted) {

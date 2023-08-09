@@ -308,48 +308,67 @@ class Location {
     required this.name,
     required this.place,
     required this.imagePath,
+    required this.realName,
+    required this.birth,
   });
 
   final String name;
   final String place;
   final String imagePath;
+  final String realName;
+  final String birth;
 }
 
 const locations = [
   Location(
     name: 'Cyclommatus',
     place: '細身屬',
-    imagePath: 'assets/cyclommatus.png',
+    imagePath: 'assets/images/cyclommatus.png',
+    realName: '雞冠細身赤鍬形蟲',
+    birth: '新北三峽',
   ),
   Location(
     name: 'Dorcus',
     place: '大鍬屬',
-    imagePath: 'assets/dorcus.png',
+    imagePath: 'assets/images/dorcus.png',
+    realName: '台灣大鍬',
+    birth: '新竹尖石',
   ),
   Location(
     name: 'Lucanus',
     place: '深山屬',
-    imagePath: 'assets/lucanus.png',
+    imagePath: 'assets/images/lucanus.png',
+    realName: '台灣深山鍬形蟲',
+    birth: '苗栗加里山',
   ),
   Location(
     name: 'Neolucanus',
     place: '圓翅屬',
-    imagePath: 'assets/neolucanus.png',
+    imagePath: 'assets/images/neolucanus.png',
+    realName: '紅圓翅鍬形蟲',
+    birth: '桃園東眼山',
   ),
   Location(
     name: 'Odontolabis',
     place: '艷鍬屬',
-    imagePath: 'assets/odontolabis.png',
+    imagePath: 'assets/images/odontolabis.png',
+    realName: '鬼艷鍬形蟲',
+    birth: '台中觀霧',
   ),
   Location(
     name: 'Prosopocoilus',
     place: '鋸鍬屬',
-    imagePath: 'assets/prosopocoilus.png',
+    imagePath: 'assets/images/prosopocoilus.png',
+    realName: '兩點赤鋸鍬形蟲',
+    birth: '高雄藤枝',
   ),
   Location(
     name: 'Rhaetulus',
     place: '鹿角屬',
-    imagePath: 'assets/rhaetulus.png',
+    imagePath: 'assets/images/rhaetulus.png',
+    realName: '鹿角鍬形蟲',
+    birth: '台東啞口',
+
   ),
 ];
 
@@ -404,9 +423,8 @@ class _WikiChildState extends State<WikiChild> {
 
   @override
   Widget build(BuildContext context) {
-    Location location = locations.firstWhere(
-            (loc) => loc.name == widget.title,
-            orElse: () => const Location(name: '', place: '', imagePath: ''));
+    Location location = locations.firstWhere((loc) => loc.name == widget.title,
+        orElse: () => const Location(name:'',place:'',imagePath:'', realName:'',birth:''));
     return Scaffold(
       body: Container(
         color: lightTeal, // Set the background color here
@@ -416,7 +434,7 @@ class _WikiChildState extends State<WikiChild> {
           physics: const BouncingScrollPhysics(),
           //physics: ClampingScrollPhysics(),
           slivers: [
-            _buildAppBar(location.imagePath),
+            _buildAppBar(location.imagePath,location.realName,location.birth),
             _buildCardBorder(),
             _buildGridView(),
           ],
@@ -428,7 +446,7 @@ class _WikiChildState extends State<WikiChild> {
   Widget _buildGridView() {
     const double boxHeight = 6.0;
     const double title1Height = 15.0;
-    const double title2Height = 11.0;
+    const double title2Height = 12.0;
     //const double containerHeight = 185.0;
     const double horizontalEdge = 16.0;
     double containerHeight = MediaQuery.of(context).size.width/2 - horizontalEdge*2;
@@ -476,7 +494,8 @@ class _WikiChildState extends State<WikiChild> {
                         style: TextStyle(
                           color: darkTeal,
                           fontSize: title1Height,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'MPLUS',
                         ),
                       ),
                     ),
@@ -490,6 +509,7 @@ class _WikiChildState extends State<WikiChild> {
                           color: Colors.grey,
                           fontSize: title2Height,
                           fontWeight: FontWeight.w600,
+                          fontFamily: 'MPLUS',
                         ),
                       ),
                     ),
@@ -504,7 +524,7 @@ class _WikiChildState extends State<WikiChild> {
     );
   }
 
-  Widget _buildAppBar(String imagePath) {
+  Widget _buildAppBar(String imagePath, String realName, String birth) {
     titleOpacity = _calculateOpacity();
     ColorTween colorTween = ColorTween(begin: Colors.white, end: darkTeal);
     Color? backButtonColor = colorTween.lerp(titleOpacity);
@@ -534,6 +554,38 @@ class _WikiChildState extends State<WikiChild> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 stops: const [0.6, 0.95],
+              ),
+            ),
+          ),
+          FlexibleSpaceBar(
+            expandedTitleScale: 1,
+            stretchModes: [],
+            title: Container(
+              // Wrap the title in a container to prevent zooming
+              alignment: Alignment.bottomLeft, // Align the title at the bottom left
+              padding: const EdgeInsets.only(bottom: 10.0), // Adjust padding as needed
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(realName,
+                      style: const TextStyle(
+                        fontSize: 25,
+                        letterSpacing: 5,
+                        fontFamily: 'MPLUS',
+                        fontWeight: FontWeight.normal,
+                      )
+                    ),
+                    Text(birth,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        letterSpacing: 5,
+                        fontFamily: 'MPLUS',
+                      )
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

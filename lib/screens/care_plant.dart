@@ -31,18 +31,13 @@ class _CarePlantScreen extends State<CarePlantScreen> {
   }
 
   String buildCareMessage(int daysToCare) {
-
-    if (daysToCare == 0 ){
+    if (daysToCare == 0) {
       return AppLocalizations.of(context)!.now;
-    }
-    else if (daysToCare <0){
+    } else if (daysToCare < 0) {
       return "${AppLocalizations.of(context)!.daysLate} ${daysToCare.abs()} ${AppLocalizations.of(context)!.days}";
+    } else {
+      return "$daysToCare ${AppLocalizations.of(context)!.daysLeft}";
     }
-    else{
-      return  "$daysToCare ${AppLocalizations.of(context)!.daysLeft}";
-    }
-
-
   }
 
   Future<void> _showDeletePlantDialog(Plant plant) async {
@@ -55,8 +50,7 @@ class _CarePlantScreen extends State<CarePlantScreen> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text(
-                    AppLocalizations.of(context)!.deletePlantBody),
+                Text(AppLocalizations.of(context)!.deletePlantBody),
               ],
             ),
           ),
@@ -84,11 +78,11 @@ class _CarePlantScreen extends State<CarePlantScreen> {
     return plant.cares.map((care) {
       int daysToCare = care.cycles - DateTime.now().difference(care.effected!).inDays;
 
-      if (careCheck[care] == null){
+      if (careCheck[care] == null) {
         careCheck[care] = daysToCare <= 0;
       }
       return CheckboxListTile(
-        title: Text(DefaultValues.getCare(context,care.name)!.translatedName),
+        title: Text(DefaultValues.getCare(context, care.name)!.translatedName),
         subtitle: Text(buildCareMessage(daysToCare)),
         value: careCheck[care],
         onChanged: (bool? value) {
@@ -108,7 +102,7 @@ class _CarePlantScreen extends State<CarePlantScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          toolbarHeight : 70,
+          toolbarHeight: 70,
           automaticallyImplyLeading: false,
           title: FittedBox(fit: BoxFit.fitWidth, child: Text(plant.name)),
           elevation: 0.0,
@@ -124,8 +118,8 @@ class _CarePlantScreen extends State<CarePlantScreen> {
                 await Navigator.push(
                     context,
                     MaterialPageRoute<void>(
-                      builder: (context) => ManagePlantScreen(
-                          title: "Manage plant", update: true, plant: plant),
+                      builder: (context) =>
+                          ManagePlantScreen(title: "Manage plant", update: true, plant: plant),
                     ));
               },
             )
@@ -154,7 +148,7 @@ class _CarePlantScreen extends State<CarePlantScreen> {
                       ClipRRect(
                         child: SizedBox(
                           height: 220,
-                          child: plant.picture!.contains("assets/")
+                          child: plant.picture!.contains("assets/images/")
                               ? Image.asset(
                                   plant.picture!,
                                   // TODO: Adjust the box size (102)
@@ -189,8 +183,9 @@ class _CarePlantScreen extends State<CarePlantScreen> {
                     ListTile(
                         leading: const Icon(Icons.cake),
                         title: Text(AppLocalizations.of(context)!.labelDayPlanted),
-                        subtitle:
-                            Text(DateFormat.yMMMMd(Localizations.localeOf(context).languageCode).format(plant.createdAt))),
+                        subtitle: Text(
+                            DateFormat.yMMMMd(Localizations.localeOf(context).languageCode)
+                                .format(plant.createdAt))),
                   ]),
                 ),
                 Card(
@@ -230,10 +225,11 @@ class _CarePlantScreen extends State<CarePlantScreen> {
                         SnackBar(content: Text(AppLocalizations.of(context)!.noCaresError)));
                   } else {
                     careCheck.forEach((key, value) {
-                      if (value == true){
+                      if (value == true) {
                         key.effected = DateTime.now();
                         objectbox.careBox.put(key);
-                      }});
+                      }
+                    });
 
                     Navigator.of(context).pop();
                   }

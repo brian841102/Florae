@@ -14,8 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
 
 class ManagePlantScreen extends StatefulWidget {
-  const ManagePlantScreen(
-      {Key? key, required this.title, required this.update, this.plant})
+  const ManagePlantScreen({Key? key, required this.title, required this.update, this.plant})
       : super(key: key);
 
   final String title;
@@ -45,16 +44,14 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
   int _prefNumber = 1;
 
   Future getImageFromCam() async {
-    var image =
-        await _picker.pickImage(source: ImageSource.camera, imageQuality: 25);
+    var image = await _picker.pickImage(source: ImageSource.camera, imageQuality: 25);
     setState(() {
       _image = image;
     });
   }
 
   Future getImageFromGallery() async {
-    var image =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
+    var image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
     setState(() {
       _image = image;
     });
@@ -90,9 +87,7 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
                   autofocus: true,
                   initialValue: cares[care]!.cycles.toString(),
                   keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                 ),
                 trailing: Text(AppLocalizations.of(context)!.days)),
             actions: [
@@ -123,16 +118,14 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
     // If is an update, restore old cares
     if (widget.update && widget.plant != null) {
       for (var care in widget.plant!.cares) {
-        cares[care.name] =
-            Care(name: care.name, cycles: care.cycles, effected: care.effected);
+        cares[care.name] = Care(name: care.name, cycles: care.cycles, effected: care.effected);
       }
       nameController.text = widget.plant!.name;
       descriptionController.text = widget.plant!.description;
       locationController.text = widget.plant!.location ?? "";
 
       if (widget.plant!.picture!.contains("florae_avatar")) {
-        String? asset =
-            widget.plant!.picture!.replaceAll(RegExp(r'\D'), ''); // '23'
+        String? asset = widget.plant!.picture!.replaceAll(RegExp(r'\D'), ''); // '23'
         _prefNumber = int.tryParse(asset) ?? 1;
       } else {
         _image = XFile(widget.plant!.picture!);
@@ -147,8 +140,7 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
     // Filling in the empty cares
     DefaultValues.getCares(context).forEach((key, value) {
       if (cares[key] == null) {
-        cares[key] = Care(
-            cycles: value.defaultCycles, effected: DateTime.now(), name: key);
+        cares[key] = Care(cycles: value.defaultCycles, effected: DateTime.now(), name: key);
       }
     });
   }
@@ -165,11 +157,9 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
       list.add(ListTile(
           trailing: const Icon(Icons.arrow_right),
           leading: Icon(value.icon, color: value.color),
-          title: Text(
-              '${value.translatedName} ${AppLocalizations.of(context)!.every}'),
+          title: Text('${value.translatedName} ${AppLocalizations.of(context)!.every}'),
           subtitle: cares[key]!.cycles != 0
-              ? Text(cares[key]!.cycles.toString() +
-                  " ${AppLocalizations.of(context)!.days}")
+              ? Text(cares[key]!.cycles.toString() + " ${AppLocalizations.of(context)!.days}")
               : Text(AppLocalizations.of(context)!.never),
           onTap: () {
             _showIntegerDialog(key);
@@ -221,7 +211,7 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
                         height: 200,
                         child: _image == null
                             ? Image.asset(
-                                "assets/florae_avatar_$_prefNumber.png",
+                                "assets/images/florae_avatar_$_prefNumber.png",
                                 // TODO: Adjust the box size (102)
                                 fit: BoxFit.fitWidth,
                               )
@@ -235,19 +225,16 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
                         IconButton(
                           onPressed: getImageFromCam,
                           icon: const Icon(Icons.add_a_photo),
-                          tooltip:
-                              AppLocalizations.of(context)!.tooltipCameraImage,
+                          tooltip: AppLocalizations.of(context)!.tooltipCameraImage,
                         ),
                         IconButton(
                             onPressed: getPrefabImage,
                             icon: const Icon(Icons.refresh),
-                            tooltip: AppLocalizations.of(context)!
-                                .tooltipNextAvatar),
+                            tooltip: AppLocalizations.of(context)!.tooltipNextAvatar),
                         IconButton(
                           onPressed: getImageFromGallery,
                           icon: const Icon(Icons.wallpaper),
-                          tooltip:
-                              AppLocalizations.of(context)!.tooltipGalleryImage,
+                          tooltip: AppLocalizations.of(context)!.tooltipGalleryImage,
                         )
                       ],
                     ),
@@ -310,8 +297,7 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
                         maxLength: 100,
                         decoration: InputDecoration(
                           icon: const Icon(Icons.topic),
-                          labelText:
-                              AppLocalizations.of(context)!.labelDescription,
+                          labelText: AppLocalizations.of(context)!.labelDescription,
                           labelStyle: const TextStyle(
                             decorationColor: Colors.teal,
                           ),
@@ -329,16 +315,14 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
                         maxLength: 20,
                         decoration: InputDecoration(
                           icon: const Icon(Icons.location_on),
-                          labelText:
-                              AppLocalizations.of(context)!.labelLocation,
+                          labelText: AppLocalizations.of(context)!.labelLocation,
                           labelStyle: const TextStyle(
                             decorationColor: Colors.teal,
                           ),
                           fillColor: Colors.teal,
                           focusColor: Colors.teal,
                           hoverColor: Colors.teal,
-                          helperText:
-                              AppLocalizations.of(context)!.exampleLocation,
+                          helperText: AppLocalizations.of(context)!.exampleLocation,
                           enabledBorder: const UnderlineInputBorder(),
                           focusedBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.teal)),
@@ -369,15 +353,13 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
                   leading: const Icon(Icons.cake),
                   enabled: !widget.update,
                   title: Text(AppLocalizations.of(context)!.labelDayPlanted),
-                  subtitle: Text(DateFormat.yMMMMEEEEd(
-                          Localizations.localeOf(context).languageCode)
+                  subtitle: Text(DateFormat.yMMMMEEEEd(Localizations.localeOf(context).languageCode)
                       .format(_planted)),
                   onTap: () async {
                     DateTime? result = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
-                        firstDate:
-                            DateTime.now().subtract(const Duration(days: 1000)),
+                        firstDate: DateTime.now().subtract(const Duration(days: 1000)),
                         lastDate: DateTime.now());
                     setState(() {
                       _planted = result ?? DateTime.now();
@@ -395,12 +377,10 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
           String fileName = "";
           if (_formKey.currentState!.validate()) {
             if (_image != null) {
-              final Directory directory = await getExternalStorageDirectory() ??
-                  await getApplicationDocumentsDirectory();
-              fileName = directory.path +
-                  "/" +
-                  generateRandomString(10) +
-                  p.extension(_image!.path);
+              final Directory directory =
+                  await getExternalStorageDirectory() ?? await getApplicationDocumentsDirectory();
+              fileName =
+                  directory.path + "/" + generateRandomString(10) + p.extension(_image!.path);
               _image!.saveTo(fileName);
             }
 
@@ -411,9 +391,7 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
                 name: nameController.text,
                 createdAt: _planted,
                 description: descriptionController.text,
-                picture: _image != null
-                    ? fileName
-                    : "assets/florae_avatar_$_prefNumber.png",
+                picture: _image != null ? fileName : "assets/images/florae_avatar_$_prefNumber.png",
                 location: locationController.text);
 
             // Assign cares to plant
@@ -421,8 +399,7 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
 
             cares.forEach((key, value) {
               if (value.cycles != 0) {
-                newPlant.cares.add(Care(
-                    cycles: value.cycles, effected: value.effected, name: key));
+                newPlant.cares.add(Care(cycles: value.cycles, effected: value.effected, name: key));
               }
             });
 
@@ -446,12 +423,11 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
   }
 
   String generateRandomString(int length) {
-    const _chars =
-        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
     Random _rnd = Random();
 
-    return String.fromCharCodes(Iterable.generate(
-        length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+    return String.fromCharCodes(
+        Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
   }
 
   _loadPlants() async {
@@ -459,7 +435,6 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
     setState(() => _plants = allPlants);
   }
 
-  Plant? findPlant(String name) => _plants
-      .cast()
-      .firstWhere((plant) => plant.name == name, orElse: () => null);
+  Plant? findPlant(String name) =>
+      _plants.cast().firstWhere((plant) => plant.name == name, orElse: () => null);
 }
