@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
-const Color lightTeal = Color.fromARGB(195, 244, 255, 252);
+const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
 
 class ExampleParallax extends StatelessWidget {
   const ExampleParallax({
@@ -411,10 +411,13 @@ class _WikiChildState extends State<WikiChild> {
       body: Container(
         color: lightTeal, // Set the background color here
         child: CustomScrollView(
+          cacheExtent: 500,
           controller: _scrollController,
           physics: const BouncingScrollPhysics(),
+          //physics: ClampingScrollPhysics(),
           slivers: [
             _buildAppBar(location.imagePath),
+            _buildCardBorder(),
             _buildGridView(),
           ],
         ),
@@ -424,15 +427,15 @@ class _WikiChildState extends State<WikiChild> {
 
   Widget _buildGridView() {
     const double boxHeight = 6.0;
-    const double title1Height = 16.0;
-    const double title2Height = 13.0;
+    const double title1Height = 15.0;
+    const double title2Height = 11.0;
     //const double containerHeight = 185.0;
     const double horizontalEdge = 16.0;
     double containerHeight = MediaQuery.of(context).size.width/2 - horizontalEdge*2;
     double totalBoxHeight = boxHeight + title1Height + title2Height + containerHeight;
     
     return SliverPadding(
-      padding: const EdgeInsets.only(top: 100.0),
+      padding: const EdgeInsets.only(top: 0.0),
       sliver: SliverPadding(
         padding: const EdgeInsets.symmetric(horizontal: horizontalEdge),
         sliver: SliverGrid(
@@ -458,11 +461,14 @@ class _WikiChildState extends State<WikiChild> {
                       child: Container(
                         alignment: Alignment.center,
                         child: Text(index.toString()),
+                        // child: const Image(
+                        //   image: //TODO
+                        // ),
                       ),
                     ),
                     const SizedBox(height: boxHeight), // Space between the grid box and titles
                     const Padding(
-                      padding: EdgeInsets.only(left: 10), // Add indentation to titles
+                      padding: EdgeInsets.only(left: 10, right: 10), // Add indentation to titles
                       child: Text(
                         '美他利佛細身赤鍬形蟲',
                         overflow: TextOverflow.fade,
@@ -475,7 +481,7 @@ class _WikiChildState extends State<WikiChild> {
                       ),
                     ),
                     const Padding(
-                      padding: EdgeInsets.only(left: 10), // Add indentation to titles
+                      padding: EdgeInsets.only(left: 10, right: 10), // Add indentation to titles
                       child: Text(
                         'Cyclommatus metallifer f.',
                         overflow: TextOverflow.fade,
@@ -507,7 +513,7 @@ class _WikiChildState extends State<WikiChild> {
       pinned: true,
       snap: false,
       foregroundColor: backButtonColor, // back button color
-      backgroundColor: darkTeal,
+      backgroundColor: Colors.transparent,
       floating: false,
       expandedHeight: 240.0,
       stretch: true,
@@ -519,6 +525,16 @@ class _WikiChildState extends State<WikiChild> {
             child: Image.asset(
               imagePath,
               fit: BoxFit.cover,
+            ),
+          ),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.transparent, Colors.black.withOpacity(0.9)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: const [0.6, 0.95],
+              ),
             ),
           ),
           Positioned(
@@ -544,5 +560,37 @@ class _WikiChildState extends State<WikiChild> {
         ],
       ),
     );
+  }
+}
+
+Widget _buildCardBorder() {
+  return SliverWidget(
+    child: Stack(
+      children: [
+        Positioned.fill(
+          child: Container(
+            color: Colors.black,
+          ),
+        ),
+        Container(
+          width: double.infinity,
+          height: 50,
+          decoration: const BoxDecoration(
+            color: lightTeal,
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+        ),
+      ],
+    ),
+  );
+}
+
+
+class SliverWidget extends StatelessWidget {
+  const SliverWidget({Key? key, required this.child}) : super(key: key);
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(child: child,);
   }
 }
