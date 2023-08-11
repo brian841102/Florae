@@ -1,6 +1,6 @@
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
@@ -421,14 +421,6 @@ class _WikiChildState extends State<WikiChild> {
       else return (_offset - fullOpacityOffset) / (zeroOpacityOffset - fullOpacityOffset);
     }
   }
-  void _openGoogleMaps() async {
-    final url = Uri.parse('https://www.google.com/maps/search/?api=1&query=latitude,longitude');
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      throw 'Could not open Google Maps.';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -443,7 +435,7 @@ class _WikiChildState extends State<WikiChild> {
           physics: const BouncingScrollPhysics(),
           //physics: ClampingScrollPhysics(),
           slivers: [
-            _buildAppBar(location.imagePath, location.realName, location.birth),
+            _buildAppBar(location.imagePath,location.realName,location.birth),
             _buildCardBorder(),
             _buildGridView(),
           ],
@@ -533,6 +525,26 @@ class _WikiChildState extends State<WikiChild> {
     );
   }
 
+  void _launchMaps(String keyword) async {
+  // String googleUrl =
+  //   'comgooglemaps://?center=${trip.origLocationObj.lat},${trip.origLocationObj.lon}';
+  Uri googleUrl =
+      Uri.parse('https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(keyword)}');
+  // String appleUrl =
+  //   'https://maps.apple.com/?sll=${trip.origLocationObj.lat},${trip.origLocationObj.lon}';
+  Uri appleUrl =
+      Uri.parse('https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(keyword)}');
+  if (await canLaunchUrl(googleUrl)) {
+    print('launching google url');
+    await launchUrl(googleUrl);
+  } else if (await canLaunchUrl(appleUrl)) {
+    print('launching apple url');
+    await launchUrl(appleUrl);
+  } else {
+    throw 'Could not launch url';
+  }
+}
+
   Widget _buildAppBar(String imagePath, String realName, String birth) {
     titleOpacity = _calculateOpacity();
     ColorTween colorTween = ColorTween(begin: Colors.white, end: darkTeal);
@@ -546,7 +558,6 @@ class _WikiChildState extends State<WikiChild> {
       floating: false,
       expandedHeight: 240.0,
       stretch: true,
-      //shape: _CustomShape(), //like this,
       flexibleSpace: Stack(
         fit: StackFit.expand,
         children: [
@@ -569,8 +580,8 @@ class _WikiChildState extends State<WikiChild> {
           ),
           FlexibleSpaceBar(
             expandedTitleScale: 1,
-            stretchModes: const [],
-            titlePadding: const EdgeInsets.only(left: 48, bottom: 16),
+            stretchModes: [],
+            titlePadding: const EdgeInsets.only(left: 40, bottom: 20.0),
             title: Container(
               alignment: Alignment.bottomLeft, // Align the title at the bottom left
               child: SingleChildScrollView(
@@ -580,8 +591,8 @@ class _WikiChildState extends State<WikiChild> {
                   children: <Widget>[
                     Text(realName,
                       style: const TextStyle(
-                        fontSize: 24,
-                        letterSpacing: 5,
+                        fontSize: 25,
+                        letterSpacing: 4,
                         fontFamily: 'MPLUS',
                         fontWeight: FontWeight.normal,
                       )
@@ -593,20 +604,30 @@ class _WikiChildState extends State<WikiChild> {
                           Text(birth,
                             style: const TextStyle(
                               fontSize: 15,
-                              letterSpacing: 5,
+                              letterSpacing: 2,
                               fontFamily: 'MPLUS',
                             )
                           ),
-                          const SizedBox(width: 5),
-                          InkWell(
-                            onTap: () {
-                              // Open Google Maps with the provided location
-                              _openGoogleMaps();
-                            },
-                            child: const Icon(
-                              Icons.location_on,
-                              color: Colors.blue, // Customize the color of the icon
+                          IconButton(
+                            iconSize: 17,
+                            icon: const Icon(
+                                Icons.location_pin,
+                                color: Colors.redAccent,
                             ),
+                            visualDensity: VisualDensity.compact,
+                            onPressed: () {
+                              _launchMaps(birth);
+                            },
+                            // InkWell(
+                            //   onTap: () {
+                            //     // Open Google Maps with the provided location
+                            //     _openGoogleMaps();
+                            //   },
+                            //   child: const Icon(
+                            //     Icons.location_on,
+                            //     color: Colors.blue, // Customize the color of the icon
+                            //   ),
+                            // ),
                           ),
                         ],
                       ),
@@ -642,26 +663,26 @@ class _WikiChildState extends State<WikiChild> {
   }
 }
 
-  Widget _buildCardBorder() {
-    return SliverWidget(
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: Container(
-              color: Colors.black,
-            ),
+Widget _buildCardBorder() {
+  return SliverWidget(
+    child: Stack(
+      children: [
+        Positioned.fill(
+          child: Container(
+            color: Colors.black,
           ),
-          Container(
-            width: double.infinity,
-            height: 50,
-            decoration: const BoxDecoration(
-              color: lightTeal,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-          ),
-        ],
-      ),
-    );
-  }
+        ),
+        Container(
+          width: double.infinity,
+          height: 50,
+          decoration: const BoxDecoration(
+            color: lightTeal,
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+        ),
+      ],
+    ),
+  );
+}
 
 
 class SliverWidget extends StatelessWidget {
