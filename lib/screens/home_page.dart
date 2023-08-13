@@ -173,9 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget pageWikis() {
-    return const Center(
-      child: ExampleParallax(),
-    );
+    return const ExampleParallax();
   }
 
   Widget noPlants() {
