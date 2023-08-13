@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'wiki_detail.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
@@ -385,8 +386,6 @@ class _WikiChildState extends State<WikiChild> {
   late ScrollController _scrollController;
   late double titleOpacity;
   double _offset = 0.0;
-  final double zeroOpacityOffset = 0;
-  final double fullOpacityOffset = 100;
 
   @override
   void initState() {
@@ -407,7 +406,7 @@ class _WikiChildState extends State<WikiChild> {
     });
   }
 
-  double _calculateOpacity() {
+  double _calculateOpacity(double zeroOpacityOffset, double fullOpacityOffset) {
     if (fullOpacityOffset == zeroOpacityOffset) return 1;
     else if (fullOpacityOffset > zeroOpacityOffset) {
       // fading in
@@ -420,6 +419,13 @@ class _WikiChildState extends State<WikiChild> {
       else if (_offset >= zeroOpacityOffset) return 0;
       else return (_offset - fullOpacityOffset) / (zeroOpacityOffset - fullOpacityOffset);
     }
+  }
+
+  void _openWikiDetail(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const WikiDetail(title: 'name')),
+    );
   }
 
   @override
@@ -450,7 +456,8 @@ class _WikiChildState extends State<WikiChild> {
     const double title2Height = 12.0;
     //const double containerHeight = 185.0;
     const double horizontalEdge = 16.0;
-    double containerHeight = MediaQuery.of(context).size.width/2 - horizontalEdge*2;
+    const double horizontalEdgeMid = 12.0;
+    double containerHeight = MediaQuery.of(context).size.width/2-horizontalEdge-horizontalEdgeMid;
     double totalBoxHeight = boxHeight + title1Height + title2Height + containerHeight;
     
     return SliverPadding(
@@ -460,14 +467,15 @@ class _WikiChildState extends State<WikiChild> {
         sliver: SliverGrid(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            crossAxisSpacing: horizontalEdge,
+            crossAxisSpacing: horizontalEdgeMid,
             mainAxisSpacing: 0,
-            childAspectRatio: (((MediaQuery.of(context).size.width) / 2) / totalBoxHeight) / 1.3,
+            childAspectRatio: (((MediaQuery.of(context).size.width) / 2) / totalBoxHeight) / 1.25,
           ),
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
+          delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
               return InkWell(
-                onTap: () {},
+                onTap: () {
+                  _openWikiDetail(context);
+                },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -487,7 +495,7 @@ class _WikiChildState extends State<WikiChild> {
                     ),
                     const SizedBox(height: boxHeight), // Space between the grid box and titles
                     const Padding(
-                      padding: EdgeInsets.only(left: 10, right: 10), // Add indentation to titles
+                      padding: EdgeInsets.only(left: 8, right: 10), // Add indentation to titles
                       child: Text(
                         '美他利佛細身赤鍬形蟲',
                         overflow: TextOverflow.fade,
@@ -501,7 +509,7 @@ class _WikiChildState extends State<WikiChild> {
                       ),
                     ),
                     const Padding(
-                      padding: EdgeInsets.only(left: 10, right: 10), // Add indentation to titles
+                      padding: EdgeInsets.only(left: 9, right: 10), // Add indentation to titles
                       child: Text(
                         'Cyclommatus metallifer f.',
                         overflow: TextOverflow.fade,
@@ -546,7 +554,7 @@ class _WikiChildState extends State<WikiChild> {
 }
 
   Widget _buildAppBar(String imagePath, String realName, String birth) {
-    titleOpacity = _calculateOpacity();
+    titleOpacity = _calculateOpacity(0,160);
     ColorTween colorTween = ColorTween(begin: Colors.white, end: darkTeal);
     Color? backButtonColor = colorTween.lerp(titleOpacity);
     return SliverAppBar(
@@ -580,8 +588,8 @@ class _WikiChildState extends State<WikiChild> {
           ),
           FlexibleSpaceBar(
             expandedTitleScale: 1,
-            stretchModes: [],
-            titlePadding: const EdgeInsets.only(left: 40, bottom: 20.0),
+            stretchModes: const [],
+            titlePadding: const EdgeInsets.only(left: 40, bottom: 16),
             title: Container(
               alignment: Alignment.bottomLeft, // Align the title at the bottom left
               child: SingleChildScrollView(
@@ -599,32 +607,35 @@ class _WikiChildState extends State<WikiChild> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 2.0),
-                      child: Row(
-                        children: [
-                          Text(birth,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              letterSpacing: 2,
-                              fontFamily: 'MPLUS',
-                            )
-                          ),
-                          IconButton(
-                            iconSize: 17,
-                            icon: const Icon(
-                                Icons.location_pin,
-                                color: Colors.redAccent,
-                            ),
-                            visualDensity: VisualDensity.compact,
-                            onPressed: () {
-                              _launchMaps(birth);
-                            },
-                          ),
-                        ],
+                      child: Text(birth,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          letterSpacing: 2,
+                          fontFamily: 'MPLUS',
+                        )
                       ),
                     ),
                   ],
                 ),
               ),
+            ),
+          ),
+          Container(
+            alignment: Alignment.bottomRight,
+            padding: const EdgeInsets.only(right: 20, bottom: 9),
+            child: TextButton(
+              onPressed: () {
+                _launchMaps(birth);
+              },
+              child: const CircleAvatar(
+                  radius: 22,
+                  backgroundColor: Colors.grey,
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundImage: AssetImage('assets/images/map.png'),
+                  )
+              ),
+              style: TextButton.styleFrom(shape: const CircleBorder()),
             ),
           ),
           Positioned(
