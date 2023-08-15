@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:tap_to_expand/tap_to_expand.dart';
+import 'plugins/tap_to_expand.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
@@ -86,61 +86,38 @@ class _WikiDetailState extends State<WikiDetail> {
     double containerHeight = MediaQuery.of(context).size.width / 2 - horizontalEdge - horizontalEdgeMid;
     double totalBoxHeight = boxHeight + title1Height + title2Height + containerHeight;
 
-    // return SliverList(
-    //   delegate: SliverChildListDelegate(
-    //     children:[
-    //
-    //     ],
-    //
-    //   ),
-    // );
-
-  //   return TapToExpand(
-  //     content: Column(
-  //       children: <Widget>[
-  //         for (var i = 0; i < 20; i++)
-  //           Text(
-  //             "data $i",
-  //             style: const TextStyle(color: Colors.white, fontSize: 20),
-  //           ),
-  //       ],
-  //     ),
-  //     title: const Text(
-  //       'TapToExpand',
-  //       style: TextStyle(
-  //         color: Colors.white,
-  //         fontSize: 20,
-  //       ),
-  //     ),
-  //     onTapPadding: 10,
-  //     closedHeight: 70,
-  //     scrollable: true,
-  //     borderRadius: 10,
-  //     openedHeight: 200,
-  //   );
-  // }
-
-    return SliverWidget(
-      child: TapToExpand(
-        content: Column(
-          children: <Widget>[
-            for (var i = 0; i < 20; i++)
-              Text("data $i",
-                style: const TextStyle(color: Colors.white, fontSize: 20),
+    return SliverList(
+      delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+          return TapToExpand(
+            content: Column(
+              children: <Widget>[
+                for (var i = 0; i < 5; i++)
+                  Text(
+                    "data $i",
+                    style: const TextStyle(
+                      color: darkTeal,
+                      fontSize: 20,
+                      fontFamily: 'MPLUS',
+                    ),
+                  ),
+              ],
+            ),
+            title: const Text(
+              '幼蟲照護',
+              style: TextStyle(
+                color: darkTeal,
+                fontSize: 22,
+                fontFamily: 'MPLUS',
               ),
-          ],
-        ),
-        title: const Text('幼蟲照護',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-          ),
-        ),
-        onTapPadding: 10,
-        closedHeight: 70,
-        scrollable: true,
-        borderRadius: 10,
-        openedHeight: 200,
+            ),
+            onTapPadding: 16,
+            closedHeight: 80,
+            scrollable: true,
+            borderRadius: 20,
+            openedHeight: 300,
+          );
+        },
+        childCount: 6,
       ),
     );
   }
