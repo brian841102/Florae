@@ -62,6 +62,7 @@ class TapToExpand extends StatefulWidget {
 
 class _TapToExpandState extends State<TapToExpand> {
   bool isExpanded = true;
+  //double contentHeight = 0; TODO: make contentHeight dynamic adjust openedHeight
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +85,7 @@ class _TapToExpandState extends State<TapToExpand> {
           vertical: 6,
         ),
         padding: const EdgeInsets.symmetric(vertical: 0,horizontal: 30),
+        //alignment: isExpanded ? Alignment.bottomLeft : AlignmentDirectional.bottomEnd,
         height:
 
             /// Used to set the height of the widget when it is closed and opened depends on the isExpanded parameter.
@@ -155,50 +157,55 @@ class _TapToExpandState extends State<TapToExpand> {
                   ),
                 ],
               )
-            : Column(
-                children: [
-                  /// Creating a row with two widgets. The first widget is the title widget and the
-                  /// second widget is the trailing widget. If the trailing widget is null, then it will
-                  /// show an arrow icon.
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            : ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                Column(
                     children: [
-                      widget.title,
-                      Icon(
-                        isExpanded
-                            ? Icons.keyboard_arrow_down
-                            : Icons.keyboard_arrow_up,
-                        color: darkTeal,
-                        size: 27,
+                      /// Creating a row with two widgets. The first widget is the title widget and the
+                      /// second widget is the trailing widget. If the trailing widget is null, then it will
+                      /// show an arrow icon.
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          widget.title,
+                          Icon(
+                            isExpanded
+                                ? Icons.keyboard_arrow_down
+                                : Icons.keyboard_arrow_up,
+                            color: darkTeal,
+                            size: 27,
+                          ),
+                        ],
+                      ),
+
+                      /// Used to add some space between the title and the content.
+                      isExpanded ? const SizedBox() : const SizedBox(height: 20),
+
+                      /// Used to show the content of the widget.
+                      AnimatedCrossFade(
+                        firstChild: const Text(
+                          '',
+                          style: TextStyle(
+                            fontSize: 0,
+                          ),
+                        ),
+                        secondChild: widget.content,
+                        crossFadeState: isExpanded
+                            ? CrossFadeState.showFirst
+                            : CrossFadeState.showSecond,
+
+                        /// Used to set the duration of the animation.
+                        duration:
+                            widget.duration ?? const Duration(milliseconds: 1200),
+                        reverseDuration: Duration.zero,
+
+                        /// Used to set the curve of the animation.
+                        sizeCurve: Curves.fastLinearToSlowEaseIn,
                       ),
                     ],
-                  ),
-
-                  /// Used to add some space between the title and the content.
-                  isExpanded ? const SizedBox() : const SizedBox(height: 20),
-
-                  /// Used to show the content of the widget.
-                  AnimatedCrossFade(
-                    firstChild: const Text(
-                      '',
-                      style: TextStyle(
-                        fontSize: 0,
-                      ),
-                    ),
-                    secondChild: widget.content,
-                    crossFadeState: isExpanded
-                        ? CrossFadeState.showFirst
-                        : CrossFadeState.showSecond,
-
-                    /// Used to set the duration of the animation.
-                    duration:
-                        widget.duration ?? const Duration(milliseconds: 1200),
-                    reverseDuration: Duration.zero,
-
-                    /// Used to set the curve of the animation.
-                    sizeCurve: Curves.fastLinearToSlowEaseIn,
-                  ),
-                ],
+                ),
+              ],
               ),
       ),
     );

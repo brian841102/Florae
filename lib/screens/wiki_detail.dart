@@ -64,8 +64,7 @@ class _WikiDetailState extends State<WikiDetail> {
         child: CustomScrollView(
           cacheExtent: 500,
           controller: _scrollController,
-          physics: const BouncingScrollPhysics(),
-          //physics: ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(), //const BouncingScrollPhysics(),
           slivers: [
             _buildAppBar(location.imagePath, location.realName, location.birth),
             _buildCardBorder(),
@@ -112,12 +111,12 @@ class _WikiDetailState extends State<WikiDetail> {
             ),
             onTapPadding: 16,
             closedHeight: 80,
-            scrollable: true,
+            scrollable: false,
             borderRadius: 20,
             openedHeight: 300,
           );
         },
-        childCount: 6,
+        childCount: 10,
       ),
     );
   }
