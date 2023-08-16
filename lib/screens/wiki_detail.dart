@@ -105,7 +105,7 @@ class _WikiDetailState extends State<WikiDetail> {
               '幼蟲照護',
               style: TextStyle(
                 color: darkTeal,
-                fontSize: 22,
+                fontSize: 20,
                 fontFamily: 'MPLUS',
               ),
             ),

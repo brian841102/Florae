@@ -67,6 +67,7 @@ class _TapToExpandState extends State<TapToExpand> {
   @override
   Widget build(BuildContext context) {
     bool scrollable = widget.scrollable ?? false;
+    double closedHeight = widget.closedHeight ?? 70;
 
     /// Used to make the widget clickable.
     return InkWell(
@@ -81,10 +82,10 @@ class _TapToExpandState extends State<TapToExpand> {
       child: AnimatedContainer(
         margin: EdgeInsets.symmetric(
           /// Used to set the padding of the widget when it is closed.
-          horizontal: isExpanded ? 25 : widget.onTapPadding ?? 10,
+          horizontal: isExpanded ? 30 : widget.onTapPadding ?? 10,
           vertical: 6,
         ),
-        padding: const EdgeInsets.symmetric(vertical: 0,horizontal: 30),
+        padding: EdgeInsets.only(top: (closedHeight-34-6)/2, left: 20, right: 20),//(closedHeight+60)-92)/2
         //alignment: isExpanded ? Alignment.bottomLeft : AlignmentDirectional.bottomEnd,
         height:
 
@@ -110,6 +111,8 @@ class _TapToExpandState extends State<TapToExpand> {
         child: scrollable
             ? ListView(
                 physics: widget.scrollPhysics,
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(0.0),
                 children: [
                   /// Creating a row with two widgets. The first widget is the title widget and the
                   /// second widget is the trailing widget. If the trailing widget is null, then it will
@@ -159,22 +162,35 @@ class _TapToExpandState extends State<TapToExpand> {
               )
             : ListView(
               physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(0.0),
               children: [
                 Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       /// Creating a row with two widgets. The first widget is the title widget and the
                       /// second widget is the trailing widget. If the trailing widget is null, then it will
                       /// show an arrow icon.
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           widget.title,
-                          Icon(
-                            isExpanded
-                                ? Icons.keyboard_arrow_down
-                                : Icons.keyboard_arrow_up,
-                            color: darkTeal,
-                            size: 27,
+                          const Spacer(),
+                          //const Expanded(child: SizedBox()),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                isExpanded = !isExpanded;
+                              });
+                            },
+                            child: CircleAvatar(
+                              radius: 20,
+                              backgroundColor: darkTeal.withOpacity(0.15),
+                              child: isExpanded
+                                  ? Icon(Icons.keyboard_arrow_down, color: darkTeal, size: 27)
+                                  : Icon(Icons.keyboard_arrow_up, color: darkTeal, size: 27)
+                            ),
+                            customBorder: const CircleBorder()
                           ),
                         ],
                       ),
