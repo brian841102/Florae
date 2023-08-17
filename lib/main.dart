@@ -95,6 +95,8 @@ class FloraeApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
+    const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
     return MaterialApp(
         title: 'Florae',
         localizationsDelegates: const [
@@ -117,6 +119,14 @@ class FloraeApp extends StatelessWidget {
         ],
         theme: ThemeData(
             primaryColor: Colors.teal,
+            textTheme: const TextTheme(
+              labelSmall: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'NotoSans',
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 0.5,
+              ),
+            ),
             // This is the theme of your application.
             //
             // Try running your application with "flutter run". You'll see the

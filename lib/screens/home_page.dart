@@ -347,47 +347,56 @@ class _MyHomePageState extends State<MyHomePage> {
           pageWikis(),
         ],
       ),
-      // body: _plants.isEmpty
-      //     ? noPlants()
-      //     : ResponsiveGridList(
-      //         // Horizontal space between grid items
-      //         horizontalGridSpacing: 10,
-      //         // Vertical space between grid items
-      //         verticalGridSpacing: 10,
-      //         // Horizontal space around the grid
-      //         horizontalGridMargin: 10,
-      //         // Vertical space around the grid
-      //         verticalGridMargin: 10,
-      //         // The minimum item width (can be smaller, if the layout constraints are smaller)
-      //         minItemWidth: 300,
-      //         // The minimum items to show in a single row. Takes precedence over minItemWidth
-      //         minItemsPerRow: 2,
-      //         // The maximum items to show in a single row. Can be useful on large screens
-      //         maxItemsPerRow: 2,
-      //         children: _buildPlantCards(context) // Changed code
-      //         ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.work),
+
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: <BottomNavigationBarItem>[
+      //     BottomNavigationBarItem(
+      //       icon: const Icon(Icons.work),
+      //       label: AppLocalizations.of(context)!.buttonToday,
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: const Icon(Icons.pest_control),
+      //       label: AppLocalizations.of(context)!.buttonGarden,
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: const Icon(Icons.book),
+      //       label: AppLocalizations.of(context)!.buttonWiki,
+      //     ),
+      //   ],
+      //   selectedItemColor: Colors.teal,
+      //   selectedIconTheme: const IconThemeData(size: 26),
+      //   unselectedIconTheme: const IconThemeData(size: 26),
+      //   selectedLabelStyle: const TextStyle(fontSize: 16),
+      //   unselectedLabelStyle: const TextStyle(fontSize: 16),
+      //   currentIndex: _selectedIndex,
+      //   onTap: _onItemTapped,
+      // ),
+      bottomNavigationBar: NavigationBar(
+        animationDuration: const Duration(milliseconds: 1500),
+        destinations: <Widget>[
+          NavigationDestination(
+            selectedIcon: const Icon(Icons.work, size: 26),
+            icon: const Icon(Icons.work, size: 26, color: Colors.black54),
             label: AppLocalizations.of(context)!.buttonToday,
           ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.pest_control),
+          NavigationDestination(
+            selectedIcon: const Icon(Icons.pest_control, size: 30),
+            icon: const Icon(Icons.pest_control, size: 30, color: Colors.black54),
             label: AppLocalizations.of(context)!.buttonGarden,
           ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.book),
+          NavigationDestination(
+            selectedIcon: const Icon(Icons.book, size: 26),
+            icon: const Icon(Icons.book, size: 26, color: Colors.black54),
             label: AppLocalizations.of(context)!.buttonWiki,
           ),
         ],
-        selectedItemColor: Colors.teal,
-        selectedIconTheme: const IconThemeData(size: 26),
-        unselectedIconTheme: const IconThemeData(size: 26),
-        selectedLabelStyle: const TextStyle(fontSize: 16),
-        unselectedLabelStyle: const TextStyle(fontSize: 16),
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        onDestinationSelected: _onItemTapped,
+        selectedIndex: _selectedIndex,
+        indicatorColor: darkTeal.withOpacity(0.2),
+        backgroundColor: Colors.white, //lightTeal,
+        elevation: 10,
+        height: 70,
+        //labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
