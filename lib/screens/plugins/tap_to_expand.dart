@@ -8,6 +8,7 @@ class TapToExpand extends StatefulWidget {
   final Widget content;
 
   /// A parameter that is used to show the title of the widget.
+  final Widget? logo;
   final Widget title;
 
   /// A parameter that is used to show the trailing widget.
@@ -45,6 +46,7 @@ class TapToExpand extends StatefulWidget {
     Key? key,
     required this.content,
     required this.title,
+    this.logo,
     this.color,
     this.scrollable,
     this.closedHeight,
@@ -172,8 +174,10 @@ class _TapToExpandState extends State<TapToExpand> {
                       /// second widget is the trailing widget. If the trailing widget is null, then it will
                       /// show an arrow icon.
                       Row(
-                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          widget.logo ?? const Icon(Icons.info_outline, color: darkTeal, size: 20),
+                          const SizedBox(width: 5),
                           widget.title,
                           const Spacer(),
                           //const Expanded(child: SizedBox()),
@@ -187,8 +191,8 @@ class _TapToExpandState extends State<TapToExpand> {
                               radius: 20,
                               backgroundColor: darkTeal.withOpacity(0.15),
                               child: isExpanded
-                                  ? Icon(Icons.keyboard_arrow_down, color: darkTeal, size: 27)
-                                  : Icon(Icons.keyboard_arrow_up, color: darkTeal, size: 27)
+                                  ? const Icon(Icons.keyboard_arrow_down, color: darkTeal, size: 27)
+                                  : const Icon(Icons.keyboard_arrow_up, color: darkTeal, size: 27)
                             ),
                             customBorder: const CircleBorder()
                           ),
@@ -218,6 +222,7 @@ class _TapToExpandState extends State<TapToExpand> {
 
                         /// Used to set the curve of the animation.
                         sizeCurve: Curves.fastLinearToSlowEaseIn,
+                        alignment: AlignmentDirectional.bottomCenter,
                       ),
                     ],
                 ),

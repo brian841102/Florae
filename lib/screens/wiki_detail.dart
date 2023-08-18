@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'plugins/tap_to_expand.dart';
 
@@ -114,6 +115,10 @@ class _WikiDetailState extends State<WikiDetail> {
             scrollable: false,
             borderRadius: 20,
             openedHeight: 300,
+            logo: SvgPicture.asset("assets/images/pediatrics_FILL0_wght400_GRAD0_opsz48.svg",
+              height: 36,
+              color: darkTeal,
+            ),
           );
         },
         childCount: 10,
