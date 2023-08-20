@@ -19,6 +19,7 @@ import 'manage_plant.dart';
 import 'care_plant.dart';
 import 'settings.dart';
 import 'wiki.dart';
+import 'plugins/animation_toolkit.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -401,6 +402,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonAnimator: AnimationToolkit.floatingButtonAnimator,
       floatingActionButton: _selectedIndex == 1
           ? FloatingActionButton(
               onPressed: () async {
