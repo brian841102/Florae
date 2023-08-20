@@ -107,7 +107,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 elevation: 2,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(16.0),
                 ),
                 child: Column(children: <Widget>[
                   ListTile(
@@ -148,7 +148,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   elevation: 2,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: BorderRadius.circular(16.0),
                   ),
                   child: Column(children: <Widget>[
                     ListTile(
@@ -160,9 +160,9 @@ class _SettingsScreen extends State<SettingsScreen> {
                         onTap: () {
                           showAboutDialog(
                             context: context,
-                            applicationName: 'Florae',
+                            applicationName: 'BeetleLand',
                             applicationVersion: '1.0.0',
-                            applicationLegalese: '© Naval Alcalá',
+                            applicationLegalese: '© Brian Lin',
                           );
                         }),
                   ])),

@@ -118,6 +118,7 @@ class FloraeApp extends StatelessWidget {
           Locale('fr'), // French
         ],
         theme: ThemeData(
+            useMaterial3: true,
             primaryColor: Colors.teal,
             textTheme: const TextTheme(
               labelSmall: TextStyle(
@@ -127,18 +128,41 @@ class FloraeApp extends StatelessWidget {
                   letterSpacing: 0.5,
               ),
             ),
-            // This is the theme of your application.
-            //
-            // Try running your application with "flutter run". You'll see the
-            // application has a blue toolbar. Then, without quitting the app, try
-            // changing the primarySwatch below to Colors.green and then invoke
-            // "hot reload" (press "r" in the console where you ran "flutter run",
-            // or simply save your changes to "hot reload" in a Flutter IDE).
-            // Notice that the counter didn't reset back to zero; the application
-            // is not restarted.
+            appBarTheme: const AppBarTheme(
+              color: lightTeal,
+              foregroundColor: Colors.white,
+              surfaceTintColor:  Colors.transparent,
+            ),
+            navigationBarTheme: NavigationBarThemeData(
+              backgroundColor: Colors.white,
+              shadowColor: Colors.black,
+              surfaceTintColor: lightTeal,
+              indicatorColor: darkTeal.withOpacity(0.2),
+            ),
+            floatingActionButtonTheme: const FloatingActionButtonThemeData(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.teal,
+            ),
+            listTileTheme: const ListTileThemeData(
+              tileColor: Colors.white,
+            ),
+            dialogTheme: const DialogTheme(
+              elevation: 10,
+              surfaceTintColor:  Colors.white,
+              backgroundColor:  Colors.white,
+              shadowColor: Colors.black,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: ButtonStyle(
+                foregroundColor: const MaterialStatePropertyAll(Colors.black),
+                overlayColor: MaterialStatePropertyAll(darkTeal.withOpacity(0.2)),
+              ),
+            ),
+            splashFactory: InkRipple.splashFactory,
             primarySwatch: Colors.teal,
             fontFamily: "NotoSans",
-            scaffoldBackgroundColor: Colors.grey[100]),
+            scaffoldBackgroundColor: Colors.grey[100],
+        ),
         home: const MyHomePage(title: 'Today'));
   }
 }
