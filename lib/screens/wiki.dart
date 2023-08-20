@@ -436,7 +436,7 @@ class _WikiChildState extends State<WikiChild> {
       body: Container(
         color: lightTeal, // Set the background color here
         child: CustomScrollView(
-          cacheExtent: 500,
+          //cacheExtent: 500,
           controller: _scrollController,
           physics: const BouncingScrollPhysics(),
           //physics: ClampingScrollPhysics(),
