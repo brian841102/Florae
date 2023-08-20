@@ -139,18 +139,20 @@ class FloraeApp extends StatelessWidget {
               surfaceTintColor: lightTeal,
               indicatorColor: darkTeal.withOpacity(0.2),
             ),
-            floatingActionButtonTheme: const FloatingActionButtonThemeData(
+            floatingActionButtonTheme: FloatingActionButtonThemeData(
               foregroundColor: Colors.white,
-              backgroundColor: Colors.teal,
+              backgroundColor: const Color.fromARGB(255, 0, 155, 115),
+              splashColor: Colors.black.withOpacity(0.3),
+              elevation: 5.0,
             ),
-            listTileTheme: const ListTileThemeData(
-              tileColor: Colors.white,
-            ),
-            dialogTheme: const DialogTheme(
+            dialogTheme: DialogTheme(
               elevation: 10,
               surfaceTintColor:  Colors.white,
               backgroundColor:  Colors.white,
               shadowColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
             ),
             textButtonTheme: TextButtonThemeData(
               style: ButtonStyle(
@@ -158,11 +160,41 @@ class FloraeApp extends StatelessWidget {
                 overlayColor: MaterialStatePropertyAll(darkTeal.withOpacity(0.2)),
               ),
             ),
+            cardTheme: const CardTheme(
+              surfaceTintColor: Colors.white,
+              color: Colors.white,
+            ),
+            listTileTheme: const ListTileThemeData(
+              tileColor: Colors.white,
+              selectedTileColor: Colors.white,
+            ),
+            inputDecorationTheme: InputDecorationTheme(
+              focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(width: 2.0, color: Colors.teal)),
+              enabledBorder: const UnderlineInputBorder(),
+              floatingLabelStyle: MaterialStateTextStyle.resolveWith(
+                (Set<MaterialState> states) {
+                  final Color color = states.contains(MaterialState.error)
+                    ? Theme.of(context).colorScheme.error
+                    : Colors.teal;
+                  return TextStyle(color: color, letterSpacing: 1.3);
+                },
+              ),
+              fillColor: Colors.teal,
+              focusColor: Colors.teal,
+              hoverColor: Colors.teal,
+            ),
+            textSelectionTheme: const TextSelectionThemeData(
+              cursorColor: Colors.teal,
+              selectionColor: Colors.teal,
+              selectionHandleColor: Colors.teal,
+            ),
             splashFactory: InkRipple.splashFactory,
             primarySwatch: Colors.teal,
             fontFamily: "NotoSans",
-            scaffoldBackgroundColor: Colors.grey[100],
+            scaffoldBackgroundColor: const Color.fromARGB(255, 240, 243, 240),
         ),
+        debugShowCheckedModeBanner: false,
         home: const MyHomePage(title: 'Today'));
   }
 }
