@@ -63,7 +63,8 @@ class _WikiDetailState extends State<WikiDetail> {
       body: Container(
         color: lightTeal, // Set the background color here
         child: CustomScrollView(
-          cacheExtent: 500,
+          shrinkWrap: true,
+          //cacheExtent: 500,
           controller: _scrollController,
           physics: const ClampingScrollPhysics(), //const BouncingScrollPhysics(),
           slivers: [
@@ -246,7 +247,7 @@ class _WikiDetailState extends State<WikiDetail> {
         children: [
           ColorFiltered(
             colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
-            child: FlutterLogo(size: 10),
+            child: const FlutterLogo(size: 10),
           ),
           DecoratedBox(
             decoration: BoxDecoration(
@@ -313,7 +314,7 @@ class _WikiDetailState extends State<WikiDetail> {
             right: 0,
             child: AppBar(
               leading: IconButton(
-                icon: Icon(Icons.close), // Use the "close" icon here
+                icon: const Icon(Icons.close), // Use the "close" icon here
                 onPressed: () {
                   Navigator.pop(context); // Go back when the "X" button is pressed
                 },

@@ -236,7 +236,6 @@ class _CarePlantScreen extends State<CarePlantScreen> {
                 },
                 label: Text(AppLocalizations.of(context)!.careButton),
                 icon: const Icon(Icons.check),
-                backgroundColor: Colors.teal,
               )
             ],
           ),

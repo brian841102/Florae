@@ -160,9 +160,9 @@ class _SettingsScreen extends State<SettingsScreen> {
                         onTap: () {
                           showAboutDialog(
                             context: context,
-                            applicationName: 'Florae',
+                            applicationName: 'BeetleLand',
                             applicationVersion: '1.0.0',
-                            applicationLegalese: '© Naval Alcalá',
+                            applicationLegalese: '© Brian Lin',
                           );
                         }),
                   ])),
@@ -179,7 +179,6 @@ class _SettingsScreen extends State<SettingsScreen> {
         },
         label: Text(AppLocalizations.of(context)!.saveButton),
         icon: const Icon(Icons.save),
-        backgroundColor: Colors.teal,
       ),
     );
   }

@@ -52,7 +52,7 @@
   "testNotificationButton": "Test notification",
   "testNotificationTitle": "Florae Test Notification",
   "testNotificationBody": "This is a test message",
-  "aboutFloraeButton": "About Florae",
+  "aboutFloraeButton": "About BeetleLand",
   "notificationInfo": "The notification time will be reset when you enter the App.\n\nPlease note that some devices perform very aggressive battery optimizations that may cause notifications to not be issued correctly.",
   "careNotificationTitle": "Plants require care",
   "careNotificationName": "Care reminder",

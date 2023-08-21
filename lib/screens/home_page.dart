@@ -19,6 +19,7 @@ import 'manage_plant.dart';
 import 'care_plant.dart';
 import 'settings.dart';
 import 'wiki.dart';
+import 'plugins/animation_toolkit.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -371,35 +372,37 @@ class _MyHomePageState extends State<MyHomePage> {
       //   currentIndex: _selectedIndex,
       //   onTap: _onItemTapped,
       // ),
-      bottomNavigationBar: NavigationBar(
-        animationDuration: const Duration(milliseconds: 1500),
-        destinations: <Widget>[
-          NavigationDestination(
-            selectedIcon: const Icon(Icons.work, size: 26),
-            icon: const Icon(Icons.work, size: 26, color: Colors.black54),
-            label: AppLocalizations.of(context)!.buttonToday,
-          ),
-          NavigationDestination(
-            selectedIcon: const Icon(Icons.pest_control, size: 30),
-            icon: const Icon(Icons.pest_control, size: 30, color: Colors.black54),
-            label: AppLocalizations.of(context)!.buttonGarden,
-          ),
-          NavigationDestination(
-            selectedIcon: const Icon(Icons.book, size: 26),
-            icon: const Icon(Icons.book, size: 26, color: Colors.black54),
-            label: AppLocalizations.of(context)!.buttonWiki,
-          ),
-        ],
-        onDestinationSelected: _onItemTapped,
-        selectedIndex: _selectedIndex,
-        indicatorColor: darkTeal.withOpacity(0.2),
-        backgroundColor: Colors.white, //lightTeal,
-        elevation: 10,
-        height: 70,
-        //labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(splashFactory: NoSplash.splashFactory,),
+        child: NavigationBar(
+          animationDuration: const Duration(milliseconds: 1500),
+          destinations: <Widget>[
+            NavigationDestination(
+              selectedIcon: const Icon(Icons.work, size: 26),
+              icon: const Icon(Icons.work, size: 26, color: Colors.black54),
+              label: AppLocalizations.of(context)!.buttonToday,
+            ),
+            NavigationDestination(
+              selectedIcon: const Icon(Icons.pest_control, size: 30),
+              icon: const Icon(Icons.pest_control, size: 30, color: Colors.black54),
+              label: AppLocalizations.of(context)!.buttonGarden,
+            ),
+            NavigationDestination(
+              selectedIcon: const Icon(Icons.book, size: 26),
+              icon: const Icon(Icons.book, size: 26, color: Colors.black54),
+              label: AppLocalizations.of(context)!.buttonWiki,
+            ),
+          ],
+          onDestinationSelected: _onItemTapped,
+          selectedIndex: _selectedIndex,
+          elevation: 10,
+          height: 70,
+          //labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+        ),
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonAnimator: AnimationToolkit.floatingButtonAnimator,
       floatingActionButton: _selectedIndex == 1
           ? FloatingActionButton(
               onPressed: () async {
@@ -416,7 +419,6 @@ class _MyHomePageState extends State<MyHomePage> {
               },
 //        tooltip: AppLocalizations.of(context)!.tooltipNewPlant,
               child: const Icon(Icons.add),
-              backgroundColor: Colors.teal,
             )
           : null, // This trailing comma makes auto-formatting nicer for build methods.
     );

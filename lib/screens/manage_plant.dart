@@ -269,21 +269,11 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
                           }
                           return null;
                         },
-                        cursorColor: Colors.teal,
                         maxLength: 20,
                         decoration: InputDecoration(
                           icon: const Icon(Icons.local_florist),
                           labelText: AppLocalizations.of(context)!.labelName,
-                          labelStyle: const TextStyle(
-                            decorationColor: Colors.teal,
-                          ),
-                          fillColor: Colors.teal,
-                          focusColor: Colors.teal,
-                          hoverColor: Colors.teal,
                           helperText: AppLocalizations.of(context)!.exampleName,
-                          enabledBorder: const UnderlineInputBorder(),
-                          focusedBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.teal)),
                         ),
                       ),
                       TextFormField(
@@ -293,39 +283,19 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
                         maxLines: 3,
                         // when user presses enter it will adapt to it
                         controller: descriptionController,
-                        cursorColor: Colors.teal,
                         maxLength: 100,
                         decoration: InputDecoration(
                           icon: const Icon(Icons.topic),
                           labelText: AppLocalizations.of(context)!.labelDescription,
-                          labelStyle: const TextStyle(
-                            decorationColor: Colors.teal,
-                          ),
-                          fillColor: Colors.teal,
-                          focusColor: Colors.teal,
-                          hoverColor: Colors.teal,
-                          enabledBorder: const UnderlineInputBorder(),
-                          focusedBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.teal)),
                         ),
                       ),
                       TextFormField(
                         controller: locationController,
-                        cursorColor: Colors.teal,
                         maxLength: 20,
                         decoration: InputDecoration(
                           icon: const Icon(Icons.location_on),
                           labelText: AppLocalizations.of(context)!.labelLocation,
-                          labelStyle: const TextStyle(
-                            decorationColor: Colors.teal,
-                          ),
-                          fillColor: Colors.teal,
-                          focusColor: Colors.teal,
-                          hoverColor: Colors.teal,
                           helperText: AppLocalizations.of(context)!.exampleLocation,
-                          enabledBorder: const UnderlineInputBorder(),
-                          focusedBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.teal)),
                         ),
                       ),
                     ]),
@@ -417,7 +387,6 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
         },
         label: Text(AppLocalizations.of(context)!.saveButton),
         icon: const Icon(Icons.save),
-        backgroundColor: Colors.teal,
       ),
     );
   }

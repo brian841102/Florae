@@ -118,6 +118,7 @@ class FloraeApp extends StatelessWidget {
           Locale('fr'), // French
         ],
         theme: ThemeData(
+            useMaterial3: true,
             primaryColor: Colors.teal,
             textTheme: const TextTheme(
               labelSmall: TextStyle(
@@ -127,18 +128,73 @@ class FloraeApp extends StatelessWidget {
                   letterSpacing: 0.5,
               ),
             ),
-            // This is the theme of your application.
-            //
-            // Try running your application with "flutter run". You'll see the
-            // application has a blue toolbar. Then, without quitting the app, try
-            // changing the primarySwatch below to Colors.green and then invoke
-            // "hot reload" (press "r" in the console where you ran "flutter run",
-            // or simply save your changes to "hot reload" in a Flutter IDE).
-            // Notice that the counter didn't reset back to zero; the application
-            // is not restarted.
+            appBarTheme: const AppBarTheme(
+              color: lightTeal,
+              foregroundColor: Colors.white,
+              surfaceTintColor:  Colors.transparent,
+            ),
+            navigationBarTheme: NavigationBarThemeData(
+              backgroundColor: Colors.white,
+              shadowColor: Colors.black,
+              surfaceTintColor: lightTeal,
+              indicatorColor: darkTeal.withOpacity(0.2),
+            ),
+            floatingActionButtonTheme: FloatingActionButtonThemeData(
+              foregroundColor: Colors.white,
+              backgroundColor: const Color.fromARGB(255, 0, 155, 115),
+              splashColor: Colors.black.withOpacity(0.3),
+              elevation: 5.0,
+            ),
+            dialogTheme: DialogTheme(
+              elevation: 10,
+              surfaceTintColor:  Colors.white,
+              backgroundColor:  Colors.white,
+              shadowColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: ButtonStyle(
+                foregroundColor: const MaterialStatePropertyAll(Colors.black),
+                overlayColor: MaterialStatePropertyAll(darkTeal.withOpacity(0.2)),
+              ),
+            ),
+            cardTheme: const CardTheme(
+              surfaceTintColor: Colors.white,
+              color: Colors.white,
+            ),
+            listTileTheme: const ListTileThemeData(
+              tileColor: Colors.white,
+              selectedTileColor: Colors.white,
+            ),
+            inputDecorationTheme: InputDecorationTheme(
+              focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(width: 2.0, color: Colors.teal)),
+              enabledBorder: const UnderlineInputBorder(),
+              floatingLabelStyle: MaterialStateTextStyle.resolveWith(
+                (Set<MaterialState> states) {
+                  final Color color = states.contains(MaterialState.error)
+                    ? Theme.of(context).colorScheme.error
+                    : Colors.teal;
+                  return TextStyle(color: color, letterSpacing: 1.3);
+                },
+              ),
+              fillColor: Colors.teal,
+              focusColor: Colors.teal,
+              hoverColor: Colors.teal,
+            ),
+            textSelectionTheme: const TextSelectionThemeData(
+              cursorColor: Colors.teal,
+              selectionColor: Colors.teal,
+              selectionHandleColor: Colors.teal,
+            ),
+            splashFactory: InkRipple.splashFactory,
             primarySwatch: Colors.teal,
             fontFamily: "NotoSans",
-            scaffoldBackgroundColor: Colors.grey[100]),
+            scaffoldBackgroundColor: const Color.fromARGB(255, 240, 243, 240),
+        ),
+        debugShowCheckedModeBanner: false,
         home: const MyHomePage(title: 'Today'));
   }
 }
