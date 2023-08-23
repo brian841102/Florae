@@ -119,7 +119,10 @@ class FloraeApp extends StatelessWidget {
         ],
         theme: ThemeData(
             useMaterial3: true,
-            primaryColor: Colors.teal,
+            //primaryColor: Colors.teal,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: darkTeal,
+            ),
             textTheme: const TextTheme(
               labelSmall: TextStyle(
                   fontSize: 14,
@@ -134,10 +137,19 @@ class FloraeApp extends StatelessWidget {
               surfaceTintColor:  Colors.transparent,
             ),
             navigationBarTheme: NavigationBarThemeData(
+              iconTheme: MaterialStateProperty.all<IconThemeData>(
+                const IconThemeData(color: darkTeal)
+              ),
+              labelTextStyle: MaterialStateProperty.resolveWith((state) {
+                if (state.contains(MaterialState.selected)) {
+                  return const TextStyle(color: darkTeal, fontSize: 12);
+                } else {
+                  return const TextStyle(color: Colors.black, fontSize: 12);
+                }
+              }),
               backgroundColor: Colors.white,
               shadowColor: Colors.black,
-              surfaceTintColor: lightTeal,
-              indicatorColor: darkTeal.withOpacity(0.2),
+              surfaceTintColor: Colors.white,
             ),
             floatingActionButtonTheme: FloatingActionButtonThemeData(
               foregroundColor: Colors.white,
@@ -177,7 +189,7 @@ class FloraeApp extends StatelessWidget {
                   final Color color = states.contains(MaterialState.error)
                     ? Theme.of(context).colorScheme.error
                     : Colors.teal;
-                  return TextStyle(color: color, letterSpacing: 1.3);
+                  return TextStyle(color: color, letterSpacing: 1.2);
                 },
               ),
               fillColor: Colors.teal,
@@ -190,7 +202,7 @@ class FloraeApp extends StatelessWidget {
               selectionHandleColor: Colors.teal,
             ),
             splashFactory: InkRipple.splashFactory,
-            primarySwatch: Colors.teal,
+            //primarySwatch: Colors.teal,
             fontFamily: "NotoSans",
             scaffoldBackgroundColor: const Color.fromARGB(255, 240, 243, 240),
         ),
