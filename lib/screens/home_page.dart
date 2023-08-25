@@ -246,11 +246,6 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: FittedBox(fit: BoxFit.fitWidth, child: Text(title)),
-        titleTextStyle: const TextStyle(
-            color: Colors.black54,
-            fontSize: 30,
-            fontWeight: FontWeight.w800,
-            fontFamily: "NotoSans"),
         actions: <Widget>[
           _selectedIndex == 0
               ? IconButton(
@@ -300,7 +295,6 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
         ],
-        backgroundColor: Colors.transparent,
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0.0,
       ),

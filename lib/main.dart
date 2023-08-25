@@ -120,21 +120,19 @@ class FloraeApp extends StatelessWidget {
         theme: ThemeData(
             useMaterial3: true,
             //primaryColor: Colors.teal,
+            brightness: Brightness.light,
             colorScheme: ColorScheme.fromSeed(
               seedColor: darkTeal,
             ),
-            textTheme: const TextTheme(
-              labelSmall: TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'NotoSans',
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0.5,
-              ),
-            ),
             appBarTheme: const AppBarTheme(
-              color: lightTeal,
-              foregroundColor: Colors.white,
-              surfaceTintColor:  Colors.transparent,
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white,
+              titleTextStyle: TextStyle(
+                color: Colors.black54,
+                fontSize: 30,
+                fontWeight: FontWeight.w800,
+                fontFamily: "NotoSans"),
+              elevation: 0,
             ),
             navigationBarTheme: NavigationBarThemeData(
               iconTheme: MaterialStateProperty.all<IconThemeData>(
@@ -154,8 +152,7 @@ class FloraeApp extends StatelessWidget {
             floatingActionButtonTheme: FloatingActionButtonThemeData(
               foregroundColor: Colors.white,
               backgroundColor: const Color.fromARGB(255, 0, 155, 115),
-              splashColor: Colors.black.withOpacity(0.3),
-              elevation: 5.0,
+              splashColor: Colors.black.withOpacity(0.2),
             ),
             dialogTheme: DialogTheme(
               elevation: 10,

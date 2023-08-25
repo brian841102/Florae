@@ -661,7 +661,7 @@ class _WikiChildState extends State<WikiChild> {
             right: 0,
             child: AppBar(
               backgroundColor: lightTeal.withOpacity(titleOpacity),
-              //backgroundColor: Colors.white.withOpacity(titleOpacity),
+              surfaceTintColor: Colors.transparent,
               elevation: 0.0,
               title: Opacity(
                 opacity: titleOpacity,
