@@ -46,9 +46,21 @@ class LocationListItem extends StatelessWidget {
   final GlobalKey _backgroundImageKey = GlobalKey();
 
   void _openWikiChild(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => WikiChild(title: name)),
+    //Navigator.push(context, MaterialPageRoute(builder: (context) => WikiChild(title: name)),);
+    Navigator.of(context).push(_createRoute());
+  }
+
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => WikiChild(title: name),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var offsetAnimation = animation.drive(tween);
+        return SlideTransition(position: offsetAnimation, child: child);
+      },
     );
   }
 
@@ -65,6 +77,11 @@ class LocationListItem extends StatelessWidget {
               _buildParallaxBackground(context),
               _buildGradient(),
               _buildTitleAndSubtitle(),
+              const Positioned(
+                right: 20,
+                bottom: 20,
+                child: Icon(Icons.arrow_right, color: Colors.white, size: 30),
+              ),
             ],
           ),
         ),
@@ -662,27 +679,27 @@ class _WikiChildState extends State<WikiChild> {
       ),
     );
   }
-}
 
-Widget _buildCardBorder() {
-  return SliverWidget(
-    child: Stack(
-      children: [
-        Positioned.fill(
-          child: Container(
-            color: Colors.black,
+  Widget _buildCardBorder() {
+    return SliverWidget(
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: Container(
+              color: Colors.black,
+            ),
           ),
-        ),
-        Container(
-          width: double.infinity,
-          height: 50,
-          decoration: const BoxDecoration(
-            color: lightTeal,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-        ),
-      ],
-    ),
-  );
+          Container(
+            width: double.infinity,
+            height: 50,
+            decoration: const BoxDecoration(
+                color: lightTeal,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 
