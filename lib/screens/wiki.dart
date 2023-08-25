@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_svg/svg.dart';
 import 'wiki_detail.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
@@ -46,8 +47,12 @@ class LocationListItem extends StatelessWidget {
   final GlobalKey _backgroundImageKey = GlobalKey();
 
   void _openWikiChild(BuildContext context) {
-    //Navigator.push(context, MaterialPageRoute(builder: (context) => WikiChild(title: name)),);
-    Navigator.of(context).push(_createRoute());
+    Future.delayed(
+      const Duration(milliseconds: 400), () {
+        //Navigator.push(context, MaterialPageRoute(builder: (context) => WikiChild(title: name)),);
+        Navigator.of(context).push(_createRoute());
+      },
+    );
   }
 
   Route _createRoute() {
@@ -67,7 +72,7 @@ class LocationListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
       child: AspectRatio(
         aspectRatio: 2 / 1,
         child: ClipRRect(
@@ -81,6 +86,16 @@ class LocationListItem extends StatelessWidget {
                 right: 20,
                 bottom: 20,
                 child: Icon(Icons.arrow_right, color: Colors.white, size: 30),
+              ),
+              Material(
+                color: Colors.transparent, // avoid any background color from Material
+                child: InkWell(
+                  onTap: () {
+                    _openWikiChild(context);
+                  },
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.black.withOpacity(0.2),
+                ),
               ),
             ],
           ),
@@ -108,23 +123,13 @@ class LocationListItem extends StatelessWidget {
 
   Widget _buildGradient() {
     return Positioned.fill(
-      child: Material(
-        color: Colors.transparent, // avoid any background color from Material
-        child: InkWell(
-          onTap: () {
-            _openWikiChild(context);
-          },
-          highlightColor: Colors.transparent,
-          splashColor: Colors.black.withOpacity(0.2), // Customize the splash color
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: const [0.6, 0.95],
-              ),
-            ),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.black.withOpacity(0.1), Colors.black.withOpacity(0.8)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: const [0.5, 0.95],
           ),
         ),
       ),
@@ -134,7 +139,7 @@ class LocationListItem extends StatelessWidget {
   Widget _buildTitleAndSubtitle() {
     return Positioned(
       left: 20,
-      bottom: 20,
+      bottom: 18,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -402,6 +407,7 @@ class WikiChild extends StatefulWidget {
 class _WikiChildState extends State<WikiChild> {
   late ScrollController _scrollController;
   late double titleOpacity;
+  late double radius;
   double _offset = 0.0;
 
   @override
@@ -471,7 +477,6 @@ class _WikiChildState extends State<WikiChild> {
     const double boxHeight = 6.0;
     const double title1Height = 15.0;
     const double title2Height = 12.0;
-    //const double containerHeight = 185.0;
     const double horizontalEdge = 16.0;
     const double horizontalEdgeMid = 12.0;
     double containerHeight = MediaQuery.of(context).size.width/2-horizontalEdge-horizontalEdgeMid;
@@ -499,15 +504,11 @@ class _WikiChildState extends State<WikiChild> {
                     Container(
                       height: containerHeight, // Adjust the height of the box
                       decoration: const BoxDecoration(
-                        color: Colors.black12,
                         borderRadius: BorderRadius.all(Radius.circular(16)),
-                      ),
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: Text(index.toString()),
-                        // child: const Image(
-                        //   image: //TODO
-                        // ),
+                        image: DecorationImage(
+                          image:AssetImage('assets/images/cmf.png'),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     const SizedBox(height: boxHeight), // Space between the grid box and titles
@@ -532,10 +533,11 @@ class _WikiChildState extends State<WikiChild> {
                         overflow: TextOverflow.fade,
                         softWrap: false,
                         style: TextStyle(
-                          color: Colors.grey,
+                          color: Color.fromARGB(255, 110, 157, 134),
                           fontSize: title2Height,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'MPLUS',
+                          fontWeight: FontWeight.w300,
+                          //fontFamily: 'MPLUS',
+                          fontStyle: FontStyle.italic,
                         ),
                       ),
                     ),
@@ -681,20 +683,70 @@ class _WikiChildState extends State<WikiChild> {
   }
 
   Widget _buildCardBorder() {
+    const cardHeight = 80.0;
+    titleOpacity = _calculateOpacity(60,200);
+    radius = 30 * (1 - titleOpacity);
     return SliverWidget(
       child: Stack(
         children: [
-          Positioned.fill(
-            child: Container(
-              color: Colors.black,
+          Container(
+            height: cardHeight,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.black, lightTeal],
+              ),
             ),
           ),
           Container(
             width: double.infinity,
-            height: 50,
-            decoration: const BoxDecoration(
+            height: cardHeight,
+            decoration: BoxDecoration(
                 color: lightTeal,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(radius), topRight: Radius.circular(radius))),
+          ),
+          Positioned.fill(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Spacer(),
+                ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                    lightTeal.withOpacity(titleOpacity*0.9), // Set your desired opacity and color
+                    BlendMode.srcATop,
+                  ),
+                  child: Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()..scale(-1.0, 1.0, 1.0),
+                      child:  Transform.translate(
+                        offset: const Offset(0, 3),
+                        child: SvgPicture.asset("assets/images/beetle-deco.svg", height: 30))
+                  ),
+                ),
+                const SizedBox(width: 20),
+                Text(
+                  widget.title,
+                  style: TextStyle(
+                    color: darkTeal.withOpacity(1-titleOpacity*0.9),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                const SizedBox(width: 20),
+                ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                    lightTeal.withOpacity(titleOpacity*0.9), // Set your desired opacity and color
+                    BlendMode.srcATop,
+                  ),
+                  child: Transform.translate(
+                      offset: const Offset(0, 3),
+                      child: SvgPicture.asset("assets/images/beetle-deco.svg", height: 30)),
+                ),
+                const Spacer(),
+              ],
+            ),
           ),
         ],
       ),

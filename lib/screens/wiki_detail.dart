@@ -338,28 +338,33 @@ class _WikiDetailState extends State<WikiDetail> {
       ),
     );
   }
-}
 
-Widget _buildCardBorder() {
-  return SliverWidget(
-    child: Stack(
-      children: [
-        Positioned.fill(
-          child: Container(
-            color: Colors.black,
+  Widget _buildCardBorder() {
+    const cardHeight = 80.0;
+    return SliverWidget(
+      child: Stack(
+        children: [
+          Container(
+            height: cardHeight,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.black, lightTeal],
+              ),
+            ),
           ),
-        ),
-        Container(
-          width: double.infinity,
-          height: 50,
-          decoration: const BoxDecoration(
-              color: lightTeal,
-              borderRadius:
-                  BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-        ),
-      ],
-    ),
-  );
+          Container(
+            width: double.infinity,
+            height: cardHeight,
+            decoration: const BoxDecoration(
+                color: lightTeal,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class SliverWidget extends StatelessWidget {
