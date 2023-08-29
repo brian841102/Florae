@@ -87,14 +87,10 @@ class _TapToExpandState extends State<TapToExpand> {
           horizontal: isExpanded ? 30 : widget.onTapPadding ?? 10,
           vertical: 6,
         ),
-        padding: EdgeInsets.only(top: (closedHeight-34-6)/2, left: 20, right: 20),//(closedHeight+60)-92)/2
+        padding: EdgeInsets.symmetric(vertical: (closedHeight-34-6)/2, horizontal: 20),
         //alignment: isExpanded ? Alignment.bottomLeft : AlignmentDirectional.bottomEnd,
-        height:
-
-            /// Used to set the height of the widget when it is closed and opened depends on the isExpanded parameter.
-            isExpanded ? widget.closedHeight ?? 70 : widget.openedHeight ?? 240,
         curve: Curves.fastLinearToSlowEaseIn,
-        duration: widget.duration ?? const Duration(milliseconds: 1200),
+        duration: widget.duration ?? const Duration(milliseconds: 800),
         decoration: BoxDecoration(
           /// Used to set the default value of the boxShadow parameter.
           boxShadow: widget.boxShadow ??
@@ -156,7 +152,7 @@ class _TapToExpandState extends State<TapToExpand> {
                         ? CrossFadeState.showFirst
                         : CrossFadeState.showSecond,
                     duration:
-                        widget.duration ?? const Duration(milliseconds: 1200),
+                        widget.duration ?? const Duration(milliseconds: 1000),
                     reverseDuration: Duration.zero,
                     sizeCurve: Curves.fastLinearToSlowEaseIn,
                   ),
@@ -214,10 +210,11 @@ class _TapToExpandState extends State<TapToExpand> {
                         crossFadeState: isExpanded
                             ? CrossFadeState.showFirst
                             : CrossFadeState.showSecond,
+                        secondCurve: Curves.easeInCubic,
 
                         /// Used to set the duration of the animation.
                         duration:
-                            widget.duration ?? const Duration(milliseconds: 1200),
+                            widget.duration ?? const Duration(milliseconds:1000),
                         reverseDuration: Duration.zero,
 
                         /// Used to set the curve of the animation.

@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'plugins/tap_to_expand.dart';
+import 'plugins/expandable_card.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
@@ -84,20 +85,22 @@ class _WikiDetailState extends State<WikiDetail> {
     const double title2Height = 12.0;
     const double horizontalEdge = 16.0;
     const double horizontalEdgeMid = 12.0;
+    const loremIpsum =
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
     double containerHeight = MediaQuery.of(context).size.width / 2 - horizontalEdge - horizontalEdgeMid;
     double totalBoxHeight = boxHeight + title1Height + title2Height + containerHeight;
 
     return SliverList(
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
           return TapToExpand(
-            content: Column(
+            content: const Column(
               children: <Widget>[
-                for (var i = 0; i < 5; i++)
                   Text(
-                    "data $i",
-                    style: const TextStyle(
+                    loremIpsum,
+                    style: TextStyle(
                       color: darkTeal,
-                      fontSize: 20,
+                      fontSize: 16,
                       fontFamily: 'MPLUS',
                     ),
                   ),
