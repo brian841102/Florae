@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'plugins/tap_to_expand.dart';
-import 'plugins/expandable_card.dart';
+import 'wiki.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
@@ -71,6 +70,8 @@ class _WikiDetailState extends State<WikiDetail> {
           slivers: [
             _buildAppBar(location.imagePath, location.realName, location.birth),
             _buildCardBorder(),
+            _buildListView(),
+            SliverToBoxAdapter(child: Container(height: 24)),
             _buildCardView(),
           ],
         ),
@@ -78,18 +79,60 @@ class _WikiDetailState extends State<WikiDetail> {
     );
   }
 
+  Widget _buildListView() {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+          bool isOdd = index % 2 == 1;
+          return Container(
+            decoration: BoxDecoration(
+              color: isOdd ? Colors.transparent : Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            margin: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 100,
+                        child: Text(
+                          Beetle.cmf.getPropertyNameByIndex(index)+' :',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 14,
+                            fontFamily: 'MPLUS',
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        child: Text(
+                          Beetle.cmf.getPropertyByIndex(index),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 14,
+                            fontFamily: 'MPLUS',
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        childCount: 7,
+      ),
+    );
+  }
+
 
   Widget _buildCardView() {
-    const double boxHeight = 6.0;
-    const double title1Height = 15.0;
-    const double title2Height = 12.0;
-    const double horizontalEdge = 16.0;
-    const double horizontalEdgeMid = 12.0;
     const loremIpsum =
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-
-    double containerHeight = MediaQuery.of(context).size.width / 2 - horizontalEdge - horizontalEdgeMid;
-    double totalBoxHeight = boxHeight + title1Height + title2Height + containerHeight;
+        "我自己的CMF在不溫控的環境下，最大紀錄差不多就是7公分左右了，要8公分以上的話大概還是要靠溫控跟更好的食材吧。然後記得，飼育幼蟲的容器大小跟他羽化後的大小絕對有正相關，想養大蟲絕對不要混養跟用直徑小於10公分的盒子。比起產卵環境，幼蟲乾濕度就不是這麼挑，一般程度就好，以免太濕造成雜蟲孳生或木屑朽化。幼蟲食量不大，假設從分出公母的L3換木屑分裝飼養的話，不論公母蟲都可以一盒500cc就可以一瓶到底 (但是公蟲會較小隻)如果公蟲丟1000cc的方盒，甚至2200cc的大桶一罐到底，通常都可以有不錯的成績";
 
     return SliverList(
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
@@ -100,14 +143,14 @@ class _WikiDetailState extends State<WikiDetail> {
                     loremIpsum,
                     style: TextStyle(
                       color: darkTeal,
-                      fontSize: 16,
+                      fontSize: 15,
                       fontFamily: 'MPLUS',
                     ),
                   ),
               ],
             ),
             title: const Text(
-              '幼蟲照護',
+              'Larva Care',
               style: TextStyle(
                 color: darkTeal,
                 fontSize: 20,
@@ -129,89 +172,7 @@ class _WikiDetailState extends State<WikiDetail> {
       ),
     );
   }
-  
-  // Widget _buildCardView() {
-  //   const double boxHeight = 6.0;
-  //   const double title1Height = 15.0;
-  //   const double title2Height = 12.0;
-  //   //const double containerHeight = 185.0;
-  //   const double horizontalEdge = 16.0;
-  //   const double horizontalEdgeMid = 12.0;
-  //   double containerHeight =
-  //       MediaQuery.of(context).size.width / 2 - horizontalEdge - horizontalEdgeMid;
-  //   double totalBoxHeight = boxHeight + title1Height + title2Height + containerHeight;
-  //
-  //   return SliverPadding(
-  //     padding: const EdgeInsets.only(top: 0.0),
-  //     sliver: SliverPadding(
-  //       padding: const EdgeInsets.symmetric(horizontal: horizontalEdge),
-  //       sliver: SliverGrid(
-  //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-  //           crossAxisCount: 2,
-  //           crossAxisSpacing: horizontalEdgeMid,
-  //           mainAxisSpacing: 0,
-  //           childAspectRatio: (((MediaQuery.of(context).size.width) / 2) / totalBoxHeight) / 1.25,
-  //         ),
-  //         delegate: SliverChildBuilderDelegate(
-  //           (BuildContext context, int index) {
-  //             return InkWell(
-  //               onTap: () {},
-  //               child: Column(
-  //                 crossAxisAlignment: CrossAxisAlignment.start,
-  //                 children: [
-  //                   Container(
-  //                     height: containerHeight, // Adjust the height of the box
-  //                     decoration: const BoxDecoration(
-  //                       color: Colors.black12,
-  //                       borderRadius: BorderRadius.all(Radius.circular(16)),
-  //                     ),
-  //                     child: Container(
-  //                       alignment: Alignment.center,
-  //                       child: Text(index.toString()),
-  //                       // child: const Image(
-  //                       //   image: //TODO
-  //                       // ),
-  //                     ),
-  //                   ),
-  //                   const SizedBox(height: boxHeight), // Space between the grid box and titles
-  //                   const Padding(
-  //                     padding: EdgeInsets.only(left: 8, right: 10), // Add indentation to titles
-  //                     child: Text(
-  //                       '美他利佛細身赤鍬形蟲',
-  //                       overflow: TextOverflow.fade,
-  //                       softWrap: false,
-  //                       style: TextStyle(
-  //                         color: darkTeal,
-  //                         fontSize: title1Height,
-  //                         fontWeight: FontWeight.w600,
-  //                         fontFamily: 'MPLUS',
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   const Padding(
-  //                     padding: EdgeInsets.only(left: 9, right: 10), // Add indentation to titles
-  //                     child: Text(
-  //                       'Cyclommatus metallifer f.',
-  //                       overflow: TextOverflow.fade,
-  //                       softWrap: false,
-  //                       style: TextStyle(
-  //                         color: Colors.grey,
-  //                         fontSize: title2Height,
-  //                         fontWeight: FontWeight.w600,
-  //                         fontFamily: 'MPLUS',
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             );
-  //           },
-  //           childCount: 20,
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+
 
   void _launchMaps(String keyword) async {
     // String googleUrl =
@@ -455,70 +416,107 @@ class SliverWidget extends StatelessWidget {
 //   }
 // }
 
-class Location {
-  const Location({
-    required this.name,
-    required this.place,
-    required this.imagePath,
-    required this.realName,
+enum Beetle {
+  cmf(
+    difficulty: 2,
+    popularity: 4,
+    larvaTime: '6~10',
+    larvaTemp: '22°C',
+    adultTime: '6~10',
+    adultSize: '36~100',
+    birth: 'Taiwan, Japan, India, America, Canada',
+  ),
+  pgk(
+    difficulty: 2,
+    popularity: 4,
+    larvaTime: '6~10',
+    larvaTemp: '22°C',
+    adultTime: '6~10',
+    adultSize: '36~100',
+    birth: 'Taiwan, Japan, India, America, Canada',
+  );
+
+  const Beetle({
+    required this.difficulty,
+    required this.popularity,
+    required this.larvaTime,
+    required this.larvaTemp,
+    required this.adultTime,
+    required this.adultSize,
     required this.birth,
   });
 
-  final String name;
-  final String place;
-  final String imagePath;
-  final String realName;
+  final int difficulty;
+  final int popularity;
+  final String larvaTime;
+  final String larvaTemp;
+  final String adultTime;
+  final String adultSize;
   final String birth;
+
+  String getPropertyByIndex(int index) {
+    switch (this) {
+      case Beetle.cmf:
+        switch (index) {
+          case 0:
+            return difficulty.toString();
+          case 1:
+            return popularity.toString();
+          case 2:
+            return larvaTime;
+          case 3:
+            return larvaTemp;
+          case 4:
+            return adultTime;
+          case 5:
+            return adultSize;
+          case 6:
+            return birth;
+          default:
+            throw ArgumentError("Invalid property index for cmf");
+        }
+      case Beetle.pgk:
+        switch (index) {
+          case 0:
+            return difficulty.toString();
+          case 1:
+            return popularity.toString();
+          case 2:
+            return larvaTime;
+          case 3:
+            return larvaTemp;
+          case 4:
+            return adultTime;
+          case 5:
+            return adultSize;
+          case 6:
+            return birth;
+          default:
+            throw ArgumentError("Invalid property index for pgk");
+        }
+      default:
+        throw ArgumentError("Invalid enum value");
+    }
+  }
+  String getPropertyNameByIndex(int index) {
+    switch (index) {
+      case 0:
+        return 'Difficulty';
+      case 1:
+        return 'Popularity';
+      case 2:
+        return 'LarvaTime';
+      case 3:
+        return 'LarvaTemp';
+      case 4:
+        return 'AdultTime';
+      case 5:
+        return 'AdultSize';
+      case 6:
+        return 'Birth';
+      default:
+        throw ArgumentError("Invalid property index");
+    }
+  }
 }
 
-const locations = [
-  Location(
-    name: 'Cyclommatus',
-    place: '細身屬',
-    imagePath: 'assets/images/cyclommatus.png',
-    realName: '雞冠細身赤鍬形蟲',
-    birth: '新北三峽',
-  ),
-  Location(
-    name: 'Dorcus',
-    place: '大鍬屬',
-    imagePath: 'assets/images/dorcus.png',
-    realName: '台灣大鍬',
-    birth: '新竹尖石',
-  ),
-  Location(
-    name: 'Lucanus',
-    place: '深山屬',
-    imagePath: 'assets/images/lucanus.png',
-    realName: '台灣深山鍬形蟲',
-    birth: '苗栗加里山',
-  ),
-  Location(
-    name: 'Neolucanus',
-    place: '圓翅屬',
-    imagePath: 'assets/images/neolucanus.png',
-    realName: '紅圓翅鍬形蟲',
-    birth: '桃園東眼山',
-  ),
-  Location(
-    name: 'Odontolabis',
-    place: '艷鍬屬',
-    imagePath: 'assets/images/odontolabis.png',
-    realName: '鬼艷鍬形蟲',
-    birth: '台中觀霧',
-  ),
-  Location(
-    name: 'Prosopocoilus',
-    place: '鋸鍬屬',
-    imagePath: 'assets/images/prosopocoilus.png',
-    realName: '兩點赤鋸鍬形蟲',
-    birth: '高雄藤枝',
-  ),
-  Location(
-    name: 'Rhaetulus',
-    place: '鹿角屬',
-    imagePath: 'assets/images/rhaetulus.png',
-    realName: '鹿角鍬形蟲',
-    birth: '台東啞口',
-  ),
-];
