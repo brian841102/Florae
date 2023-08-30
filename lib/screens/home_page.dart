@@ -284,7 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: const Icon(Icons.settings),
             iconSize: 25,
-            color: const Color(0xD37A1200),
+            color: const Color(0xFFA93B3B),
             tooltip: AppLocalizations.of(context)!.tooltipSettings,
             onPressed: () async {
               await Navigator.push(
