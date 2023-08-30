@@ -708,9 +708,8 @@ class _WikiChildState extends State<WikiChild> {
           ),
           Positioned.fill(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Spacer(),
                 ColorFiltered(
                   colorFilter: ColorFilter.mode(
                     lightTeal.withOpacity(titleOpacity*0.9), // Set your desired opacity and color
@@ -720,31 +719,35 @@ class _WikiChildState extends State<WikiChild> {
                       alignment: Alignment.center,
                       transform: Matrix4.identity()..scale(-1.0, 1.0, 1.0),
                       child:  Transform.translate(
-                        offset: const Offset(0, 3),
+                        offset: Offset(titleOpacity*(-6), 3),
                         child: SvgPicture.asset("assets/images/beetle-deco.svg", height: 30))
                   ),
                 ),
-                const SizedBox(width: 20),
-                Text(
-                  widget.title,
-                  style: TextStyle(
-                    color: darkTeal.withOpacity(1-titleOpacity*0.9),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                    fontStyle: FontStyle.italic,
+                const SizedBox(width: 15),
+                Transform.scale(
+                  alignment: Alignment.center,
+                  scaleX: 1-titleOpacity*0.1,
+                  child: Text(
+                    widget.title,
+                    style: TextStyle(
+                      color: darkTeal.withOpacity(1-titleOpacity*0.9),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 28,
+                      fontStyle: FontStyle.italic,
+                      letterSpacing: 1.2,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 20),
+                const SizedBox(width: 15),
                 ColorFiltered(
                   colorFilter: ColorFilter.mode(
                     lightTeal.withOpacity(titleOpacity*0.9), // Set your desired opacity and color
                     BlendMode.srcATop,
                   ),
                   child: Transform.translate(
-                      offset: const Offset(0, 3),
+                      offset: Offset(titleOpacity*(-6), 3),
                       child: SvgPicture.asset("assets/images/beetle-deco.svg", height: 30)),
                 ),
-                const Spacer(),
               ],
             ),
           ),
