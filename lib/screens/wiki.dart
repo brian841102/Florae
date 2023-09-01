@@ -479,7 +479,7 @@ class _WikiChildState extends State<WikiChild> {
     const double title2Height = 12.0;
     const double horizontalEdge = 16.0;
     const double horizontalEdgeMid = 12.0;
-    double containerHeight = MediaQuery.of(context).size.width/2-horizontalEdge-horizontalEdgeMid;
+    double containerHeight = (MediaQuery.of(context).size.width-horizontalEdge*2-horizontalEdgeMid)/2;
     double totalBoxHeight = boxHeight + title1Height + title2Height + containerHeight;
     
     return SliverPadding(
