@@ -58,7 +58,7 @@ class _WikiDetailState extends State<WikiDetail> {
   @override
   Widget build(BuildContext context) {
     Location location = locations.firstWhere((loc) => loc.name == widget.title,
-        orElse: () => const Location(name: '', place: '', imagePath: '', realName: '', birth: ''));
+        orElse: () => Location(name: '', place: '', imagePath: '', realName: '', birth: ''));
     return Scaffold(
       body: Container(
         color: lightTeal, // Set the background color here

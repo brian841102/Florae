@@ -14,6 +14,12 @@ class ExampleParallax extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // locations.sort((a, b) {
+    //   if (a.isFavorite && !b.isFavorite) return -1;
+    //   else if (!a.isFavorite && b.isFavorite) return 1;
+    //   else return 0;
+    // });
+    locations.sort((a, b) => a.isFavorite ? 1 : 0.compareTo(b.isFavorite ? 1 : 0));
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Column(
@@ -24,6 +30,7 @@ class ExampleParallax extends StatelessWidget {
               name: location.name,
               country: location.place,
               context: context,
+              locations: locations,
             ),
         ],
       ),
@@ -31,25 +38,33 @@ class ExampleParallax extends StatelessWidget {
   }
 }
 
-class LocationListItem extends StatelessWidget {
+class LocationListItem extends StatefulWidget  {
   LocationListItem({
     super.key,
     required this.imagePath,
     required this.name,
     required this.country,
     required this.context,
+    required this.locations,
   });
 
   final String imagePath;
   final String name;
   final String country;
   final BuildContext context;
+  final List<Location> locations;
   final GlobalKey _backgroundImageKey = GlobalKey();
+
+  @override
+  _LocationListItemState createState() => _LocationListItemState();
+}
+
+class _LocationListItemState extends State<LocationListItem> {
+  bool isFavorite = false;
 
   void _openWikiChild(BuildContext context) {
     Future.delayed(
       const Duration(milliseconds: 400), () {
-        //Navigator.push(context, MaterialPageRoute(builder: (context) => WikiChild(title: name)),);
         Navigator.of(context).push(_createRoute());
       },
     );
@@ -57,7 +72,7 @@ class LocationListItem extends StatelessWidget {
 
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => WikiChild(title: name),
+      pageBuilder: (context, animation, secondaryAnimation) => WikiChild(title: widget.name),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(1.0, 0.0);
         const end = Offset.zero;
@@ -97,6 +112,21 @@ class LocationListItem extends StatelessWidget {
                   splashColor: Colors.black.withOpacity(0.2),
                 ),
               ),
+              Positioned(
+                right: 10,
+                top: 10,
+                child: IconButton(
+                  onPressed: () {
+                    setState(() {isFavorite = !isFavorite;});
+                    final location = widget.locations.firstWhere((loc) => loc.name == widget.name);
+                    if (location != null) {location.isFavorite = isFavorite;}
+                  },
+                  icon: Icon(
+                    isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: isFavorite ? Colors.red : Colors.grey,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -109,12 +139,12 @@ class LocationListItem extends StatelessWidget {
       delegate: ParallaxFlowDelegate(
         scrollable: Scrollable.of(context),
         listItemContext: context,
-        backgroundImageKey: _backgroundImageKey,
+        backgroundImageKey: widget._backgroundImageKey,
       ),
       children: [
         Image.asset(
-          imagePath,
-          key: _backgroundImageKey,
+          widget.imagePath,
+          key: widget._backgroundImageKey,
           fit: BoxFit.cover,
         ),
       ],
@@ -145,7 +175,7 @@ class LocationListItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            name,
+            widget.name,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -153,7 +183,7 @@ class LocationListItem extends StatelessWidget {
             ),
           ),
           Text(
-            country,
+            widget.country,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
@@ -328,12 +358,13 @@ class RenderParallax extends RenderBox
 }
 
 class Location {
-  const Location({
+  Location({
     required this.name,
     required this.place,
     required this.imagePath,
     required this.realName,
     required this.birth,
+    this.isFavorite = false,
   });
 
   final String name;
@@ -341,9 +372,10 @@ class Location {
   final String imagePath;
   final String realName;
   final String birth;
+  bool isFavorite;
 }
 
-const locations = [
+ var locations = [
   Location(
     name: 'Cyclommatus',
     place: '細身屬',
@@ -392,7 +424,6 @@ const locations = [
     imagePath: 'assets/images/rhaetulus.png',
     realName: '鹿角鍬形蟲',
     birth: '台東啞口',
-
   ),
 ];
 
@@ -454,7 +485,7 @@ class _WikiChildState extends State<WikiChild> {
   @override
   Widget build(BuildContext context) {
     Location location = locations.firstWhere((loc) => loc.name == widget.title,
-        orElse: () => const Location(name:'',place:'',imagePath:'', realName:'',birth:''));
+        orElse: () => Location(name:'',place:'',imagePath:'', realName:'',birth:''));
     return Scaffold(
       body: Container(
         color: lightTeal, // Set the background color here
