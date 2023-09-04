@@ -478,7 +478,7 @@ class _WikiChildState extends State<WikiChild> {
   void _openWikiDetail(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const WikiDetail(title: 'name')),
+      MaterialPageRoute(builder: (context) => const WikiDetail(title: '美他利佛細身赤鍬形蟲')),
     );
   }
 
@@ -604,7 +604,7 @@ class _WikiChildState extends State<WikiChild> {
 }
 
   Widget _buildAppBar(String imagePath, String realName, String birth) {
-    titleOpacity = _calculateOpacity(0,160);
+    titleOpacity = _calculateOpacity(60,160);
     ColorTween colorTween = ColorTween(begin: Colors.white, end: darkTeal);
     Color? backButtonColor = colorTween.lerp(titleOpacity);
     return SliverAppBar(

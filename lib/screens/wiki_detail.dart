@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:url_launcher/url_launcher.dart';
+//import 'package:url_launcher/url_launcher.dart';
 import 'plugins/tap_to_expand.dart';
 import 'wiki.dart';
 
@@ -59,6 +59,7 @@ class _WikiDetailState extends State<WikiDetail> {
   Widget build(BuildContext context) {
     Location location = locations.firstWhere((loc) => loc.name == widget.title,
         orElse: () => Location(name: '', place: '', imagePath: '', realName: '', birth: ''));
+    String imagePath = Beetle.getImagePathByName(widget.title);
     return Scaffold(
       body: Container(
         color: lightTeal, // Set the background color here
@@ -68,8 +69,11 @@ class _WikiDetailState extends State<WikiDetail> {
           controller: _scrollController,
           physics: const ClampingScrollPhysics(), //const BouncingScrollPhysics(),
           slivers: [
-            _buildAppBar(location.imagePath, location.realName, location.birth),
+            _buildAppBar(imagePath),
             _buildCardBorder(),
+            SliverToBoxAdapter(child: Container(height: 24)),
+            _buildCardRow(),
+            SliverToBoxAdapter(child: Container(height: 24)),
             _buildListView(),
             SliverToBoxAdapter(child: Container(height: 24)),
             _buildCardView(),
@@ -78,6 +82,184 @@ class _WikiDetailState extends State<WikiDetail> {
       ),
     );
   }
+
+  Widget _buildCardRow() {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Card(
+              child: SizedBox(
+                width: (MediaQuery.of(context).size.width-55) / 3,
+                height: 140,
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      // Use Expanded to make the icon fill the remaining space
+                      const Expanded(
+                        child: Icon(
+                          Icons.bar_chart_outlined,
+                          color: darkTeal,
+                          size: 64,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 28,
+                        child: Text(
+                          '飼育難度',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 16,
+                            fontFamily: 'MPLUS',
+                            letterSpacing: 4,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '容易',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.tertiary.withOpacity(0.8),
+                            fontSize: 14,
+                            fontFamily: 'MPLUS',
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 8,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              elevation: 3,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            ),
+            Card(
+              child: SizedBox(
+                width:(MediaQuery.of(context).size.width-55) / 3,
+                height: 140,
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      // Use Expanded to make the icon fill the remaining space
+                      const Expanded(
+                        child: Icon(
+                          Icons.local_fire_department_outlined,
+                          color: darkTeal,
+                          size: 62,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 28,
+                        child: Text(
+                          '熱門程度',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 16,
+                            fontFamily: 'MPLUS',
+                            letterSpacing: 4,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '高',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.tertiary.withOpacity(0.8),
+                            fontSize: 14,
+                            fontFamily: 'MPLUS',
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 8,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              elevation: 3,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            ),
+            Card(
+              child: SizedBox(
+                width: (MediaQuery.of(context).size.width-55) / 3,
+                height: 140,
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      const Expanded(
+                        child: Icon(
+                          Icons.timelapse_outlined,
+                          color: darkTeal,
+                          size: 60,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 28,
+                        child: Text(
+                          '飼育週期',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 16,
+                            fontFamily: 'MPLUS',
+                            letterSpacing: 4,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '短',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.tertiary.withOpacity(0.8),
+                            fontSize: 14,
+                            fontFamily: 'MPLUS',
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 8,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              elevation: 3,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
 
   Widget _buildListView() {
     return SliverList(
@@ -143,21 +325,21 @@ class _WikiDetailState extends State<WikiDetail> {
                     loremIpsum,
                     style: TextStyle(
                       color: darkTeal,
-                      fontSize: 15,
-                      fontFamily: 'MPLUS',
+                      fontSize: 16,
+                      height:1.7,
                     ),
                   ),
               ],
             ),
             title: const Text(
-              'Larva Care',
+              '幼蟲照護',
               style: TextStyle(
                 color: darkTeal,
                 fontSize: 20,
                 fontFamily: 'MPLUS',
               ),
             ),
-            onTapPadding: 16,
+            onTapPadding: 14,
             closedHeight: 80,
             scrollable: false,
             borderRadius: 20,
@@ -174,26 +356,26 @@ class _WikiDetailState extends State<WikiDetail> {
   }
 
 
-  void _launchMaps(String keyword) async {
-    // String googleUrl =
-    //   'comgooglemaps://?center=${trip.origLocationObj.lat},${trip.origLocationObj.lon}';
-    Uri googleUrl = Uri.parse('https://www.google.com/maps/search/?api=1&query=$keyword');
-    // String appleUrl =
-    //   'https://maps.apple.com/?sll=${trip.origLocationObj.lat},${trip.origLocationObj.lon}';
-    Uri appleUrl = Uri.parse('https://www.google.com/maps/search/?api=1&query=$keyword');
-    if (await canLaunchUrl(googleUrl)) {
-      print('launching google url');
-      await launchUrl(googleUrl);
-    } else if (await canLaunchUrl(appleUrl)) {
-      print('launching apple url');
-      await launchUrl(appleUrl);
-    } else {
-      throw 'Could not launch url';
-    }
-  }
+  // void _launchMaps(String keyword) async {
+  //   // String googleUrl =
+  //   //   'comgooglemaps://?center=${trip.origLocationObj.lat},${trip.origLocationObj.lon}';
+  //   Uri googleUrl = Uri.parse('https://www.google.com/maps/search/?api=1&query=$keyword');
+  //   // String appleUrl =
+  //   //   'https://maps.apple.com/?sll=${trip.origLocationObj.lat},${trip.origLocationObj.lon}';
+  //   Uri appleUrl = Uri.parse('https://www.google.com/maps/search/?api=1&query=$keyword');
+  //   if (await canLaunchUrl(googleUrl)) {
+  //     print('launching google url');
+  //     await launchUrl(googleUrl);
+  //   } else if (await canLaunchUrl(appleUrl)) {
+  //     print('launching apple url');
+  //     await launchUrl(appleUrl);
+  //   } else {
+  //     throw 'Could not launch url';
+  //   }
+  // }
 
-  Widget _buildAppBar(String imagePath, String realName, String birth) {
-    titleOpacity = _calculateOpacity(0, 160);
+  Widget _buildAppBar(String imagePath) {
+    titleOpacity = _calculateOpacity(100, 270);
     ColorTween colorTween = ColorTween(begin: Colors.white, end: darkTeal);
     Color? backButtonColor = colorTween.lerp(titleOpacity);
     return SliverAppBar(
@@ -204,81 +386,68 @@ class _WikiDetailState extends State<WikiDetail> {
       foregroundColor: backButtonColor, // back button color
       backgroundColor: Colors.transparent,
       floating: false,
-      expandedHeight: 240.0,
+      expandedHeight: 340.0,
       stretch: true,
       flexibleSpace: Stack(
         fit: StackFit.expand,
         children: [
-          ColorFiltered(
-            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
-            child: const FlutterLogo(size: 10),
-          ),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.transparent, Colors.black.withOpacity(0.9)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: const [0.6, 0.95],
+          ClipPath(
+            clipper: HalfCircleClipper(),
+            child: ColorFiltered(
+              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.cover,
               ),
             ),
           ),
-          FlexibleSpaceBar(
+          const FlexibleSpaceBar(
             expandedTitleScale: 1,
-            stretchModes: const [],
-            titlePadding: const EdgeInsets.only(left: 40, bottom: 16),
-            title: Container(
-              alignment: Alignment.bottomLeft, // Align the title at the bottom left
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(realName,
-                        style: const TextStyle(
-                          fontSize: 25,
-                          letterSpacing: 4,
-                          fontFamily: 'MPLUS',
-                          fontWeight: FontWeight.normal,
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 2.0),
-                      child: Text(birth,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            letterSpacing: 2,
-                            fontFamily: 'MPLUS',
-                          )),
-                    ),
-                  ],
-                ),
+            stretchModes: [],
+            titlePadding: EdgeInsets.symmetric(horizontal: 12),
+            title: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  //beetleCard(),
+                ],
               ),
             ),
           ),
-          Container(
-            alignment: Alignment.bottomRight,
-            padding: const EdgeInsets.only(right: 20, bottom: 9),
-            child: TextButton(
-              onPressed: () {
-                _launchMaps(birth);
-              },
-              child: const CircleAvatar(
-                  radius: 22,
-                  backgroundColor: Colors.grey,
-                  child: CircleAvatar(
-                    radius: 20,
-                    backgroundImage: AssetImage('assets/images/map.png'),
-                  )),
-              style: TextButton.styleFrom(shape: const CircleBorder()),
-            ),
-          ),
+          // Container(
+          //   alignment: Alignment.bottomRight,
+          //   padding: const EdgeInsets.only(right: 20, bottom: 9),
+          //   child: TextButton(
+          //     onPressed: () {
+          //       _launchMaps(birth);
+          //     },
+          //     child: const CircleAvatar(
+          //         radius: 22,
+          //         backgroundColor: Colors.grey,
+          //         child: CircleAvatar(
+          //           radius: 20,
+          //           backgroundImage: AssetImage('assets/images/map.png'),
+          //         )),
+          //     style: TextButton.styleFrom(shape: const CircleBorder()),
+          //   ),
+          // ),
+          // Positioned(
+          //     bottom: 0,
+          //     left: 0,
+          //     right: 0,
+          //     child: Padding(
+          //       padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          //       child: beetleCard(),
+          //     )
+          // ),
           Positioned(
             top: 0,
             left: 0,
             right: 0,
             child: AppBar(
               leading: IconButton(
-                icon: const Icon(Icons.close), // Use the "close" icon here
+                icon: Icon(Icons.close, color: backButtonColor), // Use the "close" icon here
                 onPressed: () {
                   Navigator.pop(context); // Go back when the "X" button is pressed
                 },
@@ -304,164 +473,245 @@ class _WikiDetailState extends State<WikiDetail> {
   }
 
   Widget _buildCardBorder() {
-    const cardHeight = 80.0;
-    return SliverWidget(
-      child: Stack(
-        children: [
-          Container(
-            height: cardHeight,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.black, lightTeal],
-              ),
+    return SliverToBoxAdapter(
+      child: Container(
+        height: 170,
+        child: Stack(
+          children: [
+            Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: beetleCard (),
+                ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget beetleCard (){
+    return Container(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Stack(
+            children: [
+              Positioned(
+                left: 0,
+                width: 24,
+                top: 10,
+                child: Image.asset(
+                  'assets/images/barcode.png',
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+              Positioned(
+                right: 0,
+                width: 24,
+                top: 10,
+                child: Image.asset(
+                  'assets/images/barcode.png',
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+              Positioned.fill(
+                right: 24,
+                left: 24,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 6),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Image.asset(
+                    'assets/images/starry4.png',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 140,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Stack(
+                        alignment: AlignmentDirectional.topCenter,
+                        children: [
+                          Text(
+                            widget.title,
+                            style: TextStyle(
+                              fontSize: 23,
+                              letterSpacing: 4,
+                              fontFamily: 'XinYi',
+                              foreground: Paint()
+                                ..style = PaintingStyle.stroke
+                                ..strokeWidth = 3
+                                ..color = Colors.black,
+                            ),
+                          ),
+                          Text(widget.title,
+                              style: const TextStyle(
+                                color: Colors.yellow,
+                                fontSize: 23,
+                                letterSpacing: 4,
+                                fontFamily: 'XinYi',
+                              )),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 28,
+                        child: Text(
+                          'Cyclommatus metallifer finae',
+                          overflow: TextOverflow.fade,
+                          softWrap: false,
+                          style: TextStyle(
+                            //color: Theme.of(context).colorScheme.secondary,
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w300,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          //color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
+                          color: darkTeal,
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                        padding: const EdgeInsets.all(6.0),
+                        child: const Text(
+                          'メタリヘルホソアカクワガタ',
+                          style: TextStyle(
+                            //color: Theme.of(context).colorScheme.tertiary.withOpacity(0.8),
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'MPLUS',
+                            //fontWeight: FontWeight.bold,
+                            letterSpacing: 2,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-          Container(
-            width: double.infinity,
-            height: cardHeight,
-            decoration: const BoxDecoration(
-                color: lightTeal,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-          ),
+        ),
+        elevation: 5,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.grey,
+            blurRadius: 5.0, // soften the shadow
+            //spreadRadius: 1.0, //extend the shadow
+            offset: Offset(0, 5),
+          )
         ],
       ),
     );
   }
 }
 
-class SliverWidget extends StatelessWidget {
-  const SliverWidget({Key? key, required this.child}) : super(key: key);
-  final Widget child;
+class HalfCircleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    double w = size.width;
+    double h = size.height;
+    final path = Path();
+    // (0, 0) top-left corner 1.point
+    path.lineTo(0, h*0.8); // bottom-left corner 2.point
+
+    // Define the control points for the quadratic Bezier curve
+    final controlPoint = Offset(w / 2, h); // bottom-mid 3.point
+    final endPoint = Offset(w, h*0.8); //bottom-right corner 4.point
+
+    // Add the quadratic Bezier curve
+    path.quadraticBezierTo(
+      controlPoint.dx,
+      controlPoint.dy,
+      endPoint.dx,
+      endPoint.dy,
+    );
+
+    path.lineTo(w, 0); // top-right corner 5.point
+    path.close(); // Close the path to create a full shape
+
+    return path;
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: child,
-    );
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return false;
   }
 }
 
-// class WikiDetail extends StatelessWidget {
-//   const WikiDetail({
-//     super.key,
-//   });
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         body: ExampleSliverScrollView(),
-//       ),
-//     );
-//   }
-// }
-//
-// class ExampleSliverScrollView extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return CustomScrollView(
-//       slivers: [
-//         SliverAppBar(
-//           expandedHeight: 200,
-//           flexibleSpace: FlexibleSpaceBar(
-//             title: Text('SliverScrollView Example'),
-//             background: Image.network(
-//               'https://via.placeholder.com/400x200',
-//               fit: BoxFit.cover,
-//             ),
-//           ),
-//         ),
-//         SliverList(
-//           delegate: SliverChildBuilderDelegate(
-//             (BuildContext context, int index) {
-//               return Padding(
-//                 padding: const EdgeInsets.all(8.0),
-//                 child: CardItem(),
-//               );
-//             },
-//             childCount: 10,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
-//
-// class CardItem extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       elevation: 4,
-//       child: Column(
-//         children: [
-//           ListTile(
-//             title: Text('Card Title'),
-//             subtitle: Text('Subtitle'),
-//           ),
-//           Divider(),
-//           ListView.builder(
-//             shrinkWrap: true,
-//             physics: NeverScrollableScrollPhysics(),
-//             itemCount: 5,
-//             itemBuilder: (context, index) {
-//               return ListTile(
-//                 title: Text('Item $index'),
-//               );
-//             },
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
 
 enum Beetle {
   cmf(
-    difficulty: 2,
-    popularity: 4,
-    larvaTime: '6~10',
+    boxSize: '1200 cc',
+    hiberTime: '2~3個月',
+    larvaTime: '6~10個月',
     larvaTemp: '22°C',
-    adultTime: '6~10',
-    adultSize: '36~100',
-    birth: 'Taiwan, Japan, India, America, Canada',
+    adultTime: '6~10個月',
+    adultSize: '36~100mm',
+    birth: '印尼‧珀倫島',
+    name:'美他利佛細身赤鍬形蟲',
+    imagePath: 'assets/images/cyclommatus.png',
   ),
   pgk(
-    difficulty: 2,
-    popularity: 4,
-    larvaTime: '6~10',
+    boxSize: '1200 cc',
+    hiberTime: '2~3個月',
+    larvaTime: '6~10個月',
     larvaTemp: '22°C',
-    adultTime: '6~10',
-    adultSize: '36~100',
-    birth: 'Taiwan, Japan, India, America, Canada',
+    adultTime: '6~10個月',
+    adultSize: '36~100mm',
+    birth: '印尼‧龍目島',
+    name:'長頸鹿鋸鍬形蟲',
+    imagePath: 'assets/images/prosopocoilus.png',
   );
 
   const Beetle({
-    required this.difficulty,
-    required this.popularity,
+    required this.boxSize,
+    required this.hiberTime,
     required this.larvaTime,
     required this.larvaTemp,
     required this.adultTime,
     required this.adultSize,
     required this.birth,
+    required this.name,
+    required this.imagePath,
   });
 
-  final int difficulty;
-  final int popularity;
+  final String boxSize;
+  final String hiberTime;
   final String larvaTime;
   final String larvaTemp;
   final String adultTime;
   final String adultSize;
   final String birth;
+  final String name;
+  final String imagePath;
 
   String getPropertyByIndex(int index) {
     switch (this) {
       case Beetle.cmf:
         switch (index) {
           case 0:
-            return difficulty.toString();
+            return boxSize;
           case 1:
-            return popularity.toString();
+            return hiberTime;
           case 2:
             return larvaTime;
           case 3:
@@ -478,9 +728,9 @@ enum Beetle {
       case Beetle.pgk:
         switch (index) {
           case 0:
-            return difficulty.toString();
+            return boxSize;
           case 1:
-            return popularity.toString();
+            return hiberTime;
           case 2:
             return larvaTime;
           case 3:
@@ -501,22 +751,32 @@ enum Beetle {
   String getPropertyNameByIndex(int index) {
     switch (index) {
       case 0:
-        return 'Difficulty';
+        return '建議容器';
       case 1:
-        return 'Popularity';
+        return '蟄伏期';
       case 2:
-        return 'LarvaTime';
+        return '幼蟲期';
       case 3:
-        return 'LarvaTemp';
+        return '適合溫度';
       case 4:
-        return 'AdultTime';
+        return '成蟲壽命';
       case 5:
-        return 'AdultSize';
+        return '成蟲大小';
       case 6:
-        return 'Birth';
+        return '產地';
       default:
         throw ArgumentError("Invalid property index");
     }
   }
+
+  static String getImagePathByName(String name) {
+    for (var beetle in Beetle.values) {
+      if (beetle.name == name) {
+        return beetle.imagePath;
+      }
+    }
+    throw ArgumentError("No Beetle found with the provided name");
+  }
+
 }
 
