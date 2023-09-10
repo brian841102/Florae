@@ -347,10 +347,11 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
           String fileName = "";
           if (_formKey.currentState!.validate()) {
             if (_image != null) {
-              final Directory directory =
-                  await getExternalStorageDirectory() ?? await getApplicationDocumentsDirectory();
+              final Directory? directory = Platform.isAndroid
+                  ? await getExternalStorageDirectory()
+                  : await getApplicationDocumentsDirectory();
               fileName =
-                  directory.path + "/" + generateRandomString(10) + p.extension(_image!.path);
+                  directory!.path + "/" + generateRandomString(10) + p.extension(_image!.path);
               _image!.saveTo(fileName);
             }
 

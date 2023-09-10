@@ -3,6 +3,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:async';
 import 'dart:io';
 
+//const String darwinNotificationCategoryPlain = 'plainCategory';
+
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
@@ -66,8 +68,23 @@ void initNotifications(String channelName, String channelDescription) async {
 
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@drawable/ic_stat_florae');
+
+  const DarwinInitializationSettings initializationSettingsDarwin =
+      DarwinInitializationSettings(
+        // notificationCategories: [
+        //   DarwinNotificationCategory(darwinNotificationCategoryPlain,
+        //      actions: <DarwinNotificationAction>[
+        //       DarwinNotificationAction.plain('id_1', 'Action 1'),
+        //     ]
+        //   )
+        // ]
+      );
+
   const InitializationSettings initializationSettings =
-      InitializationSettings(android: initializationSettingsAndroid);
+      InitializationSettings(
+          android: initializationSettingsAndroid,
+          iOS: initializationSettingsDarwin);
+
   flutterLocalNotificationsPlugin.initialize(initializationSettings);
 }
 
@@ -81,8 +98,15 @@ Future singleNotification(String title, String body, int hashCode,
           priority: Priority.high,
           ticker: 'care_reminder');
 
+  const DarwinNotificationDetails iosPlatformChannelSpecifics =
+      DarwinNotificationDetails(
+          //categoryIdentifier: darwinNotificationCategoryPlain
+      );
+
   const NotificationDetails platformChannelSpecifics =
-      NotificationDetails(android: androidPlatformChannelSpecifics);
+      NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iosPlatformChannelSpecifics);
 
   await flutterLocalNotificationsPlugin
       .show(hashCode, title, body, platformChannelSpecifics, payload: payload);

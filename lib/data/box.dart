@@ -24,7 +24,9 @@ class ObjectBox {
   static Future<ObjectBox> create() async {
     // Future<Store> openStore() {...} is defined in the generated objectbox.g.dart
 
-    Directory? dbPath = (await getExternalStorageDirectory());
+    Directory? dbPath = Platform.isAndroid
+        ? await getExternalStorageDirectory()
+        : await getApplicationDocumentsDirectory();
 
     dbPath ??= (await defaultStoreDirectory());
 
