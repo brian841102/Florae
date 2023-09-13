@@ -640,34 +640,29 @@ class _WikiChildState extends State<WikiChild> {
             expandedTitleScale: 1,
             stretchModes: const [],
             titlePadding: const EdgeInsets.only(left: 40, bottom: 16),
-            title: Container(
-              alignment: Alignment.bottomLeft, // Align the title at the bottom left
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(realName,
-                      style: const TextStyle(
-                        fontSize: 25,
-                        letterSpacing: 4,
-                        fontFamily: 'MPLUS',
-                        fontWeight: FontWeight.normal,
-                      )
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 2.0),
-                      child: Text(birth,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          letterSpacing: 2,
-                          fontFamily: 'MPLUS',
-                        )
-                      ),
-                    ),
-                  ],
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.end, // Align the title at the bottom left
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(realName,
+                  style: const TextStyle(
+                    fontSize: 25,
+                    letterSpacing: 4,
+                    fontFamily: 'MPLUS',
+                    fontWeight: FontWeight.normal,
+                  )
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 2.0),
+                  child: Text(birth,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      letterSpacing: 2,
+                      fontFamily: 'MPLUS',
+                    )
+                  ),
+                ),
+              ],
             ),
           ),
           Container(
