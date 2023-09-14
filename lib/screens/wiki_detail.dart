@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-//import 'package:url_launcher/url_launcher.dart';
 import 'plugins/tap_to_expand.dart';
 import 'wiki.dart';
 
@@ -70,12 +69,11 @@ class _WikiDetailState extends State<WikiDetail> {
           physics: const ClampingScrollPhysics(), //const BouncingScrollPhysics(),
           slivers: [
             _buildAppBar(imagePath),
-            _buildCardBorder(),
-            SliverToBoxAdapter(child: Container(height: 24)),
+            SliverToBoxAdapter(child: Container(height: 12)),
             _buildCardRow(),
             SliverToBoxAdapter(child: Container(height: 24)),
             _buildListView(),
-            SliverToBoxAdapter(child: Container(height: 24)),
+            SliverToBoxAdapter(child: Container(height: 20)),
             _buildCardView(),
           ],
         ),
@@ -86,7 +84,7 @@ class _WikiDetailState extends State<WikiDetail> {
   Widget _buildCardRow() {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0),
+        padding: const EdgeInsets.symmetric(horizontal: 14),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -270,7 +268,7 @@ class _WikiDetailState extends State<WikiDetail> {
               color: isOdd ? Colors.transparent : Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
               borderRadius: BorderRadius.circular(10.0),
             ),
-            margin: const EdgeInsets.symmetric(horizontal: 20.0),
+            margin: const EdgeInsets.symmetric(horizontal: 18.0),
             child: Column(
               children: [
                 Padding(
@@ -355,25 +353,6 @@ class _WikiDetailState extends State<WikiDetail> {
     );
   }
 
-
-  // void _launchMaps(String keyword) async {
-  //   // String googleUrl =
-  //   //   'comgooglemaps://?center=${trip.origLocationObj.lat},${trip.origLocationObj.lon}';
-  //   Uri googleUrl = Uri.parse('https://www.google.com/maps/search/?api=1&query=$keyword');
-  //   // String appleUrl =
-  //   //   'https://maps.apple.com/?sll=${trip.origLocationObj.lat},${trip.origLocationObj.lon}';
-  //   Uri appleUrl = Uri.parse('https://www.google.com/maps/search/?api=1&query=$keyword');
-  //   if (await canLaunchUrl(googleUrl)) {
-  //     print('launching google url');
-  //     await launchUrl(googleUrl);
-  //   } else if (await canLaunchUrl(appleUrl)) {
-  //     print('launching apple url');
-  //     await launchUrl(appleUrl);
-  //   } else {
-  //     throw 'Could not launch url';
-  //   }
-  // }
-
   Widget _buildAppBar(String imagePath) {
     titleOpacity = _calculateOpacity(100, 270);
     ColorTween colorTween = ColorTween(begin: Colors.white, end: darkTeal);
@@ -386,61 +365,63 @@ class _WikiDetailState extends State<WikiDetail> {
       foregroundColor: backButtonColor, // back button color
       backgroundColor: Colors.transparent,
       floating: false,
-      expandedHeight: 340.0,
+      expandedHeight: MediaQuery.of(context).size.width*1.2,//450
       stretch: true,
       flexibleSpace: Stack(
-        fit: StackFit.expand,
+        fit: StackFit.passthrough,
         children: [
-          ClipPath(
-            clipper: HalfCircleClipper(),
-            child: ColorFiltered(
-              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.cover,
+          SizedBox(
+            height: MediaQuery.of(context).size.width*1.1,
+            child: ClipPath(
+              clipper: HalfCircleClipper(),
+              child: ColorFiltered(
+                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
-          const FlexibleSpaceBar(
-            expandedTitleScale: 1,
-            stretchModes: [],
-            titlePadding: EdgeInsets.symmetric(horizontal: 12),
-            title: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  //beetleCard(),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 10,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14),
+              child: Stack(
+                children: [
+                  beetleCard(),
+                  Positioned(
+                    height: 12,
+                    bottom: 4,
+                    left: 60,
+                    child: Image.asset(
+                      'assets/images/indicator.png',
+                      fit: BoxFit.fitWidth,
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
-          // Container(
-          //   alignment: Alignment.bottomRight,
-          //   padding: const EdgeInsets.only(right: 20, bottom: 9),
-          //   child: TextButton(
-          //     onPressed: () {
-          //       _launchMaps(birth);
-          //     },
-          //     child: const CircleAvatar(
-          //         radius: 22,
-          //         backgroundColor: Colors.grey,
-          //         child: CircleAvatar(
-          //           radius: 20,
-          //           backgroundImage: AssetImage('assets/images/map.png'),
-          //         )),
-          //     style: TextButton.styleFrom(shape: const CircleBorder()),
-          //   ),
-          // ),
-          // Positioned(
-          //     bottom: 0,
-          //     left: 0,
-          //     right: 0,
-          //     child: Padding(
-          //       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          //       child: beetleCard(),
-          //     )
-          // ),
+          FlexibleSpaceBar(
+            expandedTitleScale: 1,
+            stretchModes: [],
+            titlePadding: EdgeInsets.symmetric(horizontal: 12),
+            title: Container(
+              alignment: Alignment.bottomCenter,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    //beetleCard(),
+                  ],
+                ),
+              ),
+            ),
+          ),
           Positioned(
             top: 0,
             left: 0,
@@ -472,32 +453,11 @@ class _WikiDetailState extends State<WikiDetail> {
     );
   }
 
-  Widget _buildCardBorder() {
-    return SliverToBoxAdapter(
-      child: Container(
-        height: 170,
-        child: Stack(
-          children: [
-            Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: beetleCard (),
-                ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget beetleCard (){
     return Container(
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Stack(
             children: [
               Positioned(
@@ -506,7 +466,7 @@ class _WikiDetailState extends State<WikiDetail> {
                 top: 10,
                 child: Image.asset(
                   'assets/images/barcode.png',
-                  fit: BoxFit.fitHeight,
+                  fit: BoxFit.fitWidth,
                 ),
               ),
               Positioned(
@@ -523,6 +483,7 @@ class _WikiDetailState extends State<WikiDetail> {
                 left: 24,
                 child: Container(
                   decoration: BoxDecoration(
+                    color: Colors.black, // background color
                     border: Border.all(width: 6),
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -533,73 +494,79 @@ class _WikiDetailState extends State<WikiDetail> {
                 ),
               ),
               SizedBox(
-                height: 140,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Stack(
-                        alignment: AlignmentDirectional.topCenter,
-                        children: [
-                          Text(
-                            widget.title,
-                            style: TextStyle(
-                              fontSize: 23,
-                              letterSpacing: 4,
-                              fontFamily: 'XinYi',
-                              foreground: Paint()
-                                ..style = PaintingStyle.stroke
-                                ..strokeWidth = 3
-                                ..color = Colors.black,
-                            ),
-                          ),
-                          Text(widget.title,
-                              style: const TextStyle(
-                                color: Colors.yellow,
+                height: MediaQuery.of(context).size.width/3.2,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 12,bottom: 4),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Stack(
+                          alignment: AlignmentDirectional.topCenter,
+                          children: [
+                            Text(
+                              widget.title,
+                              style: TextStyle(
                                 fontSize: 23,
                                 letterSpacing: 4,
                                 fontFamily: 'XinYi',
-                              )),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 28,
-                        child: Text(
-                          'Cyclommatus metallifer finae',
-                          overflow: TextOverflow.fade,
-                          softWrap: false,
-                          style: TextStyle(
-                            //color: Theme.of(context).colorScheme.secondary,
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w300,
-                            fontStyle: FontStyle.italic,
+                                foreground: Paint()
+                                  ..style = PaintingStyle.stroke
+                                  ..strokeWidth = 3
+                                  ..color = Colors.black,
+                              ),
+                            ),
+                            Text(widget.title,
+                                style: const TextStyle(
+                                  color: Colors.yellow,
+                                  fontSize: 23,
+                                  letterSpacing: 4,
+                                  fontFamily: 'XinYi',
+                                )),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 28,
+                          child: Text(
+                            'Cyclommatus metallifer finae',
+                            overflow: TextOverflow.fade,
+                            softWrap: false,
+                            style: TextStyle(
+                              //color: Theme.of(context).colorScheme.secondary,
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w300,
+                              fontStyle: FontStyle.italic,
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          //color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
-                          color: darkTeal,
-                          borderRadius: BorderRadius.circular(6.0),
-                        ),
-                        padding: const EdgeInsets.all(6.0),
-                        child: const Text(
-                          'メタリヘルホソアカクワガタ',
-                          style: TextStyle(
-                            //color: Theme.of(context).colorScheme.tertiary.withOpacity(0.8),
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: 'MPLUS',
-                            //fontWeight: FontWeight.bold,
-                            letterSpacing: 2,
+                        Container(
+                          alignment: Alignment.center,
+                          width: 220, //double.infinity,
+                          decoration: BoxDecoration(
+                            //color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
+                            color: darkTeal,
+                            border: Border.all(width: 2),
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(6),
+                                topRight: Radius.circular(6),
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(4.0),
+                          child: const Text(
+                            'メタリヘルホソアカクワガタ',
+                            style: TextStyle(
+                              //color: Theme.of(context).colorScheme.tertiary.withOpacity(0.8),
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontFamily: 'MPLUS',
+                              //fontWeight: FontWeight.bold,
+                              letterSpacing: 2,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -611,12 +578,12 @@ class _WikiDetailState extends State<WikiDetail> {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: Colors.grey,
-            blurRadius: 5.0, // soften the shadow
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 5, // soften the shadow
             //spreadRadius: 1.0, //extend the shadow
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           )
         ],
       ),
@@ -634,7 +601,7 @@ class HalfCircleClipper extends CustomClipper<Path> {
     path.lineTo(0, h*0.8); // bottom-left corner 2.point
 
     // Define the control points for the quadratic Bezier curve
-    final controlPoint = Offset(w / 2, h); // bottom-mid 3.point
+    final controlPoint = Offset(w / 2, h*0.98); // bottom-mid 3.point
     final endPoint = Offset(w, h*0.8); //bottom-right corner 4.point
 
     // Add the quadratic Bezier curve
@@ -668,7 +635,7 @@ enum Beetle {
     adultSize: '36~100mm',
     birth: '印尼‧珀倫島',
     name:'美他利佛細身赤鍬形蟲',
-    imagePath: 'assets/images/cyclommatus.png',
+    imagePath: 'assets/images/cmf.png',
   ),
   pgk(
     boxSize: '1200 cc',

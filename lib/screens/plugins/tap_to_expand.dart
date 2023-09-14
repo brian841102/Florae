@@ -95,8 +95,8 @@ class _TapToExpandState extends State<TapToExpand> {
           /// Used to set the default value of the boxShadow parameter.
           boxShadow: widget.boxShadow ??
               [
-                const BoxShadow(
-                  color: Colors.grey,
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
                   blurRadius: 2,
                   offset: Offset(0, 2),
                 ),
