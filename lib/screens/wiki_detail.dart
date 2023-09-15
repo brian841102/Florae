@@ -90,7 +90,7 @@ class _WikiDetailState extends State<WikiDetail> {
           children: [
             Card(
               child: SizedBox(
-                width: (MediaQuery.of(context).size.width-55) / 3,
+                width: (MediaQuery.of(context).size.width - 55) / 3,
                 height: 140,
                 child: Padding(
                   padding: const EdgeInsets.all(6.0),
@@ -145,7 +145,7 @@ class _WikiDetailState extends State<WikiDetail> {
             ),
             Card(
               child: SizedBox(
-                width:(MediaQuery.of(context).size.width-55) / 3,
+                width: (MediaQuery.of(context).size.width - 55) / 3,
                 height: 140,
                 child: Padding(
                   padding: const EdgeInsets.all(6.0),
@@ -200,7 +200,7 @@ class _WikiDetailState extends State<WikiDetail> {
             ),
             Card(
               child: SizedBox(
-                width: (MediaQuery.of(context).size.width-55) / 3,
+                width: (MediaQuery.of(context).size.width - 55) / 3,
                 height: 140,
                 child: Padding(
                   padding: const EdgeInsets.all(6.0),
@@ -258,14 +258,16 @@ class _WikiDetailState extends State<WikiDetail> {
     );
   }
 
-
   Widget _buildListView() {
     return SliverList(
-      delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
           bool isOdd = index % 2 == 1;
           return Container(
             decoration: BoxDecoration(
-              color: isOdd ? Colors.transparent : Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
+              color: isOdd
+                  ? Colors.transparent
+                  : Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
               borderRadius: BorderRadius.circular(10.0),
             ),
             margin: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -278,7 +280,7 @@ class _WikiDetailState extends State<WikiDetail> {
                       SizedBox(
                         width: 100,
                         child: Text(
-                          Beetle.cmf.getPropertyNameByIndex(index)+' :',
+                          Beetle.cmf.getPropertyNameByIndex(index) + ' :',
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                             fontSize: 14,
@@ -309,24 +311,24 @@ class _WikiDetailState extends State<WikiDetail> {
     );
   }
 
-
   Widget _buildCardView() {
     const loremIpsum =
         "我自己的CMF在不溫控的環境下，最大紀錄差不多就是7公分左右了，要8公分以上的話大概還是要靠溫控跟更好的食材吧。然後記得，飼育幼蟲的容器大小跟他羽化後的大小絕對有正相關，想養大蟲絕對不要混養跟用直徑小於10公分的盒子。比起產卵環境，幼蟲乾濕度就不是這麼挑，一般程度就好，以免太濕造成雜蟲孳生或木屑朽化。幼蟲食量不大，假設從分出公母的L3換木屑分裝飼養的話，不論公母蟲都可以一盒500cc就可以一瓶到底 (但是公蟲會較小隻)如果公蟲丟1000cc的方盒，甚至2200cc的大桶一罐到底，通常都可以有不錯的成績";
 
     return SliverList(
-      delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
           return TapToExpand(
             content: const Column(
               children: <Widget>[
-                  Text(
-                    loremIpsum,
-                    style: TextStyle(
-                      color: darkTeal,
-                      fontSize: 16,
-                      height:1.7,
-                    ),
+                Text(
+                  loremIpsum,
+                  style: TextStyle(
+                    color: darkTeal,
+                    fontSize: 16,
+                    height: 1.7,
                   ),
+                ),
               ],
             ),
             title: const Text(
@@ -342,7 +344,8 @@ class _WikiDetailState extends State<WikiDetail> {
             scrollable: false,
             borderRadius: 20,
             openedHeight: 300,
-            logo: SvgPicture.asset("assets/images/pediatrics_FILL0_wght400_GRAD0_opsz48.svg",
+            logo: SvgPicture.asset(
+              "assets/images/pediatrics_FILL0_wght400_GRAD0_opsz48.svg",
               height: 36,
               color: darkTeal,
             ),
@@ -365,13 +368,13 @@ class _WikiDetailState extends State<WikiDetail> {
       foregroundColor: backButtonColor, // back button color
       backgroundColor: Colors.transparent,
       floating: false,
-      expandedHeight: MediaQuery.of(context).size.width*1.2,//450
+      expandedHeight: MediaQuery.of(context).size.width * 1.2, //450
       stretch: true,
       flexibleSpace: Stack(
         fit: StackFit.passthrough,
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.width*1.1,
+            height: MediaQuery.of(context).size.width * 1.1,
             child: ClipPath(
               clipper: HalfCircleClipper(),
               child: ColorFiltered(
@@ -402,23 +405,6 @@ class _WikiDetailState extends State<WikiDetail> {
                     ),
                   ),
                 ],
-              ),
-            ),
-          ),
-          FlexibleSpaceBar(
-            expandedTitleScale: 1,
-            stretchModes: [],
-            titlePadding: EdgeInsets.symmetric(horizontal: 12),
-            title: Container(
-              alignment: Alignment.bottomCenter,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    //beetleCard(),
-                  ],
-                ),
               ),
             ),
           ),
@@ -453,7 +439,7 @@ class _WikiDetailState extends State<WikiDetail> {
     );
   }
 
-  Widget beetleCard (){
+  Widget beetleCard() {
     return Container(
       child: Card(
         child: Padding(
@@ -494,10 +480,10 @@ class _WikiDetailState extends State<WikiDetail> {
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.width/3.2,
+                height: MediaQuery.of(context).size.width / 3.2,
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 12,bottom: 4),
+                    padding: const EdgeInsets.only(top: 12, bottom: 4),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -548,8 +534,8 @@ class _WikiDetailState extends State<WikiDetail> {
                             color: darkTeal,
                             border: Border.all(width: 2),
                             borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(6),
-                                topRight: Radius.circular(6),
+                              topLeft: Radius.circular(6),
+                              topRight: Radius.circular(6),
                             ),
                           ),
                           padding: const EdgeInsets.all(4.0),
@@ -598,11 +584,11 @@ class HalfCircleClipper extends CustomClipper<Path> {
     double h = size.height;
     final path = Path();
     // (0, 0) top-left corner 1.point
-    path.lineTo(0, h*0.8); // bottom-left corner 2.point
+    path.lineTo(0, h * 0.8); // bottom-left corner 2.point
 
     // Define the control points for the quadratic Bezier curve
-    final controlPoint = Offset(w / 2, h*0.98); // bottom-mid 3.point
-    final endPoint = Offset(w, h*0.8); //bottom-right corner 4.point
+    final controlPoint = Offset(w / 2, h * 0.98); // bottom-mid 3.point
+    final endPoint = Offset(w, h * 0.8); //bottom-right corner 4.point
 
     // Add the quadratic Bezier curve
     path.quadraticBezierTo(
@@ -624,7 +610,6 @@ class HalfCircleClipper extends CustomClipper<Path> {
   }
 }
 
-
 enum Beetle {
   cmf(
     boxSize: '1200 cc',
@@ -634,7 +619,7 @@ enum Beetle {
     adultTime: '6~10個月',
     adultSize: '36~100mm',
     birth: '印尼‧珀倫島',
-    name:'美他利佛細身赤鍬形蟲',
+    name: '美他利佛細身赤鍬形蟲',
     imagePath: 'assets/images/cmf.png',
   ),
   pgk(
@@ -645,7 +630,7 @@ enum Beetle {
     adultTime: '6~10個月',
     adultSize: '36~100mm',
     birth: '印尼‧龍目島',
-    name:'長頸鹿鋸鍬形蟲',
+    name: '長頸鹿鋸鍬形蟲',
     imagePath: 'assets/images/prosopocoilus.png',
   );
 
@@ -715,6 +700,7 @@ enum Beetle {
         throw ArgumentError("Invalid enum value");
     }
   }
+
   String getPropertyNameByIndex(int index) {
     switch (index) {
       case 0:
@@ -744,6 +730,4 @@ enum Beetle {
     }
     throw ArgumentError("No Beetle found with the provided name");
   }
-
 }
-
