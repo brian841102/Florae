@@ -3,15 +3,19 @@ import 'dart:io';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:florae/screens/error.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'data/box.dart';
 import 'data/plant.dart';
+import 'data/beetle_wiki.dart';
 import 'screens/home_page.dart';
 import 'package:florae/notifications.dart' as notify;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+const String beetlesBoxName = "beetles";
 late ObjectBox objectbox;
+late Box beetle_box;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +26,11 @@ Future<void> main() async {
   final prefs = await SharedPreferences.getInstance();
   String? locale = Platform.localeName.substring(0, 2);
   await prefs.setString('locale', locale);
-
+  // initialize hive
+  await Hive.initFlutter();
+  Hive.registerAdapter(BeetleWikiAdapter());
+  // beetle_box = await Hive.openBox(beetlesBoxName);
+  // beetle_box.put('name', 'David');
   runApp(const FloraeApp());
 
   BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
