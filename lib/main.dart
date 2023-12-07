@@ -13,9 +13,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const String beetlesBoxName = "beetles";
+const String beetlesBoxName = "beetlesBoxWiki";
 late ObjectBox objectbox;
-late Box beetle_box;
+late Box beetlesBoxWiki;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,8 +29,11 @@ Future<void> main() async {
   // initialize hive
   await Hive.initFlutter();
   Hive.registerAdapter(BeetleWikiAdapter());
-  // beetle_box = await Hive.openBox(beetlesBoxName);
-  // beetle_box.put('name', 'David');
+  Hive.registerAdapter(GenusAdapter());
+  Hive.registerAdapter(DifficultyAdapter());
+  Hive.registerAdapter(PopularityAdapter());
+  Hive.registerAdapter(SpanAdapter());
+  beetlesBoxWiki = await Hive.openBox(beetlesBoxName);
   runApp(const FloraeApp());
 
   BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
