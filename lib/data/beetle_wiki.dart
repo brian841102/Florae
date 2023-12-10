@@ -1,7 +1,9 @@
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 part 'beetle_wiki.g.dart';
 
 @HiveType(typeId: 0)
+@JsonSerializable()
 class BeetleWiki {
   BeetleWiki({required this.name,
               required this.nameSci,
@@ -17,40 +19,68 @@ class BeetleWiki {
               required this.adultTime,
               required this.adultSize,
               required this.birth,
-              required this.imagePath,});
+              required this.imagePath,
+              required this.isFavorite});
   //name
   @HiveField(0)
+  @JsonKey(name: 'name')
   String name;
   @HiveField(1)
+  @JsonKey(name: 'nameSci')
   String nameSci;
   @HiveField(2)
+  @JsonKey(name: 'nameJP')
   String nameJP;
   //custom type
   @HiveField(3)
+  @JsonKey(name: 'genus')
   Genus genus;
   @HiveField(4)
-  Difficulty difficulty;
+  @JsonKey(name: 'difficulty')
+  Difficulty? difficulty;
   @HiveField(5)
-  Popularity popularity;
+  @JsonKey(name: 'popularity')
+  Popularity? popularity;
   @HiveField(6)
-  Span span;
+  @JsonKey(name: 'span')
+  Span? span;
   //native type
   @HiveField(7)
-  int boxSize;
+  @JsonKey(name: 'boxSize')
+  int? boxSize;
   @HiveField(8)
-  String larvaTemp;
+  @JsonKey(name: 'larvaTemp')
+  String? larvaTemp;
   @HiveField(9)
-  String larvaTime;
+  @JsonKey(name: 'larvaTime')
+  String? larvaTime;
   @HiveField(10)
-  String hiberTime;
+  @JsonKey(name: 'hiberTime')
+  String? hiberTime;
   @HiveField(11)
-  String adultTime;
+  @JsonKey(name: 'adultTime')
+  String? adultTime;
   @HiveField(12)
-  String adultSize;
+  @JsonKey(name: 'adultSize')
+  String? adultSize;
   @HiveField(13)
-  String birth;
+  @JsonKey(name: 'birth')
+  String? birth;
   @HiveField(14)
+  @JsonKey(name: 'imagePath')
   String imagePath;
+  @HiveField(15)
+  @JsonKey(name: 'isFavorite')
+  bool isFavorite;
+  
+  /// A necessary factory constructor for creating a new instance
+  /// from a map. Pass the map to the generated `_$BeetleWikiFromJson()` constructor.
+  factory BeetleWiki.fromJson(Map<String, dynamic> json) => _$BeetleWikiFromJson(json);
+
+  /// `toJson` is the convention for a class to declare support for serialization
+  /// to JSON. The implementation simply calls the private, generated
+  /// helper method `_$BeetleWikiToJson`.
+  Map<String, dynamic> toJson() => _$BeetleWikiToJson(this);
 }
 
 @HiveType(typeId: 1)
