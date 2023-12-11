@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 import '../data/beetle_wiki.dart';
 import '../main.dart';
 
-class HiveOperationsService {
+class HiveOperationService { //CRUD
   final _favBox = Hive.box<BeetleWiki>(beetlesBoxWikiName);
 
   Future<void> addToFavBox(BeetleWiki data) async {

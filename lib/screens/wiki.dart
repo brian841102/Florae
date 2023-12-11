@@ -3,6 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/svg.dart';
 import 'wiki_detail.dart';
+import '../services/hive_operations.dart';
+import '../locator.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
@@ -440,6 +442,8 @@ class _WikiChildState extends State<WikiChild> {
   late double titleOpacity;
   late double radius;
   double _offset = 0.0;
+
+  static final _hiveService = locator<HiveOperationService>(); //TODO
 
   @override
   void initState() {
