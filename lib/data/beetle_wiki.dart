@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'beetle_wiki.g.dart';
 
 @HiveType(typeId: 0)
-@JsonSerializable()
+@JsonSerializable()//fieldRename: FieldRename.snake
 class BeetleWiki {
   BeetleWiki({required this.name,
               required this.nameSci,

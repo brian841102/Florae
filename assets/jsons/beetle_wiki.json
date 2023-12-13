@@ -1,0 +1,36 @@
+[
+  {
+    "name": "美他力佛細身赤鍬形蟲",
+    "nameSci": "Cyclommatus metallifer finae",
+    "nameJP": "メタリヘルホソアカクワガタ",
+    "genus": "Cyclommatus",
+    "difficulty": "Easy",
+    "popularity": "Five",
+    "span": "Short",
+    "boxSize": "1200 cc",
+    "larvaTemp": "22°C",
+    "larvaTime": "6~10個月",
+    "hiberTime": "2~3個月",
+    "adultTime": "6~10個月",
+    "adultSize": "36~100mm",
+    "birth": "印尼‧珀倫島",
+    "imagePath": "assets/images/cmf.png"
+  },
+  {
+    "name": "長頸鹿鋸鍬形蟲",
+    "nameSci": "Cyclommatus metallifer finae",
+    "nameJP": "メタリヘルホソアカクワガタ",
+    "genus": "Prosopocoilus",
+    "difficulty": "Easy",
+    "popularity": "Five",
+    "span": "Medium",
+    "boxSize": "2000 cc",
+    "larvaTemp": "23°C",
+    "larvaTime": "10~12個月",
+    "hiberTime": "2~3個月",
+    "adultTime": "10~12個月",
+    "adultSize": "55~121mm",
+    "birth": "印尼‧婆羅洲",
+    "imagePath": "assets/images/prosopocoilus.png"
+  }
+]

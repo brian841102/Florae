@@ -1,10 +1,11 @@
+import 'package:florae/data/beetle_wiki.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/svg.dart';
 import 'wiki_detail.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../services/hive_operations.dart';
-import '../locator.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
@@ -429,6 +430,31 @@ class Location {
   ),
 ];
 
+// class OptionsModel {
+//   OptionsModel._();
+
+//   static List<BeetleWiki> options() {
+//     var _favModelList = <BeetleWiki>[];
+
+//     final _optionRoutes = OptionAndRoutes.optionRoutes;
+//     final _linkRoutes = OptionAndRoutes.linksRoutes;
+//     final _favModel = BeetleWiki.fromJson(jsonDecode(json));
+
+//     for (var _optionRoute in _optionRoutes.entries) {
+//       //final _favModel = BeetleWiki();
+
+//       _favModel.articleID = _optionRoute.value;
+//       _favModel.articleName = _optionRoute.key;
+//       _favModel.articleRoute = _optionRoute.value;
+//       _favModel.articleLinks = _linkRoutes[_optionRoute.key];
+//       _favModel.isFavorite = false;
+
+//       _favModelList.add(_favModel);
+//     }
+//     return _favModelList;
+//   }
+// }
+
 class WikiChild extends StatefulWidget {
   const WikiChild({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -443,7 +469,7 @@ class _WikiChildState extends State<WikiChild> {
   late double radius;
   double _offset = 0.0;
 
-  static final _hiveService = locator<HiveOperationService>(); //TODO
+  static final _hiveService = locator<HiveOperationService>();
 
   @override
   void initState() {
@@ -490,6 +516,7 @@ class _WikiChildState extends State<WikiChild> {
   Widget build(BuildContext context) {
     Location location = locations.firstWhere((loc) => loc.name == widget.title,
         orElse: () => Location(name:'',place:'',imagePath:'', realName:'',birth:''));
+    final _nav = Navigator.of(context);
     return Scaffold(
       body: Container(
         color: lightTeal, // Set the background color here
@@ -502,11 +529,140 @@ class _WikiChildState extends State<WikiChild> {
             _buildAppBar(location.imagePath,location.realName,location.birth),
             _buildCardBorder(),
             _buildGridView(),
+            // ValueListenableBuilder(
+            //   builder: (_, Box<BeetleWiki> model, child) => _buildGridView2(
+            //     children: _displayOptions(_nav),
+            //   ),
+            //   valueListenable: _hiveService.favBox.listenable(),
+            // ),
           ],
         ),
       ),
     );
   }
+  // List<Widget> _displayOptions(NavigatorState nav) {
+  //   var _list = <Widget>[];
+  //   var _count = OptionsModel.options().length;
+  //   var _favBox = _OptionHomeState._hiveService.favBox;
+
+  //   if (_favBox.isNotEmpty) {
+  //     var _favCount = _favBox.length;
+
+  //     for (var i = 0; i < _count; i++) {
+  //       final _model = OptionsModel.options()[i];
+  //       var _insertion = false;
+
+  //       // FOR FAV CHECK
+  //       for (var j = 0; j < _favCount; j++) {
+  //         if (_model.articleID == _favBox.values.toList()[j].articleID) {
+  //           _list.add(_addToList(nav, true, _model));
+  //           _insertion = true;
+  //           break;
+  //         }
+  //       }
+
+  //       if (!_insertion) {
+  //         _list.add(_addToList(nav, false, _model));
+  //       }
+  //     }
+  //   } else {
+  //     for (var i = 0; i < _count; i++) {
+  //       final _model = OptionsModel.options()[i];
+  //       _list.add(_addToList(nav, false, _model));
+  //     }
+  //   }
+
+  //   return _list;
+  // }
+  
+  // Widget _addToList(NavigatorState nav, bool value, BeetleWiki _model) =>
+  //     ParallaxButton(
+  //       isFavorite: value,
+  //       medium: _model.articleLinks.first,
+  //       model: _model,
+  //       text: _model.articleName,
+  //       website: _model.articleLinks[1],
+  //       youtubeLink: _model.articleLinks.last,
+  //     ).clickable(() => nav.pushNamed(_model.articleRoute));
+
+  // Widget _buildGridView2() {
+  //   const double boxHeight = 6.0;
+  //   const double title1Height = 15.0;
+  //   const double title2Height = 12.0;
+  //   const double horizontalEdge = 16.0;
+  //   const double horizontalEdgeMid = 12.0;
+  //   double containerHeight = (MediaQuery.of(context).size.width-horizontalEdge*2-horizontalEdgeMid)/2;
+  //   double totalBoxHeight = boxHeight + title1Height + title2Height + containerHeight;
+
+  //   return SliverPadding(
+  //     padding: const EdgeInsets.only(top: 0.0),
+  //     sliver: SliverPadding(
+  //       padding: const EdgeInsets.symmetric(horizontal: horizontalEdge),
+  //       sliver: SliverGrid(
+  //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+  //           crossAxisCount: 2,
+  //           crossAxisSpacing: horizontalEdgeMid,
+  //           mainAxisSpacing: 0,
+  //           childAspectRatio: (((MediaQuery.of(context).size.width) / 2) / totalBoxHeight) / 1.25,
+  //         ),
+  //         delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+  //           return InkWell(
+  //             onTap: () {
+  //               _openWikiDetail(context);
+  //             },
+  //             child: Column(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Container(
+  //                   height: containerHeight, // Adjust the height of the box
+  //                   decoration: const BoxDecoration(
+  //                     borderRadius: BorderRadius.all(Radius.circular(16)),
+  //                     image: DecorationImage(
+  //                       image:AssetImage('assets/images/cmf.png'),
+  //                       fit: BoxFit.cover,
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 const SizedBox(height: boxHeight), // Space between the grid box and titles
+  //                 const Padding(
+  //                   padding: EdgeInsets.only(left: 8, right: 10), // Add indentation to titles
+  //                   child: Text(
+  //                     '美他利佛細身赤鍬形蟲',
+  //                     overflow: TextOverflow.fade,
+  //                     softWrap: false,
+  //                     style: TextStyle(
+  //                       color: darkTeal,
+  //                       fontSize: title1Height,
+  //                       fontWeight: FontWeight.w600,
+  //                       fontFamily: 'MPLUS',
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 const Padding(
+  //                   padding: EdgeInsets.only(left: 9, right: 10), // Add indentation to titles
+  //                   child: Text(
+  //                     'Cyclommatus metallifer f.',
+  //                     overflow: TextOverflow.fade,
+  //                     softWrap: false,
+  //                     style: TextStyle(
+  //                       color: Color.fromARGB(255, 110, 157, 134),
+  //                       fontSize: title2Height,
+  //                       fontWeight: FontWeight.w300,
+  //                       //fontFamily: 'MPLUS',
+  //                       fontStyle: FontStyle.italic,
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           );
+  //         },
+  //           childCount: 20,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildGridView() {
     const double boxHeight = 6.0;
