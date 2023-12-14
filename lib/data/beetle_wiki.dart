@@ -23,17 +23,17 @@ class BeetleWiki {
               required this.isFavorite});
   //name
   @HiveField(0)
-  @JsonKey(name: 'name')
+  @JsonKey(name: 'name', defaultValue: 'Empty')
   String name;
   @HiveField(1)
-  @JsonKey(name: 'nameSci')
+  @JsonKey(name: 'nameSci', defaultValue: 'Empty')
   String nameSci;
   @HiveField(2)
-  @JsonKey(name: 'nameJP')
+  @JsonKey(name: 'nameJP', defaultValue: 'Empty')
   String nameJP;
   //custom type
   @HiveField(3)
-  @JsonKey(name: 'genus')
+  @JsonKey(name: 'genus', defaultValue: Genus.Cyclommatus)
   Genus genus;
   @HiveField(4)
   @JsonKey(name: 'difficulty')
@@ -47,7 +47,7 @@ class BeetleWiki {
   //native type
   @HiveField(7)
   @JsonKey(name: 'boxSize')
-  int? boxSize;
+  String? boxSize;
   @HiveField(8)
   @JsonKey(name: 'larvaTemp')
   String? larvaTemp;
@@ -67,10 +67,10 @@ class BeetleWiki {
   @JsonKey(name: 'birth')
   String? birth;
   @HiveField(14)
-  @JsonKey(name: 'imagePath')
+  @JsonKey(name: 'imagePath', defaultValue: 'assets/images/cmf.png')
   String imagePath;
   @HiveField(15)
-  @JsonKey(name: 'isFavorite')
+  @JsonKey(name: 'isFavorite', defaultValue: false)
   bool isFavorite;
   
   /// A necessary factory constructor for creating a new instance
