@@ -1,4 +1,5 @@
-import 'package:florae/data/beetle_wiki.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_svg/svg.dart';
 import 'wiki_detail.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../services/hive_operations.dart';
+import '../locator.dart';
+import '../data/beetle_wiki.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
@@ -468,6 +471,7 @@ class _WikiChildState extends State<WikiChild> {
   late double titleOpacity;
   late double radius;
   double _offset = 0.0;
+  late var beetleWikiData;
 
   static final _hiveService = locator<HiveOperationService>();
 
@@ -475,6 +479,7 @@ class _WikiChildState extends State<WikiChild> {
   void initState() {
     super.initState();
     _scrollController = ScrollController()..addListener(_setOffset);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {await loadJsonDataToHive();});
   }
 
   @override
@@ -510,6 +515,26 @@ class _WikiChildState extends State<WikiChild> {
       context,
       MaterialPageRoute(builder: (context) => const WikiDetail(title: '美他利佛細身赤鍬形蟲')),
     );
+  }
+
+  Future<void> loadJsonDataToHive() async {
+    final String data = await DefaultAssetBundle.of(context).loadString("assets/jsons/beetle_wiki.json");
+    final List parsedList  = json.decode(data);
+    List<BeetleWiki> beetleWikiList = parsedList.map((val) => BeetleWiki.fromJson(val)).toList();
+    // var _favModelList = <BeetleWiki>[];
+    // for (int i =0; i< beetleWikiList.length(); in beetleWikiData[]) {
+    //   final _favModel = BeetleWiki();
+    //
+    //   _favModel.articleID = beetleWiki.value;
+    //   _favModel.articleName = _optionRoute.key;
+    //   _favModel.articleRoute = _optionRoute.value;
+    //   _favModel.articleLinks = _linkRoutes[_optionRoute.key];
+    //   _favModel.isFavorite = false;
+    //
+    //   _favModelList.add(_favModel);
+    // }
+    //print(dataMap);
+    print(beetleWikiList[1].span);
   }
 
   @override

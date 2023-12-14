@@ -33,7 +33,7 @@ class BeetleWiki {
   String nameJP;
   //custom type
   @HiveField(3)
-  @JsonKey(name: 'genus', defaultValue: 'Empty')
+  @JsonKey(name: 'genus', defaultValue: Genus.Cyclommatus)
   Genus genus;
   @HiveField(4)
   @JsonKey(name: 'difficulty')
@@ -47,7 +47,7 @@ class BeetleWiki {
   //native type
   @HiveField(7)
   @JsonKey(name: 'boxSize')
-  int? boxSize;
+  String? boxSize;
   @HiveField(8)
   @JsonKey(name: 'larvaTemp')
   String? larvaTemp;
