@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'plugins/tap_to_expand.dart';
+import 'package:hive/hive.dart';
+import '../main.dart';
 import 'wiki.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
 
 class WikiDetail extends StatefulWidget {
-  const WikiDetail({Key? key, required this.title}) : super(key: key);
+  const WikiDetail({Key? key, required this.title, required this.index}) : super(key: key);
   final String title;
+  final int index;
 
   @override
   _WikiDetailState createState() => _WikiDetailState();
@@ -24,6 +27,7 @@ class _WikiDetailState extends State<WikiDetail> {
   void initState() {
     super.initState();
     _scrollController = ScrollController()..addListener(_setOffset);
+    beetleWikiBox = Hive.box(beetleWikiBoxName);
   }
 
   @override
@@ -54,28 +58,106 @@ class _WikiDetailState extends State<WikiDetail> {
     }
   }
 
+  // @override
+  // Widget build(BuildContext context) {
+  //   String imagePath = Beetle.getImagePathByName(widget.title);
+  //   return Scaffold(
+  //     body: Container(
+  //       color: lightTeal, // Set the background color here
+  //       child: CustomScrollView(
+  //         shrinkWrap: true,
+  //         //cacheExtent: 500,
+  //         controller: _scrollController,
+  //         physics: const ClampingScrollPhysics(), //const BouncingScrollPhysics(),
+  //         slivers: [
+  //           _buildAppBar(imagePath),
+  //           SliverToBoxAdapter(child: Container(height: 12)),
+  //           _buildCardRow(),
+  //           SliverToBoxAdapter(child: Container(height: 24)),
+  //           _buildListView(),
+  //           SliverToBoxAdapter(child: Container(height: 20)),
+  //           _buildCardView(),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
-    Location location = locations.firstWhere((loc) => loc.name == widget.title,
-        orElse: () => Location(name: '', place: '', imagePath: '', realName: '', birth: ''));
     String imagePath = Beetle.getImagePathByName(widget.title);
     return Scaffold(
-      body: Container(
-        color: lightTeal, // Set the background color here
-        child: CustomScrollView(
-          shrinkWrap: true,
-          //cacheExtent: 500,
-          controller: _scrollController,
-          physics: const ClampingScrollPhysics(), //const BouncingScrollPhysics(),
-          slivers: [
-            _buildAppBar(imagePath),
-            SliverToBoxAdapter(child: Container(height: 12)),
-            _buildCardRow(),
-            SliverToBoxAdapter(child: Container(height: 24)),
-            _buildListView(),
-            SliverToBoxAdapter(child: Container(height: 20)),
-            _buildCardView(),
-          ],
+      body: DefaultTabController(
+        length: 2,
+        initialIndex: 0,
+        child: Container(
+          color: lightTeal, // Set the background color here
+          child: CustomScrollView(
+            shrinkWrap: true,
+            //cacheExtent: 500,
+            controller: _scrollController,
+            physics: const ClampingScrollPhysics(), //const BouncingScrollPhysics(),
+            slivers: [
+              _buildAppBar(imagePath),
+              SliverToBoxAdapter(child: Container(height: 12)),
+              _buildTabBar(),
+              SliverToBoxAdapter(child: Container(height: 20)),
+              _buildCardRow(),
+              SliverToBoxAdapter(child: Container(height: 16)),
+              _buildListView(),
+              SliverToBoxAdapter(child: Container(height: 20)),
+              _buildCardView(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabL() {
+    return ListView(
+      shrinkWrap: true,
+      children: [
+        _buildCardRow(),
+        //_buildCardView1(),
+        //_buildCardView(),
+      ],
+    );
+  }
+
+  Widget _buildTabBar() {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 38.0),
+        child: Container(
+          height: 48,
+          decoration: BoxDecoration(
+            color: darkTeal.withOpacity(0.2),
+            border: Border.fromBorderSide(BorderSide(color: Colors.black12)),
+            borderRadius: BorderRadius.circular(14),
+            boxShadow: [
+              BoxShadow(color: Colors.black.withOpacity(0.6), blurRadius: 1, spreadRadius: 0),
+              BoxShadow(color: lightTeal, blurRadius: 12, spreadRadius: 5),
+            ],
+          ),
+          child: TabBar(
+            padding: const EdgeInsets.all(0),
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicatorWeight: 0,
+            indicatorColor: Colors.transparent,
+            dividerColor: Colors.transparent,
+            labelColor: lightTeal, //darkTeal,
+            unselectedLabelColor: Theme.of(context).colorScheme.primary,
+            //unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
+            indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                color: darkTeal.withOpacity(0.9), //Colors.white,
+            ),
+            tabs: const [
+              Tab(child: Text('個人資料', style: TextStyle(fontFamily: 'MPLUS'))),
+              Tab(child: Text('飼育計畫BETA', style: TextStyle(fontFamily: 'MPLUS'))),
+            ],
+          ),
         ),
       ),
     );
@@ -311,6 +393,81 @@ class _WikiDetailState extends State<WikiDetail> {
     );
   }
 
+  Widget _buildCardView1() {
+    const loremIpsum =
+        "我自己的CMF在不溫控的環境下，最大紀錄差不多就是7公分左右了，要8公分以上的話大概還是要靠溫控跟更好的食材吧。然後記得，飼育幼蟲的容器大小跟他羽化後的大小絕對有正相關，想養大蟲絕對不要混養跟用直徑小於10公分的盒子。比起產卵環境，幼蟲乾濕度就不是這麼挑，一般程度就好，以免太濕造成雜蟲孳生或木屑朽化。幼蟲食量不大，假設從分出公母的L3換木屑分裝飼養的話，不論公母蟲都可以一盒500cc就可以一瓶到底 (但是公蟲會較小隻)如果公蟲丟1000cc的方盒，甚至2200cc的大桶一罐到底，通常都可以有不錯的成績";
+
+    return ListView(
+      shrinkWrap: true,
+      children: [
+        TapToExpand(
+          content: const Column(
+            children: <Widget>[
+              Text(
+                loremIpsum,
+                style: TextStyle(
+                  color: darkTeal,
+                  fontSize: 16,
+                  height: 1.7,
+                ),
+              ),
+            ],
+          ),
+          title: const Text(
+            '幼蟲照護',
+            style: TextStyle(
+              color: darkTeal,
+              fontSize: 20,
+              fontFamily: 'MPLUS',
+            ),
+          ),
+          onTapPadding: 14,
+          closedHeight: 80,
+          scrollable: false,
+          borderRadius: 20,
+          openedHeight: 300,
+          logo: SvgPicture.asset(
+            "assets/images/pediatrics_FILL0_wght400_GRAD0_opsz48.svg",
+            height: 36,
+            color: darkTeal,
+          ),
+        ),
+        TapToExpand(
+          content: const Column(
+            children: <Widget>[
+              Text(
+                loremIpsum,
+                style: TextStyle(
+                  color: darkTeal,
+                  fontSize: 16,
+                  height: 1.7,
+                ),
+              ),
+            ],
+          ),
+          title: const Text(
+            '幼蟲照護',
+            style: TextStyle(
+              color: darkTeal,
+              fontSize: 20,
+              fontFamily: 'MPLUS',
+            ),
+          ),
+          onTapPadding: 14,
+          closedHeight: 80,
+          scrollable: false,
+          borderRadius: 20,
+          openedHeight: 300,
+          logo: SvgPicture.asset(
+            "assets/images/pediatrics_FILL0_wght400_GRAD0_opsz48.svg",
+            height: 36,
+            color: darkTeal,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildCardView() {
     const loremIpsum =
         "我自己的CMF在不溫控的環境下，最大紀錄差不多就是7公分左右了，要8公分以上的話大概還是要靠溫控跟更好的食材吧。然後記得，飼育幼蟲的容器大小跟他羽化後的大小絕對有正相關，想養大蟲絕對不要混養跟用直徑小於10公分的盒子。比起產卵環境，幼蟲乾濕度就不是這麼挑，一般程度就好，以免太濕造成雜蟲孳生或木屑朽化。幼蟲食量不大，假設從分出公母的L3換木屑分裝飼養的話，不論公母蟲都可以一盒500cc就可以一瓶到底 (但是公蟲會較小隻)如果公蟲丟1000cc的方盒，甚至2200cc的大桶一罐到底，通常都可以有不錯的成績";
@@ -407,6 +564,10 @@ class _WikiDetailState extends State<WikiDetail> {
                 ],
               ),
             ),
+          ),
+          const FlexibleSpaceBar(
+            expandedTitleScale: 1,
+            stretchModes: [],
           ),
           Positioned(
             top: 0,
