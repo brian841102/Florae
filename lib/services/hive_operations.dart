@@ -3,7 +3,7 @@ import '../data/beetle_wiki.dart';
 import '../main.dart';
 
 class HiveOperationService { //CRUD
-  final _favBox = Hive.box<BeetleWiki>(beetlesBoxWikiName);
+  final _favBox = Hive.box<BeetleWiki>(beetleWikiBoxName);
 
   Future<void> addToFavBox(BeetleWiki data) async {
     return _favBox.put(data.name, data);

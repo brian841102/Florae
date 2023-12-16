@@ -1,8 +1,9 @@
 import 'dart:io';
-
+import 'dart:convert';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:florae/screens/error.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'data/box.dart';
 import 'data/plant.dart';
@@ -13,9 +14,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const String beetlesBoxWikiName = "beetlesBoxWiki";
+const String beetleWikiBoxName = "beetleWikiBox";
 late ObjectBox objectbox;
-late Box beetlesBoxWiki;
+late Box beetleWikiBox;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,10 +34,21 @@ Future<void> main() async {
   Hive.registerAdapter(DifficultyAdapter());
   Hive.registerAdapter(PopularityAdapter());
   Hive.registerAdapter(SpanAdapter());
-  beetlesBoxWiki = await Hive.openBox(beetlesBoxWikiName);
+  beetleWikiBox = await Hive.openBox(beetleWikiBoxName);
+  await loadJsonDataToHive();
   runApp(const FloraeApp());
 
   BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
+}
+
+Future<void> loadJsonDataToHive() async {
+  final String data = await rootBundle.loadString("assets/jsons/beetle_wiki.json");
+  List jsonList = json.decode(data);
+  final List<BeetleWiki> beetleWikiList = jsonList.map((val) => BeetleWiki.fromJson(val)).toList();
+  await beetleWikiBox.clear();
+  for (var beetleWiki in beetleWikiList) {
+    beetleWikiBox.add(beetleWiki);
+  }
 }
 
 /// This "Headless Task" is run when app is terminated.

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/svg.dart';
 import 'wiki_detail.dart';
@@ -9,6 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../services/hive_operations.dart';
 import '../locator.dart';
 import '../data/beetle_wiki.dart';
+import '../main.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
@@ -44,7 +46,7 @@ class ExampleParallax extends StatelessWidget {
   }
 }
 
-class LocationListItem extends StatefulWidget  {
+class LocationListItem extends StatefulWidget {
   LocationListItem({
     super.key,
     required this.imagePath,
@@ -70,7 +72,8 @@ class _LocationListItemState extends State<LocationListItem> {
 
   void _openWikiChild(BuildContext context) {
     Future.delayed(
-      const Duration(milliseconds: 400), () {
+      const Duration(milliseconds: 400),
+      () {
         Navigator.of(context).push(_createRoute());
       },
     );
@@ -381,7 +384,7 @@ class Location {
   bool isFavorite;
 }
 
- var locations = [
+var locations = [
   Location(
     name: 'Cyclommatus',
     place: '細身屬',
@@ -471,7 +474,7 @@ class _WikiChildState extends State<WikiChild> {
   late double titleOpacity;
   late double radius;
   double _offset = 0.0;
-  late var beetleWikiData;
+  late Box beetleWikiBox;
 
   static final _hiveService = locator<HiveOperationService>();
 
@@ -479,7 +482,8 @@ class _WikiChildState extends State<WikiChild> {
   void initState() {
     super.initState();
     _scrollController = ScrollController()..addListener(_setOffset);
-    WidgetsBinding.instance.addPostFrameCallback((_) async {await loadJsonDataToHive();});
+    beetleWikiBox = Hive.box(beetleWikiBoxName);
+    //WidgetsBinding.instance.addPostFrameCallback((_) async {await loadJsonDataToHive();});
   }
 
   @override
@@ -510,31 +514,24 @@ class _WikiChildState extends State<WikiChild> {
     }
   }
 
-  void _openWikiDetail(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const WikiDetail(title: '美他利佛細身赤鍬形蟲')),
-    );
+  String _shortenName(String input) {
+    List<String> words = input.split(RegExp(r'\s+'));
+    if (words.length > 2) {
+      String firstWord = words[0];
+      String secondWord = words[1];
+      String thirdWordInit = words[2][0];
+      String result = firstWord + ' ' + secondWord + ' ' + thirdWordInit + '.';
+      return result;
+    } else {
+      return input;
+    }
   }
 
-  Future<void> loadJsonDataToHive() async {
-    final String data = await DefaultAssetBundle.of(context).loadString("assets/jsons/beetle_wiki.json");
-    final List parsedList  = json.decode(data);
-    List<BeetleWiki> beetleWikiList = parsedList.map((val) => BeetleWiki.fromJson(val)).toList();
-    // var _favModelList = <BeetleWiki>[];
-    // for (int i =0; i< beetleWikiList.length(); in beetleWikiData[]) {
-    //   final _favModel = BeetleWiki();
-    //
-    //   _favModel.articleID = beetleWiki.value;
-    //   _favModel.articleName = _optionRoute.key;
-    //   _favModel.articleRoute = _optionRoute.value;
-    //   _favModel.articleLinks = _linkRoutes[_optionRoute.key];
-    //   _favModel.isFavorite = false;
-    //
-    //   _favModelList.add(_favModel);
-    // }
-    //print(dataMap);
-    print(beetleWikiList[1].span);
+  void _openWikiDetail(BuildContext context, int i) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => WikiDetail(title: '美他利佛細身赤鍬形蟲', index: i)),
+    );
   }
 
   @override
@@ -553,7 +550,7 @@ class _WikiChildState extends State<WikiChild> {
           slivers: [
             _buildAppBar(location.imagePath,location.realName,location.birth),
             _buildCardBorder(),
-            _buildGridView(),
+            _buildGridView2(),
             // ValueListenableBuilder(
             //   builder: (_, Box<BeetleWiki> model, child) => _buildGridView2(
             //     children: _displayOptions(_nav),
@@ -610,84 +607,90 @@ class _WikiChildState extends State<WikiChild> {
   //       youtubeLink: _model.articleLinks.last,
   //     ).clickable(() => nav.pushNamed(_model.articleRoute));
 
-  // Widget _buildGridView2() {
-  //   const double boxHeight = 6.0;
-  //   const double title1Height = 15.0;
-  //   const double title2Height = 12.0;
-  //   const double horizontalEdge = 16.0;
-  //   const double horizontalEdgeMid = 12.0;
-  //   double containerHeight = (MediaQuery.of(context).size.width-horizontalEdge*2-horizontalEdgeMid)/2;
-  //   double totalBoxHeight = boxHeight + title1Height + title2Height + containerHeight;
+  Widget _buildGridView2() {
+    const double boxHeight = 6.0;
+    const double title1Height = 15.0;
+    const double title2Height = 12.2;
+    const double horizontalEdge = 16.0;
+    const double horizontalEdgeMid = 12.0;
+    double containerHeight =
+        (MediaQuery.of(context).size.width - horizontalEdge * 2 - horizontalEdgeMid) / 2;
+    double totalBoxHeight = boxHeight + title1Height + title2Height + containerHeight;
 
-  //   return SliverPadding(
-  //     padding: const EdgeInsets.only(top: 0.0),
-  //     sliver: SliverPadding(
-  //       padding: const EdgeInsets.symmetric(horizontal: horizontalEdge),
-  //       sliver: SliverGrid(
-  //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-  //           crossAxisCount: 2,
-  //           crossAxisSpacing: horizontalEdgeMid,
-  //           mainAxisSpacing: 0,
-  //           childAspectRatio: (((MediaQuery.of(context).size.width) / 2) / totalBoxHeight) / 1.25,
-  //         ),
-  //         delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-  //           return InkWell(
-  //             onTap: () {
-  //               _openWikiDetail(context);
-  //             },
-  //             child: Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 Container(
-  //                   height: containerHeight, // Adjust the height of the box
-  //                   decoration: const BoxDecoration(
-  //                     borderRadius: BorderRadius.all(Radius.circular(16)),
-  //                     image: DecorationImage(
-  //                       image:AssetImage('assets/images/cmf.png'),
-  //                       fit: BoxFit.cover,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 const SizedBox(height: boxHeight), // Space between the grid box and titles
-  //                 const Padding(
-  //                   padding: EdgeInsets.only(left: 8, right: 10), // Add indentation to titles
-  //                   child: Text(
-  //                     '美他利佛細身赤鍬形蟲',
-  //                     overflow: TextOverflow.fade,
-  //                     softWrap: false,
-  //                     style: TextStyle(
-  //                       color: darkTeal,
-  //                       fontSize: title1Height,
-  //                       fontWeight: FontWeight.w600,
-  //                       fontFamily: 'MPLUS',
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 const Padding(
-  //                   padding: EdgeInsets.only(left: 9, right: 10), // Add indentation to titles
-  //                   child: Text(
-  //                     'Cyclommatus metallifer f.',
-  //                     overflow: TextOverflow.fade,
-  //                     softWrap: false,
-  //                     style: TextStyle(
-  //                       color: Color.fromARGB(255, 110, 157, 134),
-  //                       fontSize: title2Height,
-  //                       fontWeight: FontWeight.w300,
-  //                       //fontFamily: 'MPLUS',
-  //                       fontStyle: FontStyle.italic,
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           );
-  //         },
-  //           childCount: 20,
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+    return SliverPadding(
+      padding: const EdgeInsets.only(top: 0.0),
+      sliver: SliverPadding(
+        padding: const EdgeInsets.symmetric(horizontal: horizontalEdge),
+        sliver: SliverGrid(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: horizontalEdgeMid,
+            mainAxisSpacing: 0,
+            childAspectRatio: (((MediaQuery.of(context).size.width) / 2) / totalBoxHeight) / 1.25,
+          ),
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int i) {
+              return InkWell(
+                onTap: () {
+                  _openWikiDetail(context, i);
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: containerHeight, // Adjust the height of the box
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(16)),
+                        image: DecorationImage(
+                          image: AssetImage(beetleWikiBox.getAt(i).imagePath),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: boxHeight), // Space between the grid box and titles
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 8, right: 10), // Add indentation to titles
+                      child: Text(
+                        beetleWikiBox.getAt(i).name,
+                        overflow: TextOverflow.fade,
+                        maxLines: 1,
+                        softWrap: false,
+                        style: const TextStyle(
+                          color: darkTeal,
+                          fontSize: title1Height,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'MPLUS',
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 9, right: 10), // Add indentation to titles
+                      child: Text(
+                        _shortenName(beetleWikiBox.getAt(i).nameSci),
+                        overflow: TextOverflow.fade,
+                        maxLines: 1,
+                        softWrap: false,
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 110, 157, 134),
+                          fontSize: title2Height,
+                          fontWeight: FontWeight.w300,
+                          //fontFamily: 'MPLUS',
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+            childCount: beetleWikiBox.length,
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildGridView() {
     const double boxHeight = 6.0;
@@ -709,10 +712,10 @@ class _WikiChildState extends State<WikiChild> {
             mainAxisSpacing: 0,
             childAspectRatio: (((MediaQuery.of(context).size.width) / 2) / totalBoxHeight) / 1.25,
           ),
-          delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+          delegate: SliverChildBuilderDelegate((BuildContext context, int i) {
               return InkWell(
                 onTap: () {
-                  _openWikiDetail(context);
+                  _openWikiDetail(context, i);
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -722,7 +725,7 @@ class _WikiChildState extends State<WikiChild> {
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(16)),
                         image: DecorationImage(
-                          image:AssetImage('assets/images/cmf.png'),
+                          image: AssetImage('assets/images/cmf.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -967,7 +970,6 @@ class _WikiChildState extends State<WikiChild> {
     );
   }
 }
-
 
 class SliverWidget extends StatelessWidget {
   const SliverWidget({Key? key, required this.child}) : super(key: key);
