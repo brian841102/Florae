@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'plugins/tap_to_expand.dart';
 import 'package:hive/hive.dart';
 import '../main.dart';
-import 'wiki.dart';
+import '../data/beetle_wiki.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
@@ -58,6 +58,7 @@ class _WikiDetailState extends State<WikiDetail> {
     }
   }
 
+  // ## No TabBar Version ##
   // @override
   // Widget build(BuildContext context) {
   //   String imagePath = Beetle.getImagePathByName(widget.title);
@@ -85,7 +86,6 @@ class _WikiDetailState extends State<WikiDetail> {
 
   @override
   Widget build(BuildContext context) {
-    String imagePath = Beetle.getImagePathByName(widget.title);
     return Scaffold(
       body: DefaultTabController(
         length: 2,
@@ -98,7 +98,7 @@ class _WikiDetailState extends State<WikiDetail> {
             controller: _scrollController,
             physics: const ClampingScrollPhysics(), //const BouncingScrollPhysics(),
             slivers: [
-              _buildAppBar(imagePath),
+              _buildAppBar(),
               SliverToBoxAdapter(child: Container(height: 12)),
               _buildTabBar(),
               SliverToBoxAdapter(child: Container(height: 20)),
@@ -154,7 +154,7 @@ class _WikiDetailState extends State<WikiDetail> {
                 color: darkTeal.withOpacity(0.9), //Colors.white,
             ),
             tabs: const [
-              Tab(child: Text('個人資料', style: TextStyle(fontFamily: 'MPLUS'))),
+              Tab(child: Text('基本資料', style: TextStyle(fontFamily: 'MPLUS'))),
               Tab(child: Text('飼育計畫BETA', style: TextStyle(fontFamily: 'MPLUS'))),
             ],
           ),
@@ -164,6 +164,10 @@ class _WikiDetailState extends State<WikiDetail> {
   }
 
   Widget _buildCardRow() {
+    BeetleWiki bt = beetleWikiBox.getAt(widget.index);
+    String? difficulty = diffuculties[bt.difficulty];
+    String? popularity = popularities[bt.popularity];
+    String? span = spans[bt.span];
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -208,7 +212,7 @@ class _WikiDetailState extends State<WikiDetail> {
                         ),
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          '容易',
+                          difficulty!,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.tertiary.withOpacity(0.8),
                             fontSize: 14,
@@ -263,7 +267,7 @@ class _WikiDetailState extends State<WikiDetail> {
                         ),
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          '高',
+                          popularity!,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.tertiary.withOpacity(0.8),
                             fontSize: 14,
@@ -317,7 +321,7 @@ class _WikiDetailState extends State<WikiDetail> {
                         ),
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          '短',
+                          span!,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.tertiary.withOpacity(0.8),
                             fontSize: 14,
@@ -341,6 +345,17 @@ class _WikiDetailState extends State<WikiDetail> {
   }
 
   Widget _buildListView() {
+    BeetleWiki bt = beetleWikiBox.getAt(widget.index);
+    String? _getFieldByIndex(int index) {
+      List<String?> fields = [bt.boxSize, bt.larvaTemp, bt.larvaTime, bt.hiberTime, bt.adultTime,
+                              bt.adultSize, bt.birth];
+      return fields[index];
+    }
+    String? _getFieldNamebyIndex(int index) {
+      List<String?> names = ['建議容器', '適合溫度', '幼蟲期', '蟄伏期', '成蟲壽命',
+                             '成蟲大小', '產地'];
+      return names[index];
+    }
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
@@ -362,7 +377,7 @@ class _WikiDetailState extends State<WikiDetail> {
                       SizedBox(
                         width: 100,
                         child: Text(
-                          Beetle.cmf.getPropertyNameByIndex(index) + ' :',
+                          _getFieldNamebyIndex(index)!+ ' :',
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                             fontSize: 14,
@@ -372,7 +387,7 @@ class _WikiDetailState extends State<WikiDetail> {
                       ),
                       Flexible(
                         child: Text(
-                          Beetle.cmf.getPropertyByIndex(index),
+                          _getFieldByIndex(index)!,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                             fontSize: 14,
@@ -513,10 +528,11 @@ class _WikiDetailState extends State<WikiDetail> {
     );
   }
 
-  Widget _buildAppBar(String imagePath) {
+  Widget _buildAppBar() {
     titleOpacity = _calculateOpacity(100, 270);
     ColorTween colorTween = ColorTween(begin: Colors.white, end: darkTeal);
     Color? backButtonColor = colorTween.lerp(titleOpacity);
+    BeetleWiki bt = beetleWikiBox.getAt(widget.index);
     return SliverAppBar(
       automaticallyImplyLeading: false,
       elevation: 0.0,
@@ -535,9 +551,9 @@ class _WikiDetailState extends State<WikiDetail> {
             child: ClipPath(
               clipper: HalfCircleClipper(),
               child: ColorFiltered(
-                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.1), BlendMode.darken),
                 child: Image.asset(
-                  imagePath,
+                  bt.imagePath,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -585,7 +601,7 @@ class _WikiDetailState extends State<WikiDetail> {
               elevation: 0.0,
               title: Opacity(
                 opacity: titleOpacity,
-                child: Text(widget.title),
+                child: Text(bt.name),
               ),
               titleTextStyle: const TextStyle(
                 color: darkTeal,
@@ -601,6 +617,7 @@ class _WikiDetailState extends State<WikiDetail> {
   }
 
   Widget beetleCard() {
+    BeetleWiki bt = beetleWikiBox.getAt(widget.index);
     return Container(
       child: Card(
         child: Padding(
@@ -652,7 +669,7 @@ class _WikiDetailState extends State<WikiDetail> {
                           alignment: AlignmentDirectional.topCenter,
                           children: [
                             Text(
-                              widget.title,
+                              bt.name,
                               style: TextStyle(
                                 fontSize: 23,
                                 letterSpacing: 4,
@@ -663,22 +680,24 @@ class _WikiDetailState extends State<WikiDetail> {
                                   ..color = Colors.black,
                               ),
                             ),
-                            Text(widget.title,
-                                style: const TextStyle(
-                                  color: Colors.yellow,
-                                  fontSize: 23,
-                                  letterSpacing: 4,
-                                  fontFamily: 'XinYi',
-                                )),
+                            Text(
+                              bt.name,//widget.title,
+                              style: const TextStyle(
+                                color: Colors.yellow,
+                                fontSize: 23,
+                                letterSpacing: 4,
+                                fontFamily: 'XinYi',
+                              )
+                            ),
                           ],
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 28,
                           child: Text(
-                            'Cyclommatus metallifer finae',
+                            bt.nameSci,
                             overflow: TextOverflow.fade,
                             softWrap: false,
-                            style: TextStyle(
+                            style: const TextStyle(
                               //color: Theme.of(context).colorScheme.secondary,
                               color: Colors.white,
                               fontSize: 16,
@@ -700,9 +719,9 @@ class _WikiDetailState extends State<WikiDetail> {
                             ),
                           ),
                           padding: const EdgeInsets.all(4.0),
-                          child: const Text(
-                            'メタリヘルホソアカクワガタ',
-                            style: TextStyle(
+                          child: Text(
+                            bt.nameJP,
+                            style: const TextStyle(
                               //color: Theme.of(context).colorScheme.tertiary.withOpacity(0.8),
                               color: Colors.white,
                               fontSize: 12,
@@ -768,127 +787,5 @@ class HalfCircleClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
     return false;
-  }
-}
-
-enum Beetle {
-  cmf(
-    boxSize: '1200 cc',
-    hiberTime: '2~3個月',
-    larvaTime: '6~10個月',
-    larvaTemp: '22°C',
-    adultTime: '6~10個月',
-    adultSize: '36~100mm',
-    birth: '印尼‧珀倫島',
-    name: '美他利佛細身赤鍬形蟲',
-    imagePath: 'assets/images/cmf.png',
-  ),
-  pgk(
-    boxSize: '1200 cc',
-    hiberTime: '2~3個月',
-    larvaTime: '6~10個月',
-    larvaTemp: '22°C',
-    adultTime: '6~10個月',
-    adultSize: '36~100mm',
-    birth: '印尼‧龍目島',
-    name: '長頸鹿鋸鍬形蟲',
-    imagePath: 'assets/images/prosopocoilus.png',
-  );
-
-  const Beetle({
-    required this.boxSize,
-    required this.hiberTime,
-    required this.larvaTime,
-    required this.larvaTemp,
-    required this.adultTime,
-    required this.adultSize,
-    required this.birth,
-    required this.name,
-    required this.imagePath,
-  });
-
-  final String boxSize;
-  final String hiberTime;
-  final String larvaTime;
-  final String larvaTemp;
-  final String adultTime;
-  final String adultSize;
-  final String birth;
-  final String name;
-  final String imagePath;
-
-  String getPropertyByIndex(int index) {
-    switch (this) {
-      case Beetle.cmf:
-        switch (index) {
-          case 0:
-            return boxSize;
-          case 1:
-            return hiberTime;
-          case 2:
-            return larvaTime;
-          case 3:
-            return larvaTemp;
-          case 4:
-            return adultTime;
-          case 5:
-            return adultSize;
-          case 6:
-            return birth;
-          default:
-            throw ArgumentError("Invalid property index for cmf");
-        }
-      case Beetle.pgk:
-        switch (index) {
-          case 0:
-            return boxSize;
-          case 1:
-            return hiberTime;
-          case 2:
-            return larvaTime;
-          case 3:
-            return larvaTemp;
-          case 4:
-            return adultTime;
-          case 5:
-            return adultSize;
-          case 6:
-            return birth;
-          default:
-            throw ArgumentError("Invalid property index for pgk");
-        }
-      default:
-        throw ArgumentError("Invalid enum value");
-    }
-  }
-
-  String getPropertyNameByIndex(int index) {
-    switch (index) {
-      case 0:
-        return '建議容器';
-      case 1:
-        return '蟄伏期';
-      case 2:
-        return '幼蟲期';
-      case 3:
-        return '適合溫度';
-      case 4:
-        return '成蟲壽命';
-      case 5:
-        return '成蟲大小';
-      case 6:
-        return '產地';
-      default:
-        throw ArgumentError("Invalid property index");
-    }
-  }
-
-  static String getImagePathByName(String name) {
-    for (var beetle in Beetle.values) {
-      if (beetle.name == name) {
-        return beetle.imagePath;
-      }
-    }
-    throw ArgumentError("No Beetle found with the provided name");
   }
 }
