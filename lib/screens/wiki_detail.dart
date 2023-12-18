@@ -142,7 +142,7 @@ class _WikiDetailState extends State<WikiDetail> {
             ],
           ),
           child: TabBar(
-            padding: const EdgeInsets.all(0),
+            padding: const EdgeInsets.all(2),
             indicatorSize: TabBarIndicatorSize.tab,
             indicatorWeight: 0,
             indicatorColor: Colors.transparent,
@@ -151,8 +151,11 @@ class _WikiDetailState extends State<WikiDetail> {
             unselectedLabelColor: Theme.of(context).colorScheme.primary,
             //unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
             indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(12),
                 color: darkTeal.withOpacity(0.9), //Colors.white,
+              boxShadow: [
+                BoxShadow(color: Colors.black.withOpacity(0.6), blurRadius: 5)
+              ],
             ),
             tabs: const [
               Tab(child: Text('基本資料', style: TextStyle(fontFamily: 'MPLUS'))),
@@ -185,12 +188,27 @@ class _WikiDetailState extends State<WikiDetail> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       // Use Expanded to make the icon fill the remaining space
-                      const Expanded(
-                        child: Icon(
-                          Icons.bar_chart_outlined,
-                          color: darkTeal,
-                          size: 64,
+                      Expanded(
+                        child: Image.asset(((){
+                          switch (bt.difficulty) {
+                            case Difficulty.Easy:
+                              return 'assets/images/level2.png';
+                            case Difficulty.Medium:
+                              return 'assets/images/level3.png';
+                            case Difficulty.Hard:
+                              return 'assets/images/level4.png';
+                            case Difficulty.Expert:
+                              return 'assets/images/level5.png';
+                            default:
+                              return 'assets/images/level1.png';
+                          }})(),
+                          width: 62,
                         ),
+                        // child: Icon(
+                        //   Icons.bar_chart_outlined,
+                        //   color: darkTeal,
+                        //   size: 64,
+                        // ),
                       ),
                       SizedBox(
                         height: 28,
