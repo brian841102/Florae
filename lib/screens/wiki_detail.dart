@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'plugins/tap_to_expand.dart';
 import 'package:hive/hive.dart';
@@ -662,72 +663,109 @@ class _WikiDetailState extends State<WikiDetail> {
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 12, bottom: 4),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Stack(
+                      alignment: Alignment.center,
                       children: [
-                        Stack(
-                          alignment: AlignmentDirectional.topCenter,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              bt.name,
-                              style: TextStyle(
-                                fontSize: 23,
-                                letterSpacing: 4,
-                                fontFamily: 'XinYi',
-                                foreground: Paint()
-                                  ..style = PaintingStyle.stroke
-                                  ..strokeWidth = 3
-                                  ..color = Colors.black,
+                            Stack(
+                              alignment: AlignmentDirectional.topCenter,
+                              children: [
+                                Text(
+                                  bt.name,
+                                  style: TextStyle(
+                                    fontSize: 23,
+                                    letterSpacing: 4,
+                                    fontFamily: 'XinYi',
+                                    foreground: Paint()
+                                      ..style = PaintingStyle.stroke
+                                      ..strokeWidth = 3
+                                      ..color = Colors.black,
+                                  ),
+                                ),
+                                Text(
+                                  bt.name,//widget.title,
+                                  style: const TextStyle(
+                                    color: Colors.yellow,
+                                    fontSize: 23,
+                                    letterSpacing: 4,
+                                    fontFamily: 'XinYi',
+                                  )
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 28,
+                              child: Text(
+                                bt.nameSci,
+                                overflow: TextOverflow.fade,
+                                softWrap: false,
+                                style: const TextStyle(
+                                  //color: Theme.of(context).colorScheme.secondary,
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w300,
+                                  fontStyle: FontStyle.italic,
+                                ),
                               ),
                             ),
-                            Text(
-                              bt.name,//widget.title,
-                              style: const TextStyle(
-                                color: Colors.yellow,
-                                fontSize: 23,
-                                letterSpacing: 4,
-                                fontFamily: 'XinYi',
-                              )
+                            Container(
+                              alignment: Alignment.center,
+                              width: 220, //double.infinity,
+                              decoration: BoxDecoration(
+                                //color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
+                                color: darkTeal,
+                                border: Border.all(width: 2),
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(6),
+                                  topRight: Radius.circular(6),
+                                ),
+                              ),
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text(
+                                bt.nameJP,
+                                style: const TextStyle(
+                                  //color: Theme.of(context).colorScheme.tertiary.withOpacity(0.8),
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontFamily: 'MPLUS',
+                                  //fontWeight: FontWeight.bold,
+                                  letterSpacing: 2,
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 28,
-                          child: Text(
-                            bt.nameSci,
-                            overflow: TextOverflow.fade,
-                            softWrap: false,
-                            style: const TextStyle(
-                              //color: Theme.of(context).colorScheme.secondary,
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w300,
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          width: 220, //double.infinity,
-                          decoration: BoxDecoration(
-                            //color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
-                            color: darkTeal,
-                            border: Border.all(width: 2),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(6),
-                              topRight: Radius.circular(6),
-                            ),
-                          ),
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(
-                            bt.nameJP,
-                            style: const TextStyle(
-                              //color: Theme.of(context).colorScheme.tertiary.withOpacity(0.8),
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontFamily: 'MPLUS',
-                              //fontWeight: FontWeight.bold,
-                              letterSpacing: 2,
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: SizedBox(
+                            height: 28,
+                            width: 222,
+                            child:OutlinedButton(
+                              onPressed: (){},
+                              onLongPress: () {
+                                Clipboard.setData(ClipboardData(text: bt.nameJP)).then((_) {
+                                   var snackBar = SnackBar(
+                                      content: Text(
+                                        '文字已複製至剪貼簿',
+                                        style: TextStyle(
+                                          color: Colors.greenAccent.withOpacity(0.6),
+                                          //fontFamily: 'MPLUS',
+                                        ),
+                                      ),
+                                      duration: const Duration(seconds: 2),
+                                      margin: const EdgeInsets.all(20),
+                                      behavior: SnackBarBehavior.floating,
+                                  );
+                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                });
+                              },
+                              child: const Text(''),
+                              style: OutlinedButton.styleFrom(
+                                side: const BorderSide(color: Colors.transparent),
+                                splashFactory: NoSplash.splashFactory,
+                              ),
                             ),
                           ),
                         ),
