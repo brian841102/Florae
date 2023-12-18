@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
@@ -76,6 +77,7 @@ class _TapToExpandState extends State<TapToExpand> {
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       onTap: () {
+        HapticFeedback.mediumImpact();
         /// Changing the state of the widget.
         setState(() {
           isExpanded = !isExpanded;
@@ -179,6 +181,7 @@ class _TapToExpandState extends State<TapToExpand> {
                           //const Expanded(child: SizedBox()),
                           InkWell(
                             onTap: () {
+                              HapticFeedback.mediumImpact();
                               setState(() {
                                 isExpanded = !isExpanded;
                               });
