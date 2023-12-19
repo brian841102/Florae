@@ -129,7 +129,7 @@ class _WikiDetailState extends State<WikiDetail> {
   Widget _buildTabBar() {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 38.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Container(
           height: 48,
           decoration: BoxDecoration(
@@ -159,7 +159,7 @@ class _WikiDetailState extends State<WikiDetail> {
             ),
             tabs: const [
               Tab(child: Text('基本資料', style: TextStyle(fontFamily: 'MPLUS'))),
-              Tab(child: Text('飼育計畫BETA', style: TextStyle(fontFamily: 'MPLUS'))),
+              Tab(child: Text('飼育計畫(建構中)', style: TextStyle(fontFamily: 'MPLUS'))),
             ],
           ),
         ),
@@ -192,17 +192,16 @@ class _WikiDetailState extends State<WikiDetail> {
                         child: Image.asset(((){
                           switch (bt.difficulty) {
                             case Difficulty.Easy:
-                              return 'assets/images/level2.png';
-                            case Difficulty.Medium:
-                              return 'assets/images/level3.png';
-                            case Difficulty.Hard:
-                              return 'assets/images/level4.png';
-                            case Difficulty.Expert:
-                              return 'assets/images/level5.png';
-                            default:
                               return 'assets/images/level1.png';
+                            case Difficulty.Medium:
+                              return 'assets/images/level2.png';
+                            case Difficulty.Hard:
+                              return 'assets/images/level3.png';
+                            case Difficulty.Expert:
+                              return 'assets/images/level4.png';
+                            default:
+                              return 'assets/images/level0.png';
                           }})(),
-                          width: 62,
                         ),
                         // child: Icon(
                         //   Icons.bar_chart_outlined,
@@ -258,12 +257,28 @@ class _WikiDetailState extends State<WikiDetail> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       // Use Expanded to make the icon fill the remaining space
-                      const Expanded(
-                        child: Icon(
-                          Icons.local_fire_department_outlined,
-                          color: darkTeal,
-                          size: 62,
+                      Expanded(
+                        child: Image.asset(((){
+                          switch (bt.popularity) {
+                            case Popularity.One:
+                              return 'assets/images/pop1.png';
+                            case Popularity.Two:
+                              return 'assets/images/pop1.png';
+                            case Popularity.Three:
+                              return 'assets/images/pop1.png';
+                            case Popularity.Four:
+                              return 'assets/images/pop1.png';
+                            case Popularity.Five:
+                              return 'assets/images/pop1.png';
+                            default:
+                              return 'assets/images/pop1.png';
+                          }})(),
                         ),
+                        // child: Icon(
+                        //   Icons.local_fire_department_outlined,
+                        //   color: darkTeal,
+                        //   size: 62,
+                        // ),
                       ),
                       SizedBox(
                         height: 28,
