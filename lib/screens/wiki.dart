@@ -478,12 +478,34 @@ class _WikiChildState extends State<WikiChild> {
 
   static final _hiveService = locator<HiveOperationService>();
 
+  late Image image1, image2, image3, image4, image5, image6, image7, image8, image9, image10,
+             image11, image12, image13, image14, image15, image16, image17, image18;
+
+
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController()..addListener(_setOffset);
     beetleWikiBox = Hive.box(beetleWikiBoxName);
     //WidgetsBinding.instance.addPostFrameCallback((_) async {await loadJsonDataToHive();});
+    image1  = Image.asset("assets/images/indicator.png");
+    image2  = Image.asset("assets/images/barcode.png");
+    image3  = Image.asset("assets/images/starry4.png");
+    image4  = Image.asset("assets/images/span1.png");
+    image5  = Image.asset("assets/images/span2.png");
+    image6  = Image.asset("assets/images/span3.png");
+    image7  = Image.asset("assets/images/span4.png");
+    image8  = Image.asset("assets/images/dif1.png");
+    image9  = Image.asset("assets/images/dif2.png");
+    image10 = Image.asset("assets/images/dif3.png");
+    image11 = Image.asset("assets/images/dif4.png");
+    image12 = Image.asset("assets/images/dif5.png");
+    image13 = Image.asset("assets/images/pop1.png");
+    image14 = Image.asset("assets/images/pop2.png");
+    image15 = Image.asset("assets/images/pop3.png");
+    image16 = Image.asset("assets/images/pop4.png");
+    image17 = Image.asset("assets/images/pop5.png");
+    image18 = Image.asset("assets/images/pop6.png");
   }
 
   @override
@@ -528,6 +550,24 @@ class _WikiChildState extends State<WikiChild> {
   }
 
   void _openWikiDetail(BuildContext context, int i) {
+    precacheImage(image1.image, context);
+    precacheImage(image2.image, context);
+    precacheImage(image3.image, context);
+    precacheImage(image4.image, context);
+    precacheImage(image5.image, context);
+    precacheImage(image6.image, context);
+    precacheImage(image7.image, context);
+    precacheImage(image8.image, context);
+    precacheImage(image9.image, context);
+    precacheImage(image10.image, context);
+    precacheImage(image11.image, context);
+    precacheImage(image12.image, context);
+    precacheImage(image13.image, context);
+    precacheImage(image14.image, context);
+    precacheImage(image15.image, context);
+    precacheImage(image16.image, context);
+    precacheImage(image17.image, context);
+    precacheImage(image18.image, context);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => WikiDetail(title: '美他利佛細身赤鍬形蟲', index: i)),

@@ -192,15 +192,15 @@ class _WikiDetailState extends State<WikiDetail> {
                         child: Image.asset(((){
                           switch (bt.difficulty) {
                             case Difficulty.Easy:
-                              return 'assets/images/level1.png';
+                              return 'assets/images/dif1.png';
                             case Difficulty.Medium:
-                              return 'assets/images/level2.png';
+                              return 'assets/images/dif2.png';
                             case Difficulty.Hard:
-                              return 'assets/images/level3.png';
+                              return 'assets/images/dif3.png';
                             case Difficulty.Expert:
-                              return 'assets/images/level4.png';
+                              return 'assets/images/dif4.png';
                             default:
-                              return 'assets/images/level0.png';
+                              return 'assets/images/dif5.png';
                           }})(),
                         ),
                         // child: Icon(
@@ -254,24 +254,24 @@ class _WikiDetailState extends State<WikiDetail> {
                 child: Padding(
                   padding: const EdgeInsets.all(6.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       // Use Expanded to make the icon fill the remaining space
                       Expanded(
                         child: Image.asset(((){
                           switch (bt.popularity) {
                             case Popularity.One:
-                              return 'assets/images/pop1.png';
+                              return 'assets/images/pop3.png';
                             case Popularity.Two:
-                              return 'assets/images/pop1.png';
+                              return 'assets/images/pop2.png';
                             case Popularity.Three:
                               return 'assets/images/pop1.png';
                             case Popularity.Four:
-                              return 'assets/images/pop1.png';
+                              return 'assets/images/pop4.png';
                             case Popularity.Five:
-                              return 'assets/images/pop1.png';
+                              return 'assets/images/pop5.png';
                             default:
-                              return 'assets/images/pop1.png';
+                              return 'assets/images/pop6.png';
                           }})(),
                         ),
                         // child: Icon(
@@ -327,12 +327,24 @@ class _WikiDetailState extends State<WikiDetail> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      const Expanded(
-                        child: Icon(
-                          Icons.timelapse_outlined,
-                          color: darkTeal,
-                          size: 60,
+                      Expanded(
+                        child: Image.asset(((){
+                          switch (bt.span) {
+                            case Span.Short:
+                              return 'assets/images/span1.png';
+                            case Span.Medium:
+                              return 'assets/images/span2.png';
+                            case Span.Long:
+                              return 'assets/images/span3.png';
+                            default:
+                              return 'assets/images/span4.png';
+                          }})(),
                         ),
+                        // child: Icon(
+                        //   Icons.timelapse_outlined,
+                        //   color: darkTeal,
+                        //   size: 60,
+                        // ),
                       ),
                       SizedBox(
                         height: 28,
@@ -476,7 +488,7 @@ class _WikiDetailState extends State<WikiDetail> {
           borderRadius: 20,
           openedHeight: 300,
           logo: SvgPicture.asset(
-            "assets/images/pediatrics_FILL0_wght400_GRAD0_opsz48.svg",
+            "assets/images/babybottle.svg",
             height: 36,
             color: darkTeal,
           ),
@@ -508,7 +520,7 @@ class _WikiDetailState extends State<WikiDetail> {
           borderRadius: 20,
           openedHeight: 300,
           logo: SvgPicture.asset(
-            "assets/images/pediatrics_FILL0_wght400_GRAD0_opsz48.svg",
+            "assets/images/babybottle.svg",
             height: 36,
             color: darkTeal,
           ),
@@ -551,7 +563,7 @@ class _WikiDetailState extends State<WikiDetail> {
             borderRadius: 20,
             openedHeight: 300,
             logo: SvgPicture.asset(
-              "assets/images/pediatrics_FILL0_wght400_GRAD0_opsz48.svg",
+              "assets/images/babybottle.svg",
               height: 36,
               color: darkTeal,
             ),
