@@ -339,6 +339,7 @@ class _WikiDetailState extends State<WikiDetail> {
                             default:
                               return 'assets/images/span4.png';
                           }})(),
+                          width: 60,
                         ),
                         // child: Icon(
                         //   Icons.timelapse_outlined,
