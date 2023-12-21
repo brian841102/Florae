@@ -104,6 +104,8 @@ class _WikiDetailState extends State<WikiDetail> {
               _buildTabBar(),
               SliverToBoxAdapter(child: Container(height: 20)),
               _buildCardRow(),
+              SliverToBoxAdapter(child: Container(height: 2)),
+              _buildBekuwaCard(),
               SliverToBoxAdapter(child: Container(height: 16)),
               _buildListView(),
               SliverToBoxAdapter(child: Container(height: 20)),
@@ -451,6 +453,192 @@ class _WikiDetailState extends State<WikiDetail> {
           );
         },
         childCount: 7,
+      ),
+    );
+  }
+
+  Widget _buildBekuwaCard() {
+    BeetleWiki bt = beetleWikiBox.getAt(widget.index);
+    String? popularity = popularities[bt.popularity];
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14),
+        child: Card(
+          child: SizedBox(
+            height: 100,
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Image.asset(
+                        'assets/images/bekuwa.png',
+                        ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 68,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '紀錄尺寸',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 13,
+                              fontFamily: 'MPLUS',
+                              letterSpacing: 1.2,
+                            ),
+                          ),
+                          Text(
+                            '紀錄者',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 13,
+                              fontFamily: 'MPLUS',
+                              letterSpacing: 1.2,
+                            ),
+                          ),
+                          Text(
+                            '登錄年',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 13,
+                              fontFamily: 'MPLUS',
+                              letterSpacing: 1.2,
+                            ),
+                          ),
+                          Text(
+                            '評級',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 13,
+                              fontFamily: 'MPLUS',
+                              letterSpacing: 1.2,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      padding: const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              '177mm',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize: 13,
+                                fontFamily: 'MPLUS',
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              '林渝恆',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize:  13,
+                                fontFamily: 'MPLUS',
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              '2023',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize:  13,
+                                fontFamily: 'MPLUS',
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              '5 Star',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize:  13,
+                                fontFamily: 'MPLUS',
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 6),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SizedBox(
+                          height: double.maxFinite,
+                          width: 90,
+                          child: ElevatedButton(
+                            onPressed: (){},
+                            child: Text(
+                              '',
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize:  12,
+                                  fontFamily: 'XinYi',
+                                  //fontWeight: FontWeight.bold,
+                                ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromRGBO(31, 92, 0, 1),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 60,
+                          child: Text(
+                            '開啟相機比較',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize:  13,
+                              //fontFamily: 'XinYi',
+                              //fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          elevation: 3,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        ),
       ),
     );
   }
