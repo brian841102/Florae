@@ -1,15 +1,13 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:animations/animations.dart';
 import 'wiki_detail.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../services/hive_operations.dart';
 import '../locator.dart';
-import '../data/beetle_wiki.dart';
 import '../main.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
@@ -578,7 +576,7 @@ class _WikiChildState extends State<WikiChild> {
   Widget build(BuildContext context) {
     Location location = locations.firstWhere((loc) => loc.name == widget.title,
         orElse: () => Location(name:'',place:'',imagePath:'', realName:'',birth:''));
-    final _nav = Navigator.of(context);
+    //final _nav = Navigator.of(context);
     return Scaffold(
       body: Container(
         color: lightTeal, // Set the background color here
@@ -670,59 +668,86 @@ class _WikiChildState extends State<WikiChild> {
           ),
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int i) {
-              return InkWell(
-                onTap: () {
-                  _openWikiDetail(context, i);
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: containerHeight, // Adjust the height of the box
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(16)),
-                        image: DecorationImage(
-                          image: AssetImage(beetleWikiBox.getAt(i).imagePath),
-                          fit: BoxFit.cover,
+              return Stack(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      _openWikiDetail(context, i);
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: containerHeight, // Adjust the height of the box
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.all(Radius.circular(16)),
+                            image: DecorationImage(
+                              image: AssetImage(beetleWikiBox.getAt(i).imagePath),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: boxHeight), // Space between the grid box and titles
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 8, right: 10), // Add indentation to titles
-                      child: Text(
-                        beetleWikiBox.getAt(i).name,
-                        overflow: TextOverflow.fade,
-                        maxLines: 1,
-                        softWrap: false,
-                        style: const TextStyle(
-                          color: darkTeal,
-                          fontSize: title1Height,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'MPLUS',
+                        const SizedBox(height: boxHeight), // Space between the grid box and titles
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 8, right: 10), // Add indentation to titles
+                          child: Text(
+                            beetleWikiBox.getAt(i).name,
+                            overflow: TextOverflow.fade,
+                            maxLines: 1,
+                            softWrap: false,
+                            style: const TextStyle(
+                              color: darkTeal,
+                              fontSize: title1Height,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'MPLUS',
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 9, right: 10), // Add indentation to titles
-                      child: Text(
-                        _shortenName(beetleWikiBox.getAt(i).nameSci),
-                        overflow: TextOverflow.fade,
-                        maxLines: 1,
-                        softWrap: false,
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 110, 157, 134),
-                          fontSize: title2Height,
-                          fontWeight: FontWeight.w300,
-                          //fontFamily: 'MPLUS',
-                          fontStyle: FontStyle.italic,
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 9, right: 10), // Add indentation to titles
+                          child: Text(
+                            _shortenName(beetleWikiBox.getAt(i).nameSci),
+                            overflow: TextOverflow.fade,
+                            maxLines: 1,
+                            softWrap: false,
+                            style: const TextStyle(
+                              color: Color.fromARGB(255, 110, 157, 134),
+                              fontSize: title2Height,
+                              fontWeight: FontWeight.w300,
+                              //fontFamily: 'MPLUS',
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  ContainerTransition(
+                    closedBuilder: (_, _open) {
+                      return InkWell(
+                        onTap: () {
+                          _open();
+                        },
+                        child: Container(
+                          height: containerHeight, // Adjust the height of the box
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.all(Radius.circular(16)),
+                            image: DecorationImage(
+                              image: AssetImage(beetleWikiBox.getAt(i).imagePath),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    closedShape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                    index: i,
+                  ),
+                ],
               );
             },
             childCount: beetleWikiBox.length,
@@ -1018,5 +1043,33 @@ class SliverWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(child: child,);
+  }
+}
+
+class ContainerTransition extends StatelessWidget {
+  const ContainerTransition({
+    required this.closedBuilder,
+    required this.closedShape,
+    required this.index,
+  });
+
+  final CloseContainerBuilder closedBuilder;
+  final ShapeBorder closedShape ;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return OpenContainer<bool>(
+      tappable: false,
+      //transitionDuration: const Duration(milliseconds: 400),
+      transitionType:  ContainerTransitionType.fade,
+      openBuilder: (BuildContext context, VoidCallback _) {
+        return WikiDetail(title: '美他利佛細身赤鍬形蟲', index: index);
+      },
+      openColor: Colors.transparent,
+      closedColor:Colors.transparent,
+      closedShape: closedShape,
+      closedBuilder: closedBuilder,
+    );
   }
 }
