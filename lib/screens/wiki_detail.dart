@@ -228,7 +228,7 @@ class _WikiDetailState extends State<WikiDetail> {
                         alignment: Alignment.center,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
+                          color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         padding: const EdgeInsets.all(8.0),
@@ -299,7 +299,7 @@ class _WikiDetailState extends State<WikiDetail> {
                         alignment: Alignment.center,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
+                          color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         padding: const EdgeInsets.all(8.0),
@@ -366,7 +366,7 @@ class _WikiDetailState extends State<WikiDetail> {
                         alignment: Alignment.center,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
+                          color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         padding: const EdgeInsets.all(8.0),
@@ -491,48 +491,52 @@ class _WikiDetailState extends State<WikiDetail> {
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       child: Row(
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '紀錄尺寸',
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontSize: 13,
-                                  fontFamily: 'MPLUS',
-                                  letterSpacing: 1.2,
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '紀錄尺寸',
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.primary,
+                                    fontSize: 13,
+                                    fontFamily: 'MPLUS',
+                                    letterSpacing: 1.2,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                '紀錄者',
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontSize: 13,
-                                  fontFamily: 'MPLUS',
-                                  letterSpacing: 1.2,
+                                Text(
+                                  '紀錄者',
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.primary,
+                                    fontSize: 13,
+                                    fontFamily: 'MPLUS',
+                                    letterSpacing: 1.2,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                '登錄年',
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontSize: 13,
-                                  fontFamily: 'MPLUS',
-                                  letterSpacing: 1.2,
+                                Text(
+                                  '登錄年',
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.primary,
+                                    fontSize: 13,
+                                    fontFamily: 'MPLUS',
+                                    letterSpacing: 1.2,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                '評級',
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontSize: 13,
-                                  fontFamily: 'MPLUS',
-                                  letterSpacing: 1.2,
+                                Text(
+                                  '評級',
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.primary,
+                                    fontSize: 13,
+                                    fontFamily: 'MPLUS',
+                                    letterSpacing: 1.2,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
+                          Container(width: 1,height: 72, color: darkTeal.withOpacity(0.4)),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: Column(
@@ -544,7 +548,7 @@ class _WikiDetailState extends State<WikiDetail> {
                                     '181 mm',
                                     style: TextStyle(
                                       color: Theme.of(context).colorScheme.primary,
-                                      fontSize: 12.5,
+                                      fontSize:  13,
                                       fontFamily: 'MPLUS',
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -555,7 +559,7 @@ class _WikiDetailState extends State<WikiDetail> {
                                     '河野博士',
                                     style: TextStyle(
                                       color: Theme.of(context).colorScheme.primary,
-                                      fontSize: 12.5,
+                                      fontSize:  13,
                                       fontFamily: 'MPLUS',
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -566,7 +570,7 @@ class _WikiDetailState extends State<WikiDetail> {
                                     '2023',
                                     style: TextStyle(
                                       color: Theme.of(context).colorScheme.primary,
-                                      fontSize: 12.5,
+                                      fontSize:  13,
                                       fontFamily: 'MPLUS',
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -582,10 +586,10 @@ class _WikiDetailState extends State<WikiDetail> {
                                       // ),
                                       // const SizedBox(width: 4),
                                       Text(
-                                        '4.5',
+                                        '4.5 顆星',
                                         style: TextStyle(
                                           color: Theme.of(context).colorScheme.primary,
-                                          fontSize: 12.5,
+                                          fontSize:  13,
                                           fontFamily: 'MPLUS',
                                           fontWeight: FontWeight.w500,
                                         ),
