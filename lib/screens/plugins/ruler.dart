@@ -7,8 +7,14 @@ class Ruler extends StatelessWidget {
   final TextStyle? style;
   final bool? showZero;
   final double? length;
+  final Widget? child;
 
-  const Ruler({Key? key, this.tickColor, this.style, this.showZero, this.length}) : super(key: key);
+  const Ruler({super.key,
+    this.tickColor,
+    this.style,
+    this.showZero,
+    this.length,
+    this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +24,10 @@ class Ruler extends StatelessWidget {
               tickColor: tickColor ?? Colors.black ,
               style: style ?? const TextStyle(color: Colors.blue),
               showZero: showZero ?? true,
-              length: length ?? 150,
+              length: length ?? MediaQuery.of(context).size.height*0.9/
+                      (455.6/MediaQuery.of(context).devicePixelRatio/25.4),
           ),
+      child: child,
     );
   }
 }
