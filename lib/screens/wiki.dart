@@ -1047,7 +1047,7 @@ class SliverWidget extends StatelessWidget {
 }
 
 class ContainerTransition extends StatelessWidget {
-  const ContainerTransition({
+  const ContainerTransition({super.key,
     required this.closedBuilder,
     required this.closedShape,
     required this.index,

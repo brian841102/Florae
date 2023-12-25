@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'plugins/tap_to_expand.dart';
 import 'package:hive/hive.dart';
+import 'plugins/tap_to_expand.dart';
 import '../main.dart';
 import '../data/beetle_wiki.dart';
+import 'size_compare.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
@@ -670,7 +671,12 @@ class _WikiDetailState extends State<WikiDetail> {
                   height: double.maxFinite,
                   width: double.maxFinite,
                   child: OutlinedButton(
-                    onPressed: () {print('hello');},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SizeCompare(index: widget.index)),
+                      );
+                    },
                     child: const Text(''),
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: Colors.transparent),
