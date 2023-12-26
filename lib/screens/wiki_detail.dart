@@ -29,7 +29,6 @@ class _WikiDetailState extends State<WikiDetail> {
   void initState() {
     super.initState();
     _scrollController = ScrollController()..addListener(_setOffset);
-    beetleWikiBox = Hive.box(beetleWikiBoxName);
   }
 
   @override

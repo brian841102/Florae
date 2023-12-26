@@ -472,7 +472,7 @@ class _WikiChildState extends State<WikiChild> {
   late double titleOpacity;
   late double radius;
   double _offset = 0.0;
-  late Box beetleWikiBox;
+  //late Box beetleWikiBox;
 
   static final _hiveService = locator<HiveOperationService>();
 
@@ -484,7 +484,7 @@ class _WikiChildState extends State<WikiChild> {
   void initState() {
     super.initState();
     _scrollController = ScrollController()..addListener(_setOffset);
-    beetleWikiBox = Hive.box(beetleWikiBoxName);
+    //beetleWikiBox = Hive.box(beetleWikiBoxName);
     //WidgetsBinding.instance.addPostFrameCallback((_) async {await loadJsonDataToHive();});
     image1  = Image.asset("assets/images/indicator.png");
     image2  = Image.asset("assets/images/barcode.png");
