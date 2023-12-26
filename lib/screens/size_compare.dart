@@ -15,6 +15,8 @@ class _SizeCompareState extends State<SizeCompare> {
 
   double bgScale = 2.5;
 
+  double occupyRatio = 0.6;
+
   double _scale = 1.0;
   double _lastUpdateScale = 1.0;
 
@@ -22,14 +24,14 @@ class _SizeCompareState extends State<SizeCompare> {
   double _lastUpdateRotation = 0.0;
 
   double _offsetX = 0.0;
-  double _pointX = 0.0;
   double _lastUpdatePointX = 0.0;
   double _deltaPointX = 0.0;
 
   double _offsetY = 0.0;
-  double _pointY = 0.0;
   double _lastUpdatePointY = 0.0;
   double _deltaPointY = 0.0;
+
+  bool lock = false;
   @override
   void initState() {
     super.initState();
@@ -55,27 +57,25 @@ class _SizeCompareState extends State<SizeCompare> {
       //   });
       // },
       onScaleStart: (details) {
-        _pointX = details.focalPoint.dx;
         _lastUpdatePointX = details.focalPoint.dx;
-        _pointY = details.focalPoint.dy;
         _lastUpdatePointY = details.focalPoint.dy;
       },
       onScaleUpdate: (details) {
-        _scale = details.scale*_lastUpdateScale;
-        _scale = _scale.clamp(0.3, 20);
-        // print("Scale: ");
-        // print(_scale);
-        _rotation = details.rotation+_lastUpdateRotation;
-        
-        _deltaPointX = (details.focalPoint.dx - _lastUpdatePointX);
-        _lastUpdatePointX = details.focalPoint.dx;
-        _deltaPointY = (details.focalPoint.dy - _lastUpdatePointY);
-        _lastUpdatePointY = details.focalPoint.dy;
-        
-        setState(() {
-          _offsetX += _deltaPointX;
-          _offsetY += _deltaPointY;
-        });
+        if(!lock){
+          _scale = details.scale*_lastUpdateScale;
+          _scale = _scale.clamp(0.3, 20);
+          // print("Scale: ");
+          // print(_scale);
+          _rotation = details.rotation+_lastUpdateRotation;
+          _deltaPointX = (details.focalPoint.dx - _lastUpdatePointX);
+          _lastUpdatePointX = details.focalPoint.dx;
+          _deltaPointY = (details.focalPoint.dy - _lastUpdatePointY);
+          _lastUpdatePointY = details.focalPoint.dy;
+          setState(() {
+            _offsetX += _deltaPointX;
+            _offsetY += _deltaPointY;
+          });
+        }
       },
       onScaleEnd: (details) {
         _lastUpdateScale = _scale;
@@ -84,15 +84,36 @@ class _SizeCompareState extends State<SizeCompare> {
         // print(_lastUpdateScale);
       },
       onDoubleTap: () {
+        if(!lock) {
+          setState(() {
+            _scale = 1.0;
+            _lastUpdateScale = 1.0;
+            _rotation = 0.0;
+            _lastUpdateRotation = 0.0;
+            _offsetX = 0.0;
+            _lastUpdatePointX = 0.0;
+            _offsetY = 0.0;
+            _lastUpdatePointY = 0.0;
+          });
+        }
+      },
+      onLongPress: () {
+        var snackBar = SnackBar(
+          content: Text(
+            lock == false
+                ? '已鎖定'
+                : '已解鎖',
+            style: const TextStyle(fontSize: 16),
+            textAlign: TextAlign.center,
+          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
+          duration: const Duration(seconds: 2),
+          margin: const EdgeInsets.symmetric(vertical: 100, horizontal: 140),
+          behavior: SnackBarBehavior.floating,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);//TODO: change to toast
         setState(() {
-          _scale = 1.0;
-          _lastUpdateScale = 1.0;
-          _rotation = 0.0;
-          _lastUpdateRotation = 0.0;
-          _offsetX = 0.0;
-          _lastUpdatePointX = 0.0;
-          _offsetY = 0.0;
-          _lastUpdatePointY = 0.0;
+          lock = !lock;
         });
       },
       child: Scaffold(
@@ -107,10 +128,15 @@ class _SizeCompareState extends State<SizeCompare> {
               child: Stack(
                 children: [
                   Transform(
-                    transform: Matrix4.translationValues(_offsetX, _offsetY, 0)
-                      ..rotateZ(_rotation),
+                    transform: Matrix4.identity()
+                      ..translate(_offsetX+MediaQuery.of(context).size.width * 0.5,
+                          _offsetY+MediaQuery.of(context).size.height * 0.342)
+                      ..rotateZ(_rotation)
+                      ..scale(_scale)
+                      ..translate(-MediaQuery.of(context).size.width * 0.5,
+                          -MediaQuery.of(context).size.height * occupyRatio * 0.5),//setup rotate origin
                     child: SizedBox(
-                      height: 500 * _scale,
+                      height: MediaQuery.of(context).size.height * occupyRatio,
                       width: double.maxFinite,
                       child: FittedBox(
                         fit: BoxFit.fitHeight,

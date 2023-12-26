@@ -40,10 +40,12 @@ class _RulerPainter extends CustomPainter {
 
   late double dpr;
   late double screenHeight;
+  late double screenWidth;
   _RulerPainter(BuildContext context,
     {required this.tickColor, required this.style, required this.showZero, required this.length}) {
     dpr = MediaQuery.of(context).devicePixelRatio;
     screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
   }
 
   @override
@@ -58,6 +60,11 @@ class _RulerPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
+    Paint dashLine = Paint()
+      ..color = darkTeal.withOpacity(0.6)
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0;
 
     double dpi = 455.6;
     double maxSize = length;
@@ -82,6 +89,9 @@ class _RulerPainter extends CustomPainter {
         if (ticker != 0.0 || showZero) {
           canvas.drawParagraph(
               paragraph, Offset(30, y - (paragraph.height / 2)));
+        }
+        if (ticker == 0.0) {
+          canvas.drawLine(Offset(45, y), Offset(screenWidth, y), dashLine);
         }
       } else if (ticker % 5 == 0) {
         canvas.drawLine(Offset(0, y), Offset(15, y), cmTick);
