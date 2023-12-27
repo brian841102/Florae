@@ -19,7 +19,7 @@ class Card1 extends StatelessWidget {
             SizedBox(
               height: 150,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.orange,
                   shape: BoxShape.rectangle,
                 ),
@@ -34,12 +34,12 @@ class Card1 extends StatelessWidget {
                   tapBodyToCollapse: true,
                 ),
                 header: Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: Text(
                       "ExpandablePanel",
                       style: Theme.of(context).textTheme.bodyMedium,
                     )),
-                collapsed: Text(
+                collapsed: const Text(
                   loremIpsum,
                   softWrap: true,
                   maxLines: 2,
@@ -49,7 +49,7 @@ class Card1 extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     for (var _ in Iterable.generate(5))
-                      Padding(
+                      const Padding(
                           padding: EdgeInsets.only(bottom: 10),
                           child: Text(
                             loremIpsum,
@@ -60,7 +60,7 @@ class Card1 extends StatelessWidget {
                 ),
                 builder: (_, collapsed, expanded) {
                   return Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                    padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
                     child: Expandable(
                       collapsed: collapsed,
                       expanded: expanded,
@@ -96,7 +96,7 @@ class Card2 extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -123,7 +123,7 @@ class Card2 extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -162,7 +162,7 @@ class Card2 extends StatelessWidget {
     }
 
     buildExpanded3() {
-      return Padding(
+      return const Padding(
         padding: EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,7 +197,7 @@ class Card2 extends StatelessWidget {
                 collapsed: buildCollapsed3(),
                 expanded: buildExpanded3(),
               ),
-              Divider(
+              const Divider(
                 height: 1,
               ),
               Row(

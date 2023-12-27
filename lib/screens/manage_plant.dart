@@ -14,8 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
 
 class ManagePlantScreen extends StatefulWidget {
-  const ManagePlantScreen({Key? key, required this.title, required this.update, this.plant})
-      : super(key: key);
+  const ManagePlantScreen({super.key, required this.title, required this.update, this.plant});
 
   final String title;
   final bool update;
@@ -393,11 +392,11 @@ class _ManagePlantScreen extends State<ManagePlantScreen> {
   }
 
   String generateRandomString(int length) {
-    const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    Random _rnd = Random();
+    const chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    Random rnd = Random();
 
     return String.fromCharCodes(
-        Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+        Iterable.generate(length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
   }
 
   _loadPlants() async {

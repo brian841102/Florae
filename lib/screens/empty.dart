@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Template extends StatefulWidget {
-  const Template({Key? key, required this.index}) : super(key: key);
+  const Template({super.key, required this.index});
   final int index;
 
   @override

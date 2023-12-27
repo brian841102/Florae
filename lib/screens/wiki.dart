@@ -5,7 +5,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:animations/animations.dart';
 import 'wiki_detail.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import '../services/hive_operations.dart';
 import '../locator.dart';
 import '../main.dart';
@@ -460,7 +459,7 @@ var locations = [
 // }
 
 class WikiChild extends StatefulWidget {
-  const WikiChild({Key? key, required this.title}) : super(key: key);
+  const WikiChild({super.key, required this.title});
   final String title;
 
   @override
@@ -925,6 +924,7 @@ class _WikiChildState extends State<WikiChild> {
               onPressed: () {
                 _launchMaps(birth);
               },
+              style: TextButton.styleFrom(shape: const CircleBorder()),
               child: const CircleAvatar(
                   radius: 22,
                   backgroundColor: Colors.grey,
@@ -933,7 +933,6 @@ class _WikiChildState extends State<WikiChild> {
                     backgroundImage: AssetImage('assets/images/map.png'),
                   )
               ),
-              style: TextButton.styleFrom(shape: const CircleBorder()),
             ),
           ),
           Positioned(
@@ -1037,7 +1036,7 @@ class _WikiChildState extends State<WikiChild> {
 }
 
 class SliverWidget extends StatelessWidget {
-  const SliverWidget({Key? key, required this.child}) : super(key: key);
+  const SliverWidget({super.key, required this.child});
   final Widget child;
 
   @override

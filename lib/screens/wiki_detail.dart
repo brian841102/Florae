@@ -11,7 +11,7 @@ const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
 
 class WikiDetail extends StatefulWidget {
-  const WikiDetail({Key? key, required this.title, required this.index}) : super(key: key);
+  const WikiDetail({super.key, required this.title, required this.index});
   final String title;
   final int index;
 
@@ -182,6 +182,8 @@ class _WikiDetailState extends State<WikiDetail> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Card(
+              elevation: 3,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               child: SizedBox(
                 width: (MediaQuery.of(context).size.width - 55) / 3,
                 height: 140,
@@ -247,10 +249,10 @@ class _WikiDetailState extends State<WikiDetail> {
                   ),
                 ),
               ),
-              elevation: 3,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
             Card(
+              elevation: 3,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               child: SizedBox(
                 width: (MediaQuery.of(context).size.width - 55) / 3,
                 height: 140,
@@ -318,10 +320,10 @@ class _WikiDetailState extends State<WikiDetail> {
                   ),
                 ),
               ),
-              elevation: 3,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
             Card(
+              elevation: 3,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               child: SizedBox(
                 width: (MediaQuery.of(context).size.width - 55) / 3,
                 height: 140,
@@ -385,8 +387,6 @@ class _WikiDetailState extends State<WikiDetail> {
                   ),
                 ),
               ),
-              elevation: 3,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
           ],
         ),
@@ -465,6 +465,8 @@ class _WikiDetailState extends State<WikiDetail> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14),
         child: Card(
+          elevation: 3,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           child: SizedBox(
             height: 100,
             child: Padding(
@@ -608,8 +610,6 @@ class _WikiDetailState extends State<WikiDetail> {
               ),
             ),
           ),
-          elevation: 3,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         ),
       ),
     );
@@ -623,6 +623,9 @@ class _WikiDetailState extends State<WikiDetail> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Card(
+          elevation: 0,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
+          color: const Color.fromRGBO(255, 133, 161, 1.0),
           child: SizedBox(
             height: 46,
             child: Stack(
@@ -676,20 +679,17 @@ class _WikiDetailState extends State<WikiDetail> {
                         MaterialPageRoute(builder: (context) => SizeCompare(index: widget.index)),
                       );
                     },
-                    child: const Text(''),
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: Colors.transparent),
                       splashFactory: NoSplash.splashFactory,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
                     ),
+                    child: const Text(''),
                   ),
                 ),
               ],
             ),
           ),
-          elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
-          color: const Color.fromRGBO(255, 133, 161, 1.0),
         ),
       ),
     );
@@ -906,7 +906,20 @@ class _WikiDetailState extends State<WikiDetail> {
   Widget beetleCard() {
     BeetleWiki bt = beetleWikiBox.getAt(widget.index);
     return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 5, // soften the shadow
+            //spreadRadius: 1.0, //extend the shadow
+            offset: const Offset(0, 5),
+          )
+        ],
+      ),
       child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Stack(
@@ -1050,11 +1063,11 @@ class _WikiDetailState extends State<WikiDetail> {
                                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                 });
                               },
-                              child: const Text(''),
                               style: OutlinedButton.styleFrom(
                                 side: const BorderSide(color: Colors.transparent),
                                 splashFactory: NoSplash.splashFactory,
                               ),
+                              child: const Text(''),
                             ),
                           ),
                         ),
@@ -1066,19 +1079,6 @@ class _WikiDetailState extends State<WikiDetail> {
             ],
           ),
         ),
-        elevation: 5,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 5, // soften the shadow
-            //spreadRadius: 1.0, //extend the shadow
-            offset: const Offset(0, 5),
-          )
-        ],
       ),
     );
   }

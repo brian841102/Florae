@@ -113,7 +113,7 @@ void backgroundFetchHeadlessTask(HeadlessTask task) async {
 }
 
 class FloraeApp extends StatelessWidget {
-  const FloraeApp({Key? key}) : super(key: key);
+  const FloraeApp({super.key});
 
   // This widget is the root of your application.
   @override

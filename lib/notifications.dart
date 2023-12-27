@@ -1,7 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'dart:async';
-import 'dart:io';
 
 //const String darwinNotificationCategoryPlain = 'plainCategory';
 

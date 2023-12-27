@@ -5,9 +5,9 @@ class ErrorPage extends StatelessWidget {
   final FlutterErrorDetails errorDetails;
 
   const ErrorPage({
-    Key? key,
+    super.key,
     required this.errorDetails,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

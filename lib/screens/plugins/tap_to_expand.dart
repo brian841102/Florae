@@ -44,7 +44,7 @@ class TapToExpand extends StatefulWidget {
 
   /// A constructor.
   const TapToExpand({
-    Key? key,
+    super.key,
     required this.content,
     required this.title,
     this.logo,
@@ -58,7 +58,7 @@ class TapToExpand extends StatefulWidget {
     this.borderRadius,
     this.scrollPhysics,
     this.trailing,
-  }) : super(key: key);
+  });
   @override
   _TapToExpandState createState() => _TapToExpandState();
 }
@@ -100,7 +100,7 @@ class _TapToExpandState extends State<TapToExpand> {
                 BoxShadow(
                   color: Colors.black.withOpacity(0.3),
                   blurRadius: 2,
-                  offset: Offset(0, 2),
+                  offset: const Offset(0, 2),
                 ),
               ],
           color: widget.color ?? Colors.white,//Theme.of(context).primaryColor,
@@ -186,6 +186,7 @@ class _TapToExpandState extends State<TapToExpand> {
                                 isExpanded = !isExpanded;
                               });
                             },
+                            customBorder: const CircleBorder(),
                             child: CircleAvatar(
                               radius: 20,
                               backgroundColor: darkTeal.withOpacity(0.15),
@@ -193,7 +194,6 @@ class _TapToExpandState extends State<TapToExpand> {
                                   ? const Icon(Icons.keyboard_arrow_down, color: darkTeal, size: 27)
                                   : const Icon(Icons.keyboard_arrow_up, color: darkTeal, size: 27)
                             ),
-                            customBorder: const CircleBorder()
                           ),
                         ],
                       ),
