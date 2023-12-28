@@ -1045,20 +1045,11 @@ class _WikiDetailState extends State<WikiDetail> {
                               onPressed: () {},
                               onLongPress: () {
                                 Clipboard.setData(ClipboardData(text: bt.nameJP)).then((_) {
-                                  var snackBar = SnackBar(
-                                    content: Text(
-                                      '文字已複製到剪貼簿',
-                                      style: TextStyle(
-                                        color: Colors.green.shade500,
-                                      ),
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10)
-                                    ),
-                                    duration: const Duration(seconds: 3),
-                                    margin: const EdgeInsets.all(20),
-                                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                                    behavior: SnackBarBehavior.floating,
+                                  var snackBar = const SnackBar(
+                                    content: Text('文字已複製到剪貼簿'),
+                                    duration: Duration(seconds: 3),
+                                    margin: EdgeInsets.all(20),
+                                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                                   );
                                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                 });

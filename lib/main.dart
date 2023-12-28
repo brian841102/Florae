@@ -225,6 +225,11 @@ class FloraeApp extends StatelessWidget {
             //primarySwatch: Colors.teal,
             fontFamily: "NotoSans",
             scaffoldBackgroundColor: const Color.fromARGB(255, 240, 243, 240),
+            snackBarTheme: SnackBarThemeData(
+              contentTextStyle: TextStyle(color: Colors.green.shade500),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              behavior: SnackBarBehavior.floating,
+            ),
         ),
         debugShowCheckedModeBanner: false,
         home: const MyHomePage(title: 'Today'));
