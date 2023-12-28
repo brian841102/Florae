@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'plugins/ruler.dart';
 
 class SizeCompare extends StatefulWidget {
@@ -40,6 +41,8 @@ class _SizeCompareState extends State<SizeCompare> {
     // SystemChrome.setSystemUIOverlayStyle(
     //     const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     // );
+    fToast = FToast();
+    fToast.init(context);
   }
 
   @override
@@ -98,20 +101,23 @@ class _SizeCompareState extends State<SizeCompare> {
         }
       },
       onLongPress: () {
-        var snackBar = SnackBar(
-          content: Text(
-            lock == false
-                ? '已鎖定'
-                : '已解鎖',
-            style: const TextStyle(fontSize: 16),
-            textAlign: TextAlign.center,
-          ),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
-          duration: const Duration(seconds: 2),
-          margin: const EdgeInsets.symmetric(vertical: 100, horizontal: 140),
-          behavior: SnackBarBehavior.floating,
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);//TODO: change to toast
+        // var snackBar = SnackBar(
+        //   content: Text(
+        //     lock == false
+        //         ? '已鎖定'
+        //         : '已解鎖',
+        //     style: const TextStyle(fontSize: 16),
+        //     textAlign: TextAlign.center,
+        //   ),
+        //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
+        //   duration: const Duration(seconds: 2),
+        //   margin: const EdgeInsets.symmetric(vertical: 100, horizontal: 140),
+        //   behavior: SnackBarBehavior.floating,
+        // );
+        // ScaffoldMessenger.of(context).showSnackBar(snackBar);//TODO: change to toast
+        //SystemSound.play(SystemSoundType.click);
+        HapticFeedback.heavyImpact();
+        _showToast(lock);
         setState(() {
           lock = !lock;
         });
@@ -160,5 +166,40 @@ class _SizeCompareState extends State<SizeCompare> {
       ),
     );
 
+  }
+
+  late FToast fToast;
+  Container _toast(bool lock) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.grey[800],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(lock == false ? Icons.lock_outline_rounded : Icons.lock_open_rounded,
+              color: Colors.white,
+              size: 24,
+          ),
+          // const SizedBox(width: 6),
+          // Text(lock == false ? '已鎖定' : '已解鎖',
+          //   style: const TextStyle(
+          //     color: Colors.white,
+          //     fontSize: 16,
+          //   ),
+          // ),
+        ],
+      ),
+    );
+  }
+
+  _showToast(bool lock) {
+    fToast.showToast(
+      child: _toast(lock),
+      gravity: ToastGravity.TOP,
+      toastDuration: const Duration(seconds: 2),
+    );
   }
 }
