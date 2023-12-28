@@ -4,11 +4,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'plugins/ruler.dart';
 
 class SizeCompare extends StatefulWidget {
-  const SizeCompare({Key? key, required this.index}) : super(key: key);
+  const SizeCompare({super.key, required this.index});
   final int index;
 
   @override
-  _SizeCompareState createState() => _SizeCompareState();
+  State<SizeCompare> createState() => _SizeCompareState();
 }
 
 

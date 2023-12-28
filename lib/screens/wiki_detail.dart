@@ -16,7 +16,7 @@ class WikiDetail extends StatefulWidget {
   final int index;
 
   @override
-  _WikiDetailState createState() => _WikiDetailState();
+  State<WikiDetail> createState() => _WikiDetailState();
 }
 
 class _WikiDetailState extends State<WikiDetail> {

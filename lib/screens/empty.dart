@@ -5,7 +5,7 @@ class Template extends StatefulWidget {
   final int index;
 
   @override
-  _TemplateState createState() => _TemplateState();
+  State<Template> createState() => _TemplateState();
 }
 
 

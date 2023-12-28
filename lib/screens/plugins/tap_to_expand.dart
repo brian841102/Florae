@@ -60,7 +60,7 @@ class TapToExpand extends StatefulWidget {
     this.trailing,
   });
   @override
-  _TapToExpandState createState() => _TapToExpandState();
+  State<TapToExpand> createState() => _TapToExpandState();
 }
 
 class _TapToExpandState extends State<TapToExpand> {

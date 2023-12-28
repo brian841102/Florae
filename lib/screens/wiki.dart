@@ -61,7 +61,7 @@ class LocationListItem extends StatefulWidget {
   final GlobalKey _backgroundImageKey = GlobalKey();
 
   @override
-  _LocationListItemState createState() => _LocationListItemState();
+  State<LocationListItem> createState() => _LocationListItemState();
 }
 
 class _LocationListItemState extends State<LocationListItem> {
@@ -463,7 +463,7 @@ class WikiChild extends StatefulWidget {
   final String title;
 
   @override
-  _WikiChildState createState() => _WikiChildState();
+  State<WikiChild> createState() => _WikiChildState();
 }
 
 class _WikiChildState extends State<WikiChild> {
