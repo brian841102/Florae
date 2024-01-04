@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'plugins/ruler.dart';
+import '../main.dart';
+import '../data/beetle_wiki.dart';
 
 class SizeCompare extends StatefulWidget {
   const SizeCompare({super.key, required this.index});
@@ -52,6 +54,7 @@ class _SizeCompareState extends State<SizeCompare> {
   }
   @override
   Widget build(BuildContext context) {
+    BeetleWiki bt = beetleWikiBox.getAt(widget.index);
     return GestureDetector(
       // onVerticalDragUpdate: (details) {
       //   setState(() {
@@ -146,7 +149,7 @@ class _SizeCompareState extends State<SizeCompare> {
                       width: double.maxFinite,
                       child: FittedBox(
                         fit: BoxFit.fitHeight,
-                        child: Image.asset('assets/images/cii_r.png'),
+                        child: Image.asset(bt.imagePathR),
                       ),
                     ),
                   ),

@@ -20,6 +20,7 @@ class BeetleWiki {
               required this.adultSize,
               required this.birth,
               required this.imagePath,
+              required this.imagePathR,
               required this.isFavorite});
   //name
   @HiveField(0)
@@ -70,6 +71,9 @@ class BeetleWiki {
   @JsonKey(name: 'imagePath', defaultValue: 'assets/images/cmf.png')
   String imagePath;
   @HiveField(15)
+  @JsonKey(name: 'imagePathR', defaultValue: 'assets/images/cmf_r.png')
+  String imagePathR;
+  @HiveField(16)
   @JsonKey(name: 'isFavorite', defaultValue: false)
   bool isFavorite;
   

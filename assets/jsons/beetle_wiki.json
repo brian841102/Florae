@@ -14,7 +14,8 @@
     "adultTime": "6~10個月",
     "adultSize": "36~100mm",
     "birth": "印尼‧珀倫島",
-    "imagePath": "assets/images/cmf.png"
+    "imagePath": "assets/images/cmf.png",
+    "imagePathR": "assets/images/cmf_r.png"
   },
   {
     "name": "大頭細身赤鍬形蟲",
@@ -31,7 +32,8 @@
     "adultTime": "6~8個月",
     "adultSize": "35~65mm",
     "birth": "V島",
-    "imagePath": "assets/images/csa.jpg"
+    "imagePath": "assets/images/csa.jpg",
+    "imagePathR": "assets/images/csa_r.png"
   },
   {
     "name": "帝王細身赤鍬形蟲",
@@ -48,7 +50,8 @@
     "adultTime": "10~12個月",
     "adultSize": "55~94mm",
     "birth": "印尼‧瓦梅納",
-    "imagePath": "assets/images/cii.jpg"
+    "imagePath": "assets/images/cii.jpg",
+    "imagePathR": "assets/images/cii_r.png"
   },
   {
     "name": "紅鹿細身赤鍬形蟲",
@@ -65,7 +68,8 @@
     "adultTime": "10~12個月",
     "adultSize": "55~109mm",
     "birth": "印尼‧登波火山",
-    "imagePath": "assets/images/ce.jpg"
+    "imagePath": "assets/images/ce.jpg",
+    "imagePathR": "assets/images/ce_r.png"
   },
   {
     "name": "阿拉蓋瑞細身赤鍬形蟲",
@@ -82,7 +86,8 @@
     "adultTime": "6~10個月",
     "adultSize": "45~70mm",
     "birth": "印尼‧婆羅洲",
-    "imagePath": "assets/images/ca.jpg"
+    "imagePath": "assets/images/ca.jpg",
+    "imagePathR": "assets/images/ca_r.png"
   },
   {
     "name": "蒙奇龍細身赤鍬形蟲",
@@ -99,6 +104,7 @@
     "adultTime": "10~12個月",
     "adultSize": "55~90mm",
     "birth": "印尼‧西伊利安",
-    "imagePath": "assets/images/cm.jpg"
+    "imagePath": "assets/images/cm.jpg",
+    "imagePathR": "assets/images/cm_r.png"
   }
 ]
