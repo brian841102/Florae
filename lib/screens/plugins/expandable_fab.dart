@@ -59,9 +59,10 @@ class _ExpandableFabState extends State<ExpandableFab>
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.expand(
+    return SizedBox.fromSize(
+      size: Size.fromHeight(MediaQuery.of(context).size.height*0.92),
       child: Stack(
-        alignment: Alignment.bottomRight,
+        alignment: Alignment.topRight,
         clipBehavior: Clip.none,
         children: [
           _buildTapToCloseFab(),
@@ -74,17 +75,17 @@ class _ExpandableFabState extends State<ExpandableFab>
 
   Widget _buildTapToCloseFab() {
     return SizedBox(
-      width: 56,
-      height: 56,
+      width: 48,
+      height: 48,
       child: Center(
         child: Material(
           shape: const CircleBorder(),
           clipBehavior: Clip.antiAlias,
-          elevation: 4,
+          elevation: 3,
           child: InkWell(
             onTap: _toggle,
             child: Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(6),
               child: Icon(
                 Icons.close,
                 color: Theme.of(context).primaryColor,
@@ -131,9 +132,11 @@ class _ExpandableFabState extends State<ExpandableFab>
           opacity: _open ? 0.0 : 1.0,
           curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
           duration: const Duration(milliseconds: 250),
-          child: FloatingActionButton(
+          child: FloatingActionButton.small(
+            elevation: 3,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             onPressed: _toggle,
-            child: const Icon(Icons.create),
+            child: const Icon(Icons.more_vert),
           ),
         ),
       ),
@@ -166,7 +169,7 @@ class _ExpandingActionButton extends StatelessWidget {
         );
         return Positioned(
           right: 4.0 + offset.dx,
-          bottom: 4.0 + offset.dy,
+          top: 4.0 + offset.dy,
           child: Transform.rotate(
             angle: (1.0 - progress.value) * math.pi / 2,
             child: child!,
@@ -195,15 +198,20 @@ class ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Material(
-      shape: const CircleBorder(),
-      clipBehavior: Clip.antiAlias,
-      color: theme.colorScheme.secondary,
-      elevation: 4,
-      child: IconButton(
-        onPressed: onPressed,
-        icon: icon,
-        color: theme.colorScheme.onSecondary,
+    return SizedBox(
+      width: 40,
+      height: 40,
+      child: Material(
+        shape: const CircleBorder(),
+        clipBehavior: Clip.antiAlias,
+        color: theme.colorScheme.secondary,
+        elevation: 3,
+        child: IconButton(
+          onPressed: onPressed,
+          icon: icon,
+          iconSize: 20,
+          color: theme.colorScheme.onSecondary,
+        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'plugins/ruler.dart';
+import 'plugins/expandable_fab.dart';
 import '../main.dart';
 import '../data/beetle_wiki.dart';
 
@@ -13,9 +14,7 @@ class SizeCompare extends StatefulWidget {
   State<SizeCompare> createState() => _SizeCompareState();
 }
 
-
 class _SizeCompareState extends State<SizeCompare> {
-
   double bgScale = 2.5;
 
   double occupyRatio = 0.6;
@@ -52,119 +51,134 @@ class _SizeCompareState extends State<SizeCompare> {
     super.dispose();
     //SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: []);
   }
+  
   @override
   Widget build(BuildContext context) {
     BeetleWiki bt = beetleWikiBox.getAt(widget.index);
-    return GestureDetector(
-      // onVerticalDragUpdate: (details) {
-      //   setState(() {
-      //     bgScale -= details.primaryDelta! * 0.005;
-      //     bgScale = bgScale.clamp(0.3, 20);
-      //   });
-      // },
-      onScaleStart: (details) {
-        _lastUpdatePointX = details.focalPoint.dx;
-        _lastUpdatePointY = details.focalPoint.dy;
-      },
-      onScaleUpdate: (details) {
-        if(!lock){
-          _scale = details.scale*_lastUpdateScale;
-          _scale = _scale.clamp(0.3, 20);
-          // print("Scale: ");
-          // print(_scale);
-          _rotation = details.rotation+_lastUpdateRotation;
-          _deltaPointX = (details.focalPoint.dx - _lastUpdatePointX);
+    return Scaffold(
+      body: GestureDetector(
+        // onVerticalDragUpdate: (details) {
+        //   setState(() {
+        //     bgScale -= details.primaryDelta! * 0.005;
+        //     bgScale = bgScale.clamp(0.3, 20);
+        //   });
+        // },
+        onScaleStart: (details) {
           _lastUpdatePointX = details.focalPoint.dx;
-          _deltaPointY = (details.focalPoint.dy - _lastUpdatePointY);
           _lastUpdatePointY = details.focalPoint.dy;
+        },
+        onScaleUpdate: (details) {
+          if (!lock) {
+            _scale = details.scale * _lastUpdateScale;
+            _scale = _scale.clamp(0.3, 20);
+            // print("Scale: ");
+            // print(_scale);
+            _rotation = details.rotation + _lastUpdateRotation;
+            _deltaPointX = (details.focalPoint.dx - _lastUpdatePointX);
+            _lastUpdatePointX = details.focalPoint.dx;
+            _deltaPointY = (details.focalPoint.dy - _lastUpdatePointY);
+            _lastUpdatePointY = details.focalPoint.dy;
+            setState(() {
+              _offsetX += _deltaPointX;
+              _offsetY += _deltaPointY;
+            });
+          }
+        },
+        onScaleEnd: (details) {
+          _lastUpdateScale = _scale;
+          _lastUpdateRotation = _rotation;
+          // print("_lastUpdateScale: ");
+          // print(_lastUpdateScale);
+        },
+        onDoubleTap: () {
+          if (!lock) {
+            setState(() {
+              _scale = 1.0;
+              _lastUpdateScale = 1.0;
+              _rotation = 0.0;
+              _lastUpdateRotation = 0.0;
+              _offsetX = 0.0;
+              _lastUpdatePointX = 0.0;
+              _offsetY = 0.0;
+              _lastUpdatePointY = 0.0;
+            });
+          }
+        },
+        onLongPress: () {
+          // var snackBar = SnackBar(
+          //   content: Text(
+          //     lock == false
+          //         ? '已鎖定'
+          //         : '已解鎖',
+          //     style: const TextStyle(fontSize: 16),
+          //     textAlign: TextAlign.center,
+          //   ),
+          //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
+          //   duration: const Duration(seconds: 2),
+          //   margin: const EdgeInsets.symmetric(vertical: 100, horizontal: 140),
+          //   behavior: SnackBarBehavior.floating,
+          // );
+          // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          HapticFeedback.heavyImpact();
+          _showToast(lock);
           setState(() {
-            _offsetX += _deltaPointX;
-            _offsetY += _deltaPointY;
+            lock = !lock;
           });
-        }
-      },
-      onScaleEnd: (details) {
-        _lastUpdateScale = _scale;
-        _lastUpdateRotation= _rotation;
-        // print("_lastUpdateScale: ");
-        // print(_lastUpdateScale);
-      },
-      onDoubleTap: () {
-        if(!lock) {
-          setState(() {
-            _scale = 1.0;
-            _lastUpdateScale = 1.0;
-            _rotation = 0.0;
-            _lastUpdateRotation = 0.0;
-            _offsetX = 0.0;
-            _lastUpdatePointX = 0.0;
-            _offsetY = 0.0;
-            _lastUpdatePointY = 0.0;
-          });
-        }
-      },
-      onLongPress: () {
-        // var snackBar = SnackBar(
-        //   content: Text(
-        //     lock == false
-        //         ? '已鎖定'
-        //         : '已解鎖',
-        //     style: const TextStyle(fontSize: 16),
-        //     textAlign: TextAlign.center,
-        //   ),
-        //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
-        //   duration: const Duration(seconds: 2),
-        //   margin: const EdgeInsets.symmetric(vertical: 100, horizontal: 140),
-        //   behavior: SnackBarBehavior.floating,
-        // );
-        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        HapticFeedback.heavyImpact();
-        _showToast(lock);
-        setState(() {
-          lock = !lock;
-        });
-      },
-      child: Scaffold(
-        body: SizedBox(
-          child: Ruler(
-            style: const TextStyle(color: Colors.black),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Stack(
-                children: [
-                  Transform(
-                    transform: Matrix4.identity()
-                      ..translate(_offsetX+MediaQuery.of(context).size.width * 0.5,
-                          _offsetY+MediaQuery.of(context).size.height * 0.342)
-                      ..rotateZ(_rotation)
-                      ..scale(_scale)
-                      ..translate(-MediaQuery.of(context).size.width * 0.5,
-                          -MediaQuery.of(context).size.height * occupyRatio * 0.5),//setup rotate origin
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * occupyRatio,
-                      width: double.maxFinite,
-                      child: FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Image.asset(bt.imagePathR),
-                      ),
+        },
+        child: Ruler(
+          style: const TextStyle(color: Colors.black),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Stack(
+              children: [
+                Transform(
+                  transform: Matrix4.identity()
+                    ..translate(_offsetX+MediaQuery.of(context).size.width * 0.5,
+                        _offsetY+MediaQuery.of(context).size.height * 0.342)
+                    ..rotateZ(_rotation)
+                    ..scale(_scale)
+                    ..translate(-MediaQuery.of(context).size.width * 0.5,
+                        -MediaQuery.of(context).size.height * occupyRatio * 0.5),//setup rotate origin
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * occupyRatio,
+                    width: double.maxFinite,
+                    child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Image.asset(bt.imagePathR),
                     ),
                   ),
-                  // SizedBox(
-                  //   height: 200 * bgScale,
-                  //   width: double.maxFinite,
-                  //   child: FittedBox(
-                  //     fit: BoxFit.fitHeight,
-                  //     child: Image.asset('assets/images/cii_r.png'),
-                  //   ),
-                  // ),
-                ],
-              ),
+                ),
+                // SizedBox(
+                //   height: 200 * bgScale,
+                //   width: double.maxFinite,
+                //   child: FittedBox(
+                //     fit: BoxFit.fitHeight,
+                //     child: Image.asset('assets/images/cii_r.png'),
+                //   ),
+                // ),
+              ],
             ),
           ),
         ),
       ),
+      floatingActionButton: ExpandableFab(
+        distance: 70,
+        children: [
+          ActionButton(
+            onPressed: () => print("1"), //_showAction(context, 0),
+            icon: const Icon(Icons.format_size),
+          ),
+          ActionButton(
+            onPressed: () => print("2"), //_showAction(context, 1),
+            icon: const Icon(Icons.insert_photo),
+          ),
+          ActionButton(
+            onPressed: () => print("3"), //_showAction(context, 2),
+            icon: const Icon(Icons.videocam),
+          ),
+        ],
+      ),
     );
-
   }
 
   late FToast fToast;
@@ -179,8 +193,8 @@ class _SizeCompareState extends State<SizeCompare> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(lock == false ? Icons.lock_outline_rounded : Icons.lock_open_rounded,
-              color: Colors.white,
-              size: 24,
+            color: Colors.white,
+            size: 24,
           ),
           // const SizedBox(width: 6),
           // Text(lock == false ? '已鎖定' : '已解鎖',
