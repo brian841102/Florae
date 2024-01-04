@@ -69,7 +69,7 @@ class _LocationListItemState extends State<LocationListItem> {
 
   void _openWikiChild(BuildContext context) {
     Future.delayed(
-      const Duration(milliseconds: 400),
+      const Duration(milliseconds: 300),
       () {
         Navigator.of(context).push(_createRoute());
       },

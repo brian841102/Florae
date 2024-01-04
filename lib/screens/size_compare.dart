@@ -117,8 +117,7 @@ class _SizeCompareState extends State<SizeCompare> {
         //   margin: const EdgeInsets.symmetric(vertical: 100, horizontal: 140),
         //   behavior: SnackBarBehavior.floating,
         // );
-        // ScaffoldMessenger.of(context).showSnackBar(snackBar);//TODO: change to toast
-        //SystemSound.play(SystemSoundType.click);
+        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
         HapticFeedback.heavyImpact();
         _showToast(lock);
         setState(() {
@@ -126,9 +125,6 @@ class _SizeCompareState extends State<SizeCompare> {
         });
       },
       child: Scaffold(
-        // appBar: AppBar(
-        //   title: Text('Size Compare'),
-        // ),
         body: SizedBox(
           child: Ruler(
             style: const TextStyle(color: Colors.black),
