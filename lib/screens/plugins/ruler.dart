@@ -2,37 +2,32 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 class Ruler extends StatelessWidget {
-  
   final Color? tickColor;
   final TextStyle? style;
   final bool? showZero;
   final double? length;
   final Widget? child;
 
-  const Ruler({super.key,
-    this.tickColor,
-    this.style,
-    this.showZero,
-    this.length,
-    this.child});
+  const Ruler({super.key, this.tickColor, this.style, this.showZero, this.length, this.child});
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      foregroundPainter:
-          _RulerPainter(context,
-              tickColor: tickColor ?? Colors.black ,
-              style: style ?? const TextStyle(color: Colors.blue),
-              showZero: showZero ?? true,
-              length: length ?? MediaQuery.of(context).size.height*0.9/
-                      (455.6/MediaQuery.of(context).devicePixelRatio/25.4),
-          ),
+      foregroundPainter: _RulerPainter(
+        context: context,
+        tickColor: tickColor ?? Colors.black,
+        style: style ?? const TextStyle(color: Colors.blue),
+        showZero: showZero ?? true,
+        length: length ?? MediaQuery.of(context).size.height * 0.9 /
+                (455.6 / MediaQuery.of(context).devicePixelRatio / 25.4),
+      ),
       child: child,
     );
   }
 }
 
 class _RulerPainter extends CustomPainter {
+  final BuildContext context;
   final Color tickColor;
   final TextStyle style;
   final bool showZero;
@@ -41,8 +36,12 @@ class _RulerPainter extends CustomPainter {
   late double dpr;
   late double screenHeight;
   late double screenWidth;
-  _RulerPainter(BuildContext context,
-    {required this.tickColor, required this.style, required this.showZero, required this.length}) {
+  _RulerPainter(
+      {required this.context,
+      required this.tickColor,
+      required this.style,
+      required this.showZero,
+      required this.length}) {
     dpr = MediaQuery.of(context).devicePixelRatio;
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
@@ -61,7 +60,7 @@ class _RulerPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
     Paint dashLine = Paint()
-      ..color = darkTeal.withOpacity(0.6)
+      ..color = Theme.of(context).colorScheme.primary.withOpacity(0.6)
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
@@ -75,7 +74,7 @@ class _RulerPainter extends CustomPainter {
     // print((dpi/dpr/25.4));
     int ticker = 0;
     while (ticker <= maxSize) {
-      double y =   (maxSize - ticker) * (dpi/dpr/25.4) + screenHeight*0.95 - maxSize* (dpi/dpr/25.4);
+      double y = (maxSize - ticker) * (dpi/dpr/25.4) + screenHeight*0.95 - maxSize * (dpi/dpr/25.4);
       //print('ticker: $ticker, y: $y');
       if (ticker % 10 == 0) {
         canvas.drawLine(Offset(0, y), Offset(20, y), cmTick);
@@ -87,8 +86,7 @@ class _RulerPainter extends CustomPainter {
           ..layout(const ui.ParagraphConstraints(width: 20));
 
         if (ticker != 0.0 || showZero) {
-          canvas.drawParagraph(
-              paragraph, Offset(30, y - (paragraph.height / 2)));
+          canvas.drawParagraph(paragraph, Offset(30, y - (paragraph.height / 2)));
         }
         if (ticker == 0.0) {
           canvas.drawLine(Offset(45, y), Offset(screenWidth, y), dashLine);
