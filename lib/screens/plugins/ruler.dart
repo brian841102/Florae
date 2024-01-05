@@ -60,7 +60,7 @@ class _RulerPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
     Paint dashLine = Paint()
-      ..color = Theme.of(context).colorScheme.primary.withOpacity(0.6)
+      ..color = Theme.of(context).colorScheme.surfaceTint.withOpacity(0.6)
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;

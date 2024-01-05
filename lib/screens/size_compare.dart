@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unicons/unicons.dart';
 import 'plugins/ruler.dart';
 import 'plugins/expandable_fab.dart';
 import '../main.dart';
@@ -51,7 +52,7 @@ class _SizeCompareState extends State<SizeCompare> {
     super.dispose();
     //SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: []);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     BeetleWiki bt = beetleWikiBox.getAt(widget.index);
@@ -162,22 +163,24 @@ class _SizeCompareState extends State<SizeCompare> {
         ),
       ),
       floatingActionButton: ExpandableFab(
-        distance: 70,
+        distance: 50,
         children: [
           ActionButton(
             onPressed: () => print("1"), //_showAction(context, 0),
-            icon: const Icon(Icons.format_size),
+            // icon: const Icon(Icons.arrow_back_rounded, size: 24),
+            icon: const Icon(Icons.question_mark_rounded, size: 24),
           ),
           ActionButton(
             onPressed: () => print("2"), //_showAction(context, 1),
-            icon: const Icon(Icons.insert_photo),
+            icon: const Icon(UniconsLine.ruler, size: 24),
           ),
           ActionButton(
             onPressed: () => print("3"), //_showAction(context, 2),
-            icon: const Icon(Icons.videocam),
+            icon: const Icon(UniconsLine.camera, size: 24),
           ),
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 

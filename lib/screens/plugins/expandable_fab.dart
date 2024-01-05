@@ -18,8 +18,7 @@ class ExpandableFab extends StatefulWidget {
   State<ExpandableFab> createState() => _ExpandableFabState();
 }
 
-class _ExpandableFabState extends State<ExpandableFab>
-    with SingleTickerProviderStateMixin {
+class _ExpandableFabState extends State<ExpandableFab> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _expandAnimation;
   bool _open = false;
@@ -59,12 +58,12 @@ class _ExpandableFabState extends State<ExpandableFab>
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.fromSize(
-      size: Size.fromHeight(MediaQuery.of(context).size.height*0.92),
+    return SizedBox.expand(
       child: Stack(
         alignment: Alignment.topRight,
         clipBehavior: Clip.none,
         children: [
+          _buildDimmingOverlay(),
           _buildTapToCloseFab(),
           ..._buildExpandingActionButtons(),
           _buildTapToOpenFab(),
@@ -73,22 +72,39 @@ class _ExpandableFabState extends State<ExpandableFab>
     );
   }
 
+  Widget _buildDimmingOverlay() {
+    return IgnorePointer(
+      ignoring: !_open,
+      child: AnimatedOpacity(
+          opacity: _open ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 250),
+          child: Container(
+            color: Colors.black.withOpacity(0.2), // Adjust the opacity as needed
+          )),
+    );
+  }
+
   Widget _buildTapToCloseFab() {
-    return SizedBox(
-      width: 48,
-      height: 48,
-      child: Center(
-        child: Material(
-          shape: const CircleBorder(),
-          clipBehavior: Clip.antiAlias,
-          elevation: 3,
-          child: InkWell(
-            onTap: _toggle,
-            child: Padding(
-              padding: const EdgeInsets.all(6),
-              child: Icon(
-                Icons.close,
-                color: Theme.of(context).primaryColor,
+    return Positioned(
+      right: 20,
+      top: 60,
+      child: SizedBox(
+        width: 48,
+        height: 48,
+        child: Center(
+          child: Material(
+            color: Theme.of(context).colorScheme.secondary,
+            shape: const CircleBorder(),
+            clipBehavior: Clip.antiAlias,
+            elevation: 3,
+            child: InkWell(
+              onTap: _toggle,
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Icon(
+                  Icons.close,
+                  color: Theme.of(context).colorScheme.onSecondary,
+                ),
               ),
             ),
           ),
@@ -101,11 +117,10 @@ class _ExpandableFabState extends State<ExpandableFab>
     final children = <Widget>[];
     final count = widget.children.length;
     final step = 90.0 / (count - 1);
-    for (var i = 0, angleInDegrees = 0.0;
-    i < count;
-    i++, angleInDegrees += step) {
+    for (var i = 0, angleInDegrees = 0.0; i < count; i++, angleInDegrees += step) {
       children.add(
         _ExpandingActionButton(
+          index: i,
           directionInDegrees: angleInDegrees,
           maxDistance: widget.distance,
           progress: _expandAnimation,
@@ -117,26 +132,30 @@ class _ExpandableFabState extends State<ExpandableFab>
   }
 
   Widget _buildTapToOpenFab() {
-    return IgnorePointer(
-      ignoring: _open,
-      child: AnimatedContainer(
-        transformAlignment: Alignment.center,
-        transform: Matrix4.diagonal3Values(
-          _open ? 0.7 : 1.0,
-          _open ? 0.7 : 1.0,
-          1.0,
-        ),
-        duration: const Duration(milliseconds: 250),
-        curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
-        child: AnimatedOpacity(
-          opacity: _open ? 0.0 : 1.0,
-          curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
-          duration: const Duration(milliseconds: 250),
-          child: FloatingActionButton.small(
-            elevation: 3,
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-            onPressed: _toggle,
-            child: const Icon(Icons.more_vert),
+    return Positioned(
+      right: 20,
+      top: 60,
+      child: IgnorePointer(
+        ignoring: _open,
+        child: AnimatedContainer(
+          transformAlignment: Alignment.center,
+          transform: Matrix4.diagonal3Values(
+            _open ? 0.7 : 1.0,
+            _open ? 0.7 : 1.0,
+            1.0,
+          ),
+          duration: const Duration(milliseconds: 400),
+          curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
+          child: AnimatedOpacity(
+            opacity: _open ? 0.0 : 1.0,
+            curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
+            duration: const Duration(milliseconds: 250),
+            child: FloatingActionButton.small(
+              elevation: 3,
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              onPressed: _toggle,
+              child: const Icon(Icons.more_vert),
+            ),
           ),
         ),
       ),
@@ -147,16 +166,44 @@ class _ExpandableFabState extends State<ExpandableFab>
 @immutable
 class _ExpandingActionButton extends StatelessWidget {
   const _ExpandingActionButton({
+    required this.index,
     required this.directionInDegrees,
     required this.maxDistance,
     required this.progress,
     required this.child,
   });
 
+  final int index;
   final double directionInDegrees;
   final double maxDistance;
   final Animation<double> progress;
   final Widget child;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return AnimatedBuilder(
+//       animation: progress,
+//       builder: (context, child) {
+//         final offset = Offset.fromDirection(
+//           directionInDegrees * (math.pi / 180.0),
+//           progress.value * maxDistance,
+//         );
+//         return Positioned(
+//           right: 24 + offset.dx,
+//           top: 64 + offset.dy,
+//           child: Transform.rotate(
+//             angle: (1.0 - progress.value) * math.pi / 2,
+//             child: child!,
+//           ),
+//         );
+//       },
+//       child: FadeTransition(
+//         opacity: progress,
+//         child: child,
+//       ),
+//     );
+//   }
+// }
 
   @override
   Widget build(BuildContext context) {
@@ -164,14 +211,14 @@ class _ExpandingActionButton extends StatelessWidget {
       animation: progress,
       builder: (context, child) {
         final offset = Offset.fromDirection(
-          directionInDegrees * (math.pi / 180.0),
-          progress.value * maxDistance,
+          90 * (math.pi / 180.0),
+          index * maxDistance,
         );
         return Positioned(
-          right: 4.0 + offset.dx,
-          top: 4.0 + offset.dy,
-          child: Transform.rotate(
-            angle: (1.0 - progress.value) * math.pi / 2,
+          right: 24,
+          top: 64 + offset.dy,
+          child: Transform.translate(
+            offset: Offset(0, progress.value * maxDistance),
             child: child!,
           ),
         );
@@ -204,7 +251,7 @@ class ActionButton extends StatelessWidget {
       child: Material(
         shape: const CircleBorder(),
         clipBehavior: Clip.antiAlias,
-        color: theme.colorScheme.secondary,
+        color: theme.colorScheme.surfaceTint,
         elevation: 3,
         child: IconButton(
           onPressed: onPressed,
