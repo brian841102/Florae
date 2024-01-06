@@ -144,15 +144,16 @@ class _ExpandableFabState extends State<ExpandableFab> with SingleTickerProvider
           //   _open ? 0.7 : 1.0,
           //   1.0,
           // ),
-          duration: const Duration(milliseconds:250),
+          duration: const Duration(milliseconds: 250),
           curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
           child: AnimatedOpacity(
             opacity: _open ? 0.0 : 1.0,
             curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
             duration: const Duration(milliseconds: 250),
             child: FloatingActionButton.small(
-              shape: _open ? RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))
-                           : RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+              shape: _open
+                  ? RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))
+                  : RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
               elevation: 3,
               backgroundColor: Theme.of(context).colorScheme.secondary,
               onPressed: _toggle,
@@ -218,10 +219,10 @@ class _ExpandingActionButton extends StatelessWidget {
         );
         return Positioned(
           right: 24,
-          top: 64 + offset.dy,
+          top: 64 + offset.dy - index * maxDistance,
           child: Transform.translate(
-            offset: Offset(0, progress.value * maxDistance),
-            child: child!,
+            offset: Offset(0, progress.value * maxDistance * (index+1)),
+            child: child,
           ),
         );
       },
