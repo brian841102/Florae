@@ -169,14 +169,41 @@ class _SizeCompareState extends State<SizeCompare> {
             onPressed: () => print("1"), //_showAction(context, 0),
             // icon: const Icon(Icons.arrow_back_rounded, size: 24),
             icon: const Icon(Icons.question_mark_rounded, size: 24),
+            text: Text("教學",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontFamily: "MPLUS",
+                fontSize: 14,
+                letterSpacing: 2,
+                fontWeight: FontWeight.w500
+              ),
+            ),
           ),
           ActionButton(
             onPressed: () => print("2"), //_showAction(context, 1),
             icon: const Icon(UniconsLine.ruler, size: 24),
+            text: Text("校正",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontFamily: "MPLUS",
+                fontSize: 14,
+                letterSpacing: 2,
+                fontWeight: FontWeight.w500
+              ),
+            ),
           ),
           ActionButton(
             onPressed: () => print("3"), //_showAction(context, 2),
             icon: const Icon(UniconsLine.camera, size: 24),
+            text: Text("拍攝",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontFamily: "MPLUS",
+                fontSize: 14,
+                letterSpacing: 2,
+                fontWeight: FontWeight.w500
+              ),
+            ),
           ),
         ],
       ),

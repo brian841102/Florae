@@ -29,7 +29,7 @@ class _ExpandableFabState extends State<ExpandableFab> with SingleTickerProvider
     _open = widget.initialOpen ?? false;
     _controller = AnimationController(
       value: _open ? 1.0 : 0.0,
-      duration: const Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 350),
       vsync: this,
     );
     _expandAnimation = CurvedAnimation(
@@ -79,7 +79,7 @@ class _ExpandableFabState extends State<ExpandableFab> with SingleTickerProvider
           opacity: _open ? 1.0 : 0.0,
           duration: const Duration(milliseconds: 250),
           child: Container(
-            color: Colors.black.withOpacity(0.2), // Adjust the opacity as needed
+            color: Colors.black.withOpacity(0.3), // Adjust the opacity as needed
           )),
     );
   }
@@ -139,18 +139,20 @@ class _ExpandableFabState extends State<ExpandableFab> with SingleTickerProvider
         ignoring: _open,
         child: AnimatedContainer(
           transformAlignment: Alignment.center,
-          transform: Matrix4.diagonal3Values(
-            _open ? 0.7 : 1.0,
-            _open ? 0.7 : 1.0,
-            1.0,
-          ),
-          duration: const Duration(milliseconds: 400),
+          // transform: Matrix4.diagonal3Values(
+          //   _open ? 0.7 : 1.0,
+          //   _open ? 0.7 : 1.0,
+          //   1.0,
+          // ),
+          duration: const Duration(milliseconds:250),
           curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
           child: AnimatedOpacity(
             opacity: _open ? 0.0 : 1.0,
             curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
             duration: const Duration(milliseconds: 250),
             child: FloatingActionButton.small(
+              shape: _open ? RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))
+                           : RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
               elevation: 3,
               backgroundColor: Theme.of(context).colorScheme.secondary,
               onPressed: _toggle,
@@ -236,30 +238,43 @@ class ActionButton extends StatelessWidget {
   const ActionButton({
     super.key,
     this.onPressed,
+    this.text,
     required this.icon,
   });
 
   final VoidCallback? onPressed;
+  final Widget? text;
   final Widget icon;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return SizedBox(
-      width: 40,
-      height: 40,
-      child: Material(
-        shape: const CircleBorder(),
-        clipBehavior: Clip.antiAlias,
-        color: theme.colorScheme.surfaceTint,
-        elevation: 3,
-        child: IconButton(
-          onPressed: onPressed,
-          icon: icon,
-          iconSize: 20,
-          color: theme.colorScheme.onSecondary,
+    return Row(
+      children: [
+        Container(
+          width: 120,
+          height: 40,
+          alignment: Alignment.centerRight,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: text ?? const Text(""),
         ),
-      ),
+        SizedBox(
+          width: 40,
+          height: 40,
+          child: Material(
+            shape: const CircleBorder(),
+            clipBehavior: Clip.antiAlias,
+            color: theme.colorScheme.surfaceTint,
+            elevation: 3,
+            child: IconButton(
+              onPressed: onPressed,
+              icon: icon,
+              iconSize: 20,
+              color: theme.colorScheme.onSecondary,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
