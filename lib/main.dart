@@ -185,6 +185,7 @@ class FloraeApp extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.0),
               ),
+              actionsPadding: const EdgeInsets.only(left:16, right:16, bottom:12),
             ),
             textButtonTheme: TextButtonThemeData(
               style: ButtonStyle(

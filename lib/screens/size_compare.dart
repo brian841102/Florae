@@ -166,7 +166,7 @@ class _SizeCompareState extends State<SizeCompare> {
         distance: 50,
         children: [
           ActionButton(
-            onPressed: () => print("1"), //_showAction(context, 0),
+            onPressed: () => _showGuide(context),
             // icon: const Icon(Icons.arrow_back_rounded, size: 24),
             icon: const Icon(Icons.question_mark_rounded, size: 24),
             text: Text("教學",
@@ -243,6 +243,36 @@ class _SizeCompareState extends State<SizeCompare> {
       child: _toast(lock),
       gravity: ToastGravity.TOP,
       toastDuration: const Duration(seconds: 2),
+    );
+  }
+
+  _showGuide(BuildContext context) {//TODO: switch to showModalBottomSheet
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.only(left: 20, right: 20,top: 16),
+          content: const SizedBox(
+            height: 85,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("長按：鎖定/解除鎖定"),
+                Text("雙擊：重設視圖"),
+                Text("單指拖動：移動"),
+                Text("雙指拖動：旋轉/縮放"),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
