@@ -33,38 +33,42 @@ class BottomPickerButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        onClick.call();
-      },
-      borderRadius: BorderRadius.circular(10),
-      child: Container(
-        width: buttonWidth,
-        padding: EdgeInsets.all(buttonPadding ?? 8.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: solidColor,
-          gradient: solidColor == null
-              ? LinearGradient(
-                  colors: gradientColors,
-                  begin: const FractionalOffset(0.0, 0.0),
-                  end: const FractionalOffset(1.0, 0.0),
-                  stops: const [0.0, 1.0],
-                  tileMode: TileMode.clamp,
-                )
-              : null,
-        ),
-        child: Row(
-          mainAxisAlignment: buttonTextAlignment,
-          children: [
-            if (text != null) Text(text!, style: textStyle),
-            if (displayIcon)
-              Icon(
-                Icons.done,
-                color: iconColor,
-                size: 20,
-              ),
-          ],
+    return SizedBox(
+      width: buttonWidth,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: ElevatedButton(
+          onPressed: () => onClick.call(),
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.all(buttonPadding ?? 8.0),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(0),
+              color: solidColor,
+              gradient: solidColor == null
+                  ? LinearGradient(
+                      colors: gradientColors,
+                      begin: const FractionalOffset(0.0, 0.0),
+                      end: const FractionalOffset(1.0, 0.0),
+                      stops: const [0.0, 1.0],
+                      tileMode: TileMode.clamp,
+                    )
+                  : null,
+            ),
+            child: Row(
+              mainAxisAlignment: buttonTextAlignment,
+              children: [
+                if (text != null) Text(text!, style: textStyle),
+                if (displayIcon)
+                  Icon(
+                    Icons.done,
+                    color: iconColor,
+                    size: 20,
+                  ),
+              ],
+            ),
+          ),
         ),
       ),
     );

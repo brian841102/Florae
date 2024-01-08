@@ -650,44 +650,38 @@ class _BottomPickerState extends State<BottomPicker> {
                             ),
             ),
             if (widget.displaySubmitButton)
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 20,
-                ),
-                child: Row(
-                  mainAxisAlignment: widget.buttonAlignment,
-                  children: [
-                    BottomPickerButton(
-                      onClick: () {
-                        if (widget.bottomPickerType ==
-                            BottomPickerType.rangeDateTime) {
-                          widget.onRangeDateSubmitPressed?.call(
-                            selectedFirstDateTime,
-                            selectedSecondDateTime,
-                          );
-                        } else if (widget.bottomPickerType ==
-                                BottomPickerType.dateTime ||
-                            widget.bottomPickerType == BottomPickerType.time) {
-                          widget.onSubmit?.call(selectedDateTime);
-                        } else {
-                          widget.onSubmit?.call(selectedItemIndex);
-                        }
-
-                        Navigator.pop(context);
-                      },
-                      buttonTextAlignment: widget.buttonTextAlignment,
-                      iconColor: widget.iconColor,
-                      gradientColors: widget.gradientColor,
-                      text: widget.buttonText,
-                      buttonPadding: widget.buttonPadding,
-                      buttonWidth: widget.buttonWidth,
-                      textStyle: widget.buttonTextStyle,
-                      displayIcon: widget.displayButtonIcon,
-                      solidColor: widget.buttonSingleColor,
-                    ),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: widget.buttonAlignment,
+                children: [
+                  BottomPickerButton(
+                    onClick: () {
+                      if (widget.bottomPickerType ==
+                          BottomPickerType.rangeDateTime) {
+                        widget.onRangeDateSubmitPressed?.call(
+                          selectedFirstDateTime,
+                          selectedSecondDateTime,
+                        );
+                      } else if (widget.bottomPickerType ==
+                              BottomPickerType.dateTime ||
+                          widget.bottomPickerType == BottomPickerType.time) {
+                        widget.onSubmit?.call(selectedDateTime);
+                      } else {
+                        widget.onSubmit?.call(selectedItemIndex);
+                      }
+              
+                      Navigator.pop(context);
+                    },
+                    buttonTextAlignment: widget.buttonTextAlignment,
+                    iconColor: widget.iconColor,
+                    gradientColors: widget.gradientColor,
+                    text: widget.buttonText,
+                    buttonPadding: widget.buttonPadding,
+                    buttonWidth: widget.buttonWidth,
+                    textStyle: widget.buttonTextStyle,
+                    displayIcon: widget.displayButtonIcon,
+                    solidColor: widget.buttonSingleColor,
+                  ),
+                ],
               ),
           ],
         ),

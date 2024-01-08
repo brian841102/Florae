@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicons/unicons.dart';
+import 'package:flutter/cupertino.dart';
 import 'plugins/ruler.dart';
 import 'plugins/expandable_fab.dart';
 import 'plugins/bottom_picker/bottom_picker.dart';
@@ -36,16 +37,8 @@ class _SizeCompareState extends State<SizeCompare> {
   double _lastUpdatePointY = 0.0;
   double _deltaPointY = 0.0;
 
-  final countryList = [
-    Text('Algeria 🇩🇿'),
-    Text('Maroco 🇲🇦'),
-    Text('Tunisia 🇹🇳'),
-    Text('Palestine 🇵🇸'),
-    Text('Egypt 🇪🇬'),
-    Text('Syria 🇸🇾'),
-    Text('Irak 🇮🇶'),
-    Text('Mauritania 🇲🇷')
-  ];
+  // Generating values from 0.5 to 1.5 with a step of 0.01
+  final decimalList = List.generate(101, (index) => Text('${(index + 50) / 100}')).toList();
 
   bool lock = false;
   @override
@@ -193,7 +186,7 @@ class _SizeCompareState extends State<SizeCompare> {
             ),
           ),
           ActionButton(
-            onPressed: () => _showNumberPicker(context, countryList),//print("2"),
+            onPressed: () => _showNumberPicker(context, decimalList),
             icon: const Icon(UniconsLine.ruler, size: 24),
             text: Text("校正",
               style: TextStyle(
@@ -291,7 +284,7 @@ class _SizeCompareState extends State<SizeCompare> {
       context: context,
       builder: (BuildContext context) {
         return SizedBox(
-          height: 220,
+          height: 250,
           width: double.maxFinite,
           child: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -316,18 +309,23 @@ class _SizeCompareState extends State<SizeCompare> {
                     ],
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 120, vertical: 10),
-                  ),
-                  child: const Text(
-                    '返回',
-                    style: TextStyle(
-                      fontFamily: "MPLUS",  
-                      fontSize: 16,
-                      letterSpacing: 6,
-                      fontWeight: FontWeight.w500
+                SizedBox(
+                  width: 240,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(8),
+                      ),
+                      child: const Text(
+                        '返回',
+                        style: TextStyle(
+                            fontFamily: "MPLUS",
+                            fontSize: 16,
+                            letterSpacing: 6,
+                            fontWeight: FontWeight.w500),
+                      ),
                     ),
                   ),
                 ),
@@ -341,19 +339,14 @@ class _SizeCompareState extends State<SizeCompare> {
 
   _showNumberPicker(BuildContext context, List<Text> items) {
     BottomPicker(
+      height: 280,
       displayCloseIcon: false,
       dismissable: true,
       items: items,
       title: '設定尺規係數',
       titleStyle: const TextStyle(
-        fontFamily: "MPLUS",
-        fontSize: 18,
-        letterSpacing: 2,
-        fontWeight: FontWeight.w500
-      ),
+          fontFamily: "MPLUS", fontSize: 18, letterSpacing: 2, fontWeight: FontWeight.w500),
       titleAlignment: CrossAxisAlignment.center,
-      //backgroundColor: Colors.transparent,//Theme.of(context).colorScheme.surface,
-      bottomPickerTheme: BottomPickerTheme.morningSalad,
       onSubmit: (index) {
         print(index);
       },
@@ -361,14 +354,61 @@ class _SizeCompareState extends State<SizeCompare> {
       displaySubmitButton: true,
       buttonText: '儲存',
       buttonTextStyle: const TextStyle(
-        color: Colors.white,
-        fontFamily: "MPLUS",  
-        fontSize: 16,
-        letterSpacing: 6,
-        fontWeight: FontWeight.w500
-      ),
+          color: Colors.white,
+          fontFamily: "MPLUS",
+          fontSize: 16,
+          letterSpacing: 6,
+          fontWeight: FontWeight.w500),
       buttonWidth: 240,
-      buttonSingleColor: Theme.of(context).colorScheme.primary,
+      buttonSingleColor: Colors.transparent,
+      selectedItemIndex: 5,
+      pickerTextStyle: const TextStyle(fontSize: 18, color: Colors.black),
+      selectionOverlay: const CupertinoPickerSelectionOverlay(),
     ).show(context);
+  }
+}
+
+class CupertinoPickerSelectionOverlay extends StatelessWidget {
+  const CupertinoPickerSelectionOverlay({
+    super.key,
+    this.background = CupertinoColors.systemFill,
+    this.capStartEdge = true,
+    this.capEndEdge = true,
+  });
+
+  /// Whether to use the default use rounded corners and margin on the start side.
+  final bool capStartEdge;
+
+  /// Whether to use the default use rounded corners and margin on the end side.
+  final bool capEndEdge;
+
+  final Color background;
+
+  /// Default margin of the 'SelectionOverlay'.
+  static const double _defaultSelectionOverlayHorizontalMargin = 120;
+
+  /// Default radius of the 'SelectionOverlay'.
+  static const double _defaultSelectionOverlayRadius = 8;
+
+  @override
+  Widget build(BuildContext context) {
+    const Radius radius = Radius.circular(_defaultSelectionOverlayRadius);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: Container(
+        margin: EdgeInsetsDirectional.only(
+          start: capStartEdge ? _defaultSelectionOverlayHorizontalMargin : 0,
+          end: capEndEdge ? _defaultSelectionOverlayHorizontalMargin : 0,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadiusDirectional.horizontal(
+            start: capStartEdge ? radius : Radius.zero,
+            end: capEndEdge ? radius : Radius.zero,
+          ),
+          color: CupertinoDynamicColor.resolve(background, context),
+        ),
+      ),
+    );
   }
 }

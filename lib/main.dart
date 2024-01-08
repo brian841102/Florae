@@ -196,21 +196,16 @@ class FloraeApp extends StatelessWidget {
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ButtonStyle(
               foregroundColor: const MaterialStatePropertyAll(Colors.white),
-              overlayColor: MaterialStatePropertyAll(Colors.black.withOpacity(0.2)),
+              overlayColor: MaterialStatePropertyAll(Colors.black.withOpacity(0.1)),
               backgroundColor: const MaterialStatePropertyAll(Color.fromARGB(255, 30, 107, 63)),
               shape: MaterialStatePropertyAll(
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
               elevation: MaterialStateProperty.resolveWith<double>((Set<MaterialState> states) {
                 if (states.contains(MaterialState.pressed)) return 0.0; // Elevation when pressed
                 else return 0.0; // Elevation when not pressed
               }),
             ),
           ),
-          // outlinedButtonTheme: OutlinedButtonThemeData(
-          //   style: ButtonStyle( 
-          //     //overlayColor: MaterialStatePropertyAll(Colors.black.withOpacity(0.2)),
-          //   ),
-          // ),
           cardTheme: const CardTheme(
             surfaceTintColor: Colors.white,
             color: Colors.white,
