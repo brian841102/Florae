@@ -5,6 +5,7 @@
 // See also https://docs.objectbox.io/getting-started#generate-objectbox-code
 
 // ignore_for_file: camel_case_types
+// coverage:ignore-file
 
 import 'dart:typed_data';
 
@@ -195,6 +196,7 @@ ModelDefinition getObjectBoxModel() {
           final object = Plant(
               name: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               location: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 8),
               description: const fb.StringReader(asciiOptimization: true)
@@ -202,8 +204,7 @@ ModelDefinition getObjectBoxModel() {
               createdAt: DateTime.fromMillisecondsSinceEpoch(
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0)),
               picture: const fb.StringReader(asciiOptimization: true)
-                  .vTableGetNullable(buffer, rootOffset, 14))
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+                  .vTableGetNullable(buffer, rootOffset, 14));
           InternalToManyAccess.setRelInfo(object.cares, store,
               RelInfo<Plant>.toMany(1, object.id), store.box<Plant>());
           return object;

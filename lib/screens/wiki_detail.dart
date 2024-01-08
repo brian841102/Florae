@@ -154,11 +154,9 @@ class _WikiDetailState extends State<WikiDetail> {
             unselectedLabelColor: Theme.of(context).colorScheme.primary,
             //unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
             indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: darkTeal.withOpacity(0.9), //Colors.white,
-              boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.6), blurRadius: 5)
-              ],
+              borderRadius: BorderRadius.circular(12),
+              color: darkTeal.withOpacity(0.9), //Colors.white,
+              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.6), blurRadius: 5)],
             ),
             tabs: const [
               Tab(child: Text('基本資料', style: TextStyle(fontFamily: 'MPLUS'))),
@@ -538,7 +536,7 @@ class _WikiDetailState extends State<WikiDetail> {
                               ],
                             ),
                           ),
-                          Container(width: 1,height: 72, color: darkTeal.withOpacity(0.4)),
+                          Container(width: 1, height: 72, color: darkTeal.withOpacity(0.4)),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: Column(
@@ -550,7 +548,7 @@ class _WikiDetailState extends State<WikiDetail> {
                                     '181 mm',
                                     style: TextStyle(
                                       color: Theme.of(context).colorScheme.primary,
-                                      fontSize:  13,
+                                      fontSize: 13,
                                       fontFamily: 'MPLUS',
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -561,7 +559,7 @@ class _WikiDetailState extends State<WikiDetail> {
                                     '河野博士',
                                     style: TextStyle(
                                       color: Theme.of(context).colorScheme.primary,
-                                      fontSize:  13,
+                                      fontSize: 13,
                                       fontFamily: 'MPLUS',
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -572,7 +570,7 @@ class _WikiDetailState extends State<WikiDetail> {
                                     '2023',
                                     style: TextStyle(
                                       color: Theme.of(context).colorScheme.primary,
-                                      fontSize:  13,
+                                      fontSize: 13,
                                       fontFamily: 'MPLUS',
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -591,7 +589,7 @@ class _WikiDetailState extends State<WikiDetail> {
                                         '4.5 顆星',
                                         style: TextStyle(
                                           color: Theme.of(context).colorScheme.primary,
-                                          fontSize:  13,
+                                          fontSize: 13,
                                           fontFamily: 'MPLUS',
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -621,73 +619,31 @@ class _WikiDetailState extends State<WikiDetail> {
     String? popularity = popularities[bt.popularity];
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
-          color: const Color.fromRGBO(255, 133, 161, 1.0),
-          child: SizedBox(
-            height: 46,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  height: double.maxFinite,
-                  width: double.maxFinite,
-                  child: const Text(
-                    '使用尺規進行比較',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontFamily: 'MPLUS',
-                      letterSpacing: 2,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  // decoration: BoxDecoration(
-                  //   color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
-                  //   borderRadius: BorderRadius.circular(10.0),
-                  //   //border: Border.all(width: 1),
-                  //   boxShadow: const [
-                  //     BoxShadow(
-                  //       color: Colors.grey,
-                  //       offset: Offset(0.0, 5.0),
-                  //       blurRadius: 1,
-                  //     ),
-                  //     BoxShadow(
-                  //       color: Colors.grey,
-                  //       offset: Offset(2.0, 0.0),
-                  //       blurRadius: 1,
-                  //     ),
-                  //     BoxShadow(
-                  //       color: Colors.grey,
-                  //       offset: Offset(-2.0, 0.0),
-                  //       blurRadius: 1,
-                  //     ),
-                  //   ],
-                  // ),
-                ),
-                SizedBox(
-                  height: double.maxFinite,
-                  width: double.maxFinite,
-                  child: OutlinedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SizeCompare(index: widget.index)),
-                      );
-                    },
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.transparent),
-                      splashFactory: NoSplash.splashFactory,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
-                    ),
-                    child: const Text(''),
-                  ),
-                ),
-              ],
+        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 4),
+        child: SizedBox(
+          height: 46,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SizeCompare(index: widget.index)),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              // splashFactory: NoSplash.splashFactory,
+              backgroundColor: const Color.fromRGBO(255, 133, 161, 1.0),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
+            ),
+            child: const Text(
+              '使用尺規進行比較',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontFamily: 'MPLUS',
+                letterSpacing: 2,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
             ),
           ),
         ),
@@ -982,15 +938,13 @@ class _WikiDetailState extends State<WikiDetail> {
                                       ..color = Colors.black,
                                   ),
                                 ),
-                                Text(
-                                  bt.name,//widget.title,
-                                  style: const TextStyle(
-                                    color: Colors.yellow,
-                                    fontSize: 23,
-                                    letterSpacing: 4,
-                                    fontFamily: 'XinYi',
-                                  )
-                                ),
+                                Text(bt.name, //widget.title,
+                                    style: const TextStyle(
+                                      color: Colors.yellow,
+                                      fontSize: 23,
+                                      letterSpacing: 4,
+                                      fontFamily: 'XinYi',
+                                    )),
                               ],
                             ),
                             SizedBox(
