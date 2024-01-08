@@ -134,103 +134,116 @@ class FloraeApp extends StatelessWidget {
           };
 
           return widget!;
-          },
+        },
         supportedLocales: const [
           Locale('en'), // English
           Locale('es'), // Spanish
           Locale('fr'), // French
         ],
         theme: ThemeData(
-            useMaterial3: true,
-            //primaryColor: Colors.teal,
-            brightness: Brightness.light,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: darkTeal,
-            ),
-            appBarTheme: const AppBarTheme(
-              backgroundColor: Colors.white,
-              surfaceTintColor: Colors.white,
-              titleTextStyle: TextStyle(
+          useMaterial3: true,
+          //primaryColor: Colors.teal,
+          brightness: Brightness.light,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: darkTeal,
+          ),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.transparent,
+            titleTextStyle: TextStyle(
                 color: Colors.black54,
                 fontSize: 30,
                 fontWeight: FontWeight.w800,
                 fontFamily: "NotoSans"),
-              elevation: 0,
-            ),
-            navigationBarTheme: NavigationBarThemeData(
-              iconTheme: MaterialStateProperty.all<IconThemeData>(
+            elevation: 0,
+          ),
+          navigationBarTheme: NavigationBarThemeData(
+            iconTheme: MaterialStateProperty.all<IconThemeData>(
                 const IconThemeData(color: darkTeal)
               ),
-              labelTextStyle: MaterialStateProperty.resolveWith((state) {
-                if (state.contains(MaterialState.selected)) {
-                  return const TextStyle(color: darkTeal, fontSize: 12);
-                } else {
-                  return const TextStyle(color: Colors.black, fontSize: 12);
-                }
+            labelTextStyle: MaterialStateProperty.resolveWith((state) {
+              if (state.contains(MaterialState.selected)) {
+                return const TextStyle(color: darkTeal, fontSize: 12);
+              } else {
+                return const TextStyle(color: Colors.black, fontSize: 12);
+              }
+            }),
+            backgroundColor: Colors.white,
+            shadowColor: Colors.black,
+            surfaceTintColor: Colors.white,
+          ),
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            foregroundColor: Colors.white,
+            backgroundColor: const Color.fromARGB(255, 0, 155, 115),
+            splashColor: Colors.black.withOpacity(0.2),
+          ),
+          dialogTheme: DialogTheme(
+            elevation: 10,
+            surfaceTintColor: Colors.white,
+            backgroundColor: Colors.white,
+            shadowColor: Colors.black,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            actionsPadding: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: ButtonStyle(
+              foregroundColor: const MaterialStatePropertyAll(Colors.black),
+              overlayColor: MaterialStatePropertyAll(darkTeal.withOpacity(0.2)),
+            ),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+              foregroundColor: const MaterialStatePropertyAll(Colors.white),
+              overlayColor: MaterialStatePropertyAll(Color.fromARGB(255, 24, 83, 49)),
+              backgroundColor: const MaterialStatePropertyAll(Color.fromARGB(255, 30, 107, 63)),
+              shape: MaterialStatePropertyAll(
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+              elevation: MaterialStateProperty.resolveWith<double>((Set<MaterialState> states) {
+                if (states.contains(MaterialState.pressed)) return 1.0; // Elevation when pressed
+                else return 5.0; // Elevation when not pressed
               }),
-              backgroundColor: Colors.white,
-              shadowColor: Colors.black,
-              surfaceTintColor: Colors.white,
             ),
-            floatingActionButtonTheme: FloatingActionButtonThemeData(
-              foregroundColor: Colors.white,
-              backgroundColor: const Color.fromARGB(255, 0, 155, 115),
-              splashColor: Colors.black.withOpacity(0.2),
-            ),
-            dialogTheme: DialogTheme(
-              elevation: 10,
-              surfaceTintColor:  Colors.white,
-              backgroundColor:  Colors.white,
-              shadowColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-              actionsPadding: const EdgeInsets.only(left:16, right:16, bottom:12),
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: ButtonStyle(
-                foregroundColor: const MaterialStatePropertyAll(Colors.black),
-                overlayColor: MaterialStatePropertyAll(darkTeal.withOpacity(0.2)),
-              ),
-            ),
-            cardTheme: const CardTheme(
-              surfaceTintColor: Colors.white,
-              color: Colors.white,
-            ),
-            listTileTheme: const ListTileThemeData(
-              tileColor: Colors.white,
-              selectedTileColor: Colors.white,
-            ),
-            inputDecorationTheme: InputDecorationTheme(
-              focusedBorder: const UnderlineInputBorder(
+          ),
+          cardTheme: const CardTheme(
+            surfaceTintColor: Colors.white,
+            color: Colors.white,
+          ),
+          listTileTheme: const ListTileThemeData(
+            tileColor: Colors.white,
+            selectedTileColor: Colors.white,
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+            focusedBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(width: 2.0, color: Colors.teal)),
-              enabledBorder: const UnderlineInputBorder(),
-              floatingLabelStyle: MaterialStateTextStyle.resolveWith(
-                (Set<MaterialState> states) {
-                  final Color color = states.contains(MaterialState.error)
+            enabledBorder: const UnderlineInputBorder(),
+            floatingLabelStyle: MaterialStateTextStyle.resolveWith(
+              (Set<MaterialState> states) {
+                final Color color = states.contains(MaterialState.error)
                     ? Theme.of(context).colorScheme.error
                     : Colors.teal;
-                  return TextStyle(color: color, letterSpacing: 1.2);
-                },
-              ),
-              fillColor: Colors.teal,
-              focusColor: Colors.teal,
-              hoverColor: Colors.teal,
+                return TextStyle(color: color, letterSpacing: 1.2);
+              },
             ),
-            textSelectionTheme: const TextSelectionThemeData(
-              cursorColor: Colors.teal,
-              selectionColor: Colors.teal,
-              selectionHandleColor: Colors.teal,
-            ),
-            //splashFactory: InkSparkle.splashFactory,
-            //primarySwatch: Colors.teal,
-            fontFamily: "NotoSans",
-            scaffoldBackgroundColor: const Color.fromARGB(255, 240, 243, 240),
-            snackBarTheme: SnackBarThemeData(
-              contentTextStyle: TextStyle(color: Colors.green.shade500),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              behavior: SnackBarBehavior.floating,
-            ),
+            fillColor: Colors.teal,
+            focusColor: Colors.teal,
+            hoverColor: Colors.teal,
+          ),
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: Colors.teal,
+            selectionColor: Colors.teal,
+            selectionHandleColor: Colors.teal,
+          ),
+                    //splashFactory: InkSparkle.splashFactory,
+          //primarySwatch: Colors.teal,
+          fontFamily: "NotoSans",
+          scaffoldBackgroundColor: const Color.fromARGB(255, 240, 243, 240),
+          snackBarTheme: SnackBarThemeData(
+            contentTextStyle: TextStyle(color: Colors.green.shade500),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            behavior: SnackBarBehavior.floating,
+          ),
         ),
         debugShowCheckedModeBanner: false,
         home: const MyHomePage(title: 'Today'));

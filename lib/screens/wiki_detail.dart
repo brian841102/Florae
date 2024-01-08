@@ -884,7 +884,6 @@ class _WikiDetailState extends State<WikiDetail> {
                 },
               ),
               backgroundColor: lightTeal.withOpacity(titleOpacity),
-              surfaceTintColor: Colors.transparent,
               elevation: 0.0,
               title: Opacity(
                 opacity: titleOpacity,

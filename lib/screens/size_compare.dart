@@ -171,11 +171,11 @@ class _SizeCompareState extends State<SizeCompare> {
             icon: const Icon(Icons.question_mark_rounded, size: 24),
             text: Text("教學",
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-                fontFamily: "MPLUS",
-                fontSize: 14,
-                letterSpacing: 2,
-                fontWeight: FontWeight.w500
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontFamily: "MPLUS",
+                  fontSize: 14,
+                  letterSpacing: 2,
+                  fontWeight: FontWeight.w500
               ),
             ),
           ),
@@ -184,11 +184,11 @@ class _SizeCompareState extends State<SizeCompare> {
             icon: const Icon(UniconsLine.ruler, size: 24),
             text: Text("校正",
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-                fontFamily: "MPLUS",
-                fontSize: 14,
-                letterSpacing: 2,
-                fontWeight: FontWeight.w500
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontFamily: "MPLUS",
+                  fontSize: 14,
+                  letterSpacing: 2,
+                  fontWeight: FontWeight.w500
               ),
             ),
           ),
@@ -197,11 +197,11 @@ class _SizeCompareState extends State<SizeCompare> {
             icon: const Icon(UniconsLine.camera, size: 24),
             text: Text("拍攝",
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-                fontFamily: "MPLUS",
-                fontSize: 14,
-                letterSpacing: 2,
-                fontWeight: FontWeight.w500
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontFamily: "MPLUS",
+                  fontSize: 14,
+                  letterSpacing: 2,
+                  fontWeight: FontWeight.w500
               ),
             ),
           ),
@@ -246,31 +246,81 @@ class _SizeCompareState extends State<SizeCompare> {
     );
   }
 
-  _showGuide(BuildContext context) {//TODO: switch to showModalBottomSheet
-    showDialog<void>(
+  _showGuide(BuildContext context) {
+    // showDialog<void>(
+    //   context: context,
+    //   builder: (context) {
+    //     return AlertDialog(
+    //       contentPadding: const EdgeInsets.only(left: 20, right: 20,top: 16),
+    //       content: const SizedBox(
+    //         height: 85,
+    //         child: Column(
+    //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //           crossAxisAlignment: CrossAxisAlignment.center,
+    //           children: [
+    //             Text("長按：鎖定/解除鎖定"),
+    //             Text("雙擊：重設視圖"),
+    //             Text("單指拖動：移動"),
+    //             Text("雙指拖動：旋轉/縮放"),
+    //           ],
+    //         ),
+    //       ),
+    //       actions: [
+    //         TextButton(
+    //           onPressed: () => Navigator.of(context).pop(),
+    //           child: const Text('Close'),
+    //         ),
+    //       ],
+    //     );
+    //   },
+    // );
+    showModalBottomSheet<void>(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          contentPadding: const EdgeInsets.only(left: 20, right: 20,top: 16),
-          content: const SizedBox(
-            height: 85,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 220,
+          width: double.maxFinite,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("長按：鎖定/解除鎖定"),
-                Text("雙擊：重設視圖"),
-                Text("單指拖動：移動"),
-                Text("雙指拖動：旋轉/縮放"),
+                Container(
+                  height: 6,
+                  width: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3.0),
+                    color: Colors.grey[600],
+                  ),
+                ),
+                const Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text("長按：鎖定/解除鎖定", style: TextStyle(fontFamily: "MPLUS")),
+                      Text("雙擊：重設視圖", style: TextStyle(fontFamily: "MPLUS")),
+                      Text("單指拖動：移動", style: TextStyle(fontFamily: "MPLUS")),
+                      Text("雙指拖動：旋轉/縮放", style: TextStyle(fontFamily: "MPLUS")),
+                    ],
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 120, vertical: 10),
+                  ),
+                  child: const Text(
+                    '返回',
+                    style: TextStyle(
+                      fontFamily: "MPLUS",  
+                      fontSize: 16,
+                      letterSpacing: 6,
+                      fontWeight: FontWeight.w500
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
-            ),
-          ],
         );
       },
     );
