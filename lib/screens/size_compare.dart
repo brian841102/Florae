@@ -4,6 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicons/unicons.dart';
 import 'plugins/ruler.dart';
 import 'plugins/expandable_fab.dart';
+import 'plugins/bottom_picker/bottom_picker.dart';
+import 'plugins/bottom_picker/resources/arrays.dart';
 import '../main.dart';
 import '../data/beetle_wiki.dart';
 
@@ -33,6 +35,17 @@ class _SizeCompareState extends State<SizeCompare> {
   double _offsetY = 0.0;
   double _lastUpdatePointY = 0.0;
   double _deltaPointY = 0.0;
+
+  final countryList = [
+    Text('Algeria 🇩🇿'),
+    Text('Maroco 🇲🇦'),
+    Text('Tunisia 🇹🇳'),
+    Text('Palestine 🇵🇸'),
+    Text('Egypt 🇪🇬'),
+    Text('Syria 🇸🇾'),
+    Text('Irak 🇮🇶'),
+    Text('Mauritania 🇲🇷')
+  ];
 
   bool lock = false;
   @override
@@ -180,7 +193,7 @@ class _SizeCompareState extends State<SizeCompare> {
             ),
           ),
           ActionButton(
-            onPressed: () => print("2"), //_showAction(context, 1),
+            onPressed: () => _showNumberPicker(context, countryList),//print("2"),
             icon: const Icon(UniconsLine.ruler, size: 24),
             text: Text("校正",
               style: TextStyle(
@@ -324,5 +337,38 @@ class _SizeCompareState extends State<SizeCompare> {
         );
       },
     );
+  }
+
+  _showNumberPicker(BuildContext context, List<Text> items) {
+    BottomPicker(
+      displayCloseIcon: false,
+      dismissable: true,
+      items: items,
+      title: '設定尺規係數',
+      titleStyle: const TextStyle(
+        fontFamily: "MPLUS",
+        fontSize: 18,
+        letterSpacing: 2,
+        fontWeight: FontWeight.w500
+      ),
+      titleAlignment: CrossAxisAlignment.center,
+      //backgroundColor: Colors.transparent,//Theme.of(context).colorScheme.surface,
+      bottomPickerTheme: BottomPickerTheme.morningSalad,
+      onSubmit: (index) {
+        print(index);
+      },
+      displayButtonIcon: false,
+      displaySubmitButton: true,
+      buttonText: '儲存',
+      buttonTextStyle: const TextStyle(
+        color: Colors.white,
+        fontFamily: "MPLUS",  
+        fontSize: 16,
+        letterSpacing: 6,
+        fontWeight: FontWeight.w500
+      ),
+      buttonWidth: 240,
+      buttonSingleColor: Theme.of(context).colorScheme.primary,
+    ).show(context);
   }
 }

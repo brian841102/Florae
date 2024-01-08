@@ -235,7 +235,7 @@ class FloraeApp extends StatelessWidget {
             selectionColor: Colors.teal,
             selectionHandleColor: Colors.teal,
           ),
-                    //splashFactory: InkSparkle.splashFactory,
+          //splashFactory: InkSparkle.splashFactory,
           //primarySwatch: Colors.teal,
           fontFamily: "NotoSans",
           scaffoldBackgroundColor: const Color.fromARGB(255, 240, 243, 240),
