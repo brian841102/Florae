@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'plugins/ruler.dart';
 import 'plugins/expandable_fab.dart';
 import 'plugins/bottom_picker/bottom_picker.dart';
-import 'plugins/bottom_picker/resources/arrays.dart';
 import '../main.dart';
 import '../data/beetle_wiki.dart';
 
@@ -38,7 +37,8 @@ class _SizeCompareState extends State<SizeCompare> {
   double _deltaPointY = 0.0;
 
   // Generating values from 0.5 to 1.5 with a step of 0.01
-  final decimalList = List.generate(101, (index) => Text('${(index + 50) / 100}')).toList();
+  final decimalList = List.generate(101, (index) => Text('${(index + 50) / 100}',
+                      style: const TextStyle(fontSize: 14),)).toList();
 
   bool lock = false;
   @override
@@ -363,52 +363,7 @@ class _SizeCompareState extends State<SizeCompare> {
       buttonSingleColor: Colors.transparent,
       selectedItemIndex: 5,
       pickerTextStyle: const TextStyle(fontSize: 18, color: Colors.black),
-      selectionOverlay: const CupertinoPickerSelectionOverlay(),
     ).show(context);
   }
 }
 
-class CupertinoPickerSelectionOverlay extends StatelessWidget {
-  const CupertinoPickerSelectionOverlay({
-    super.key,
-    this.background = CupertinoColors.systemFill,
-    this.capStartEdge = true,
-    this.capEndEdge = true,
-  });
-
-  /// Whether to use the default use rounded corners and margin on the start side.
-  final bool capStartEdge;
-
-  /// Whether to use the default use rounded corners and margin on the end side.
-  final bool capEndEdge;
-
-  final Color background;
-
-  /// Default margin of the 'SelectionOverlay'.
-  static const double _defaultSelectionOverlayHorizontalMargin = 120;
-
-  /// Default radius of the 'SelectionOverlay'.
-  static const double _defaultSelectionOverlayRadius = 8;
-
-  @override
-  Widget build(BuildContext context) {
-    const Radius radius = Radius.circular(_defaultSelectionOverlayRadius);
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0),
-      child: Container(
-        margin: EdgeInsetsDirectional.only(
-          start: capStartEdge ? _defaultSelectionOverlayHorizontalMargin : 0,
-          end: capEndEdge ? _defaultSelectionOverlayHorizontalMargin : 0,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadiusDirectional.horizontal(
-            start: capStartEdge ? radius : Radius.zero,
-            end: capEndEdge ? radius : Radius.zero,
-          ),
-          color: CupertinoDynamicColor.resolve(background, context),
-        ),
-      ),
-    );
-  }
-}

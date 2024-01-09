@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import '../resources/custom_cupertino_picker.dart';
 
 class SimplePicker extends StatelessWidget {
   final int selectedItemIndex;
@@ -26,9 +27,9 @@ class SimplePicker extends StatelessWidget {
           pickerTextStyle: textStyle,
         ),
       ),
-      child: CupertinoPicker(
+      child: CustomCupertinoPicker(
         itemExtent: itemExtent,
-        selectionOverlay: selectionOverlay ?? const CupertinoPickerDefaultSelectionOverlay(),
+        selectionOverlay: selectionOverlay ?? const CupertinoPickerCustomSelectionOverlay(),
         scrollController: FixedExtentScrollController(
           initialItem: selectedItemIndex,
         ),

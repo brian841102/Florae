@@ -55,7 +55,7 @@ class BottomPicker extends StatefulWidget {
       fontSize: 14,
       color: Colors.black,
     ),
-    this.itemExtent = 35.0,
+    this.itemExtent = 26.0,
     this.displayCloseIcon = true,
     this.closeIconColor = Colors.black,
     this.closeIconSize = 20,
