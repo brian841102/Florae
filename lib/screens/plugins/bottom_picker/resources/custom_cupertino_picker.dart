@@ -513,3 +513,16 @@ class _RenderCupertinoPickerSemantics extends RenderProxyBox {
     controller.removeListener(_handleScrollUpdate);
   }
 }
+
+class CustomListWheelScrollView extends ListWheelScrollView {
+  CustomListWheelScrollView({super.key, 
+  required super.itemExtent,
+  required super.children
+  });
+
+
+}
+
+//  double _getUntransformedPaintingCoordinateY(double layoutCoordinateY) {
+//     return layoutCoordinateY - _topScrollMarginExtent - offset.pixels + wheelOffset;
+//   }
