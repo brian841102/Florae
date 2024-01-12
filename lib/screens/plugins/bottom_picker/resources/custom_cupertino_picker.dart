@@ -515,14 +515,211 @@ class _RenderCupertinoPickerSemantics extends RenderProxyBox {
 }
 
 class CustomListWheelScrollView extends ListWheelScrollView {
-  CustomListWheelScrollView({super.key, 
-  required super.itemExtent,
-  required super.children
+  CustomListWheelScrollView({
+    super.key,
+    super.controller,
+    super.physics,
+    super.diameterRatio,
+    super.perspective,
+    super.offAxisFraction,
+    super.useMagnifier,
+    super.magnification,
+    super.overAndUnderCenterOpacity,
+    required super.itemExtent,
+    super.squeeze,
+    super.onSelectedItemChanged,
+    super.renderChildrenOutsideViewport,
+    super.clipBehavior,
+    required super.children,
+  });
+  //: super(key: key);
+
+  const CustomListWheelScrollView.useDelegate({
+    super.key,
+    super.controller,
+    super.physics,
+    super.diameterRatio,
+    super.perspective,
+    super.offAxisFraction,
+    super.useMagnifier,
+    super.magnification,
+    super.overAndUnderCenterOpacity,
+    required super.itemExtent,
+    super.squeeze,
+    super.onSelectedItemChanged,
+    super.renderChildrenOutsideViewport,
+    super.clipBehavior,
+    super.restorationId,
+    super.scrollBehavior,
+    required super.childDelegate,
+  }) : super.useDelegate();
+
+  @override
+  State<CustomListWheelScrollView> createState() => _CustomListWheelScrollViewState();
+}
+
+class _CustomListWheelScrollViewState extends State<CustomListWheelScrollView> {
+  int _lastReportedItemIndex = 0;
+  ScrollController? _backupController;
+
+  ScrollController get _effectiveController =>
+      widget.controller ?? (_backupController ??= FixedExtentScrollController());
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.controller is FixedExtentScrollController) {
+      final FixedExtentScrollController controller =
+          widget.controller! as FixedExtentScrollController;
+      _lastReportedItemIndex = controller.initialItem;
+    }
+  }
+
+  @override
+  void dispose() {
+    _backupController?.dispose();
+    super.dispose();
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification.depth == 0 &&
+        widget.onSelectedItemChanged != null &&
+        notification is ScrollUpdateNotification &&
+        notification.metrics is FixedExtentMetrics) {
+      final FixedExtentMetrics metrics = notification.metrics as FixedExtentMetrics;
+      final int currentItemIndex = metrics.itemIndex;
+      if (currentItemIndex != _lastReportedItemIndex) {
+        _lastReportedItemIndex = currentItemIndex;
+        final int trueIndex = widget.childDelegate.trueIndexOf(currentItemIndex);
+        widget.onSelectedItemChanged!(trueIndex);
+      }
+    }
+    return false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return NotificationListener<ScrollNotification>(
+      onNotification: _handleScrollNotification,
+      child: _FixedExtentScrollable(
+        controller: _effectiveController,
+        physics: widget.physics,
+        itemExtent: widget.itemExtent,
+        restorationId: widget.restorationId,
+        scrollBehavior:
+            widget.scrollBehavior ?? ScrollConfiguration.of(context).copyWith(scrollbars: false),
+        viewportBuilder: (BuildContext context, ViewportOffset offset) {
+          return CustomListWheelViewport(
+            diameterRatio: widget.diameterRatio,
+            perspective: widget.perspective,
+            offAxisFraction: widget.offAxisFraction,
+            useMagnifier: widget.useMagnifier,
+            magnification: widget.magnification,
+            overAndUnderCenterOpacity: widget.overAndUnderCenterOpacity,
+            itemExtent: widget.itemExtent,
+            squeeze: widget.squeeze,
+            renderChildrenOutsideViewport: widget.renderChildrenOutsideViewport,
+            offset: offset,
+            childDelegate: widget.childDelegate,
+            clipBehavior: widget.clipBehavior,
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _FixedExtentScrollable extends Scrollable {
+  const _FixedExtentScrollable({
+    super.controller,
+    super.physics,
+    required this.itemExtent,
+    required super.viewportBuilder,
+    super.restorationId,
+    super.scrollBehavior,
   });
 
+  final double itemExtent;
 
+  @override
+  _FixedExtentScrollableState createState() => _FixedExtentScrollableState();
+}
+
+class _FixedExtentScrollableState extends ScrollableState {
+  double get itemExtent {
+    // Downcast because only _FixedExtentScrollable can make _FixedExtentScrollableState.
+    final _FixedExtentScrollable actualWidget = widget as _FixedExtentScrollable;
+    return actualWidget.itemExtent;
+  }
 }
 
 //  double _getUntransformedPaintingCoordinateY(double layoutCoordinateY) {
 //     return layoutCoordinateY - _topScrollMarginExtent - offset.pixels + wheelOffset;
 //   }
+
+class CustomListWheelViewport extends ListWheelViewport {
+  const CustomListWheelViewport({
+    super.key,
+    super.diameterRatio,
+    super.perspective,
+    super.offAxisFraction,
+    super.useMagnifier,
+    super.magnification,
+    super.overAndUnderCenterOpacity,
+    required super.itemExtent,
+    super.squeeze,
+    super.renderChildrenOutsideViewport,
+    required super.offset,
+    required super.childDelegate,
+    super.clipBehavior,
+  });
+
+  @override
+  RenderListWheelViewport createRenderObject(BuildContext context) {
+    final ListWheelElement childManager = context as ListWheelElement;
+    return CustomRenderListWheelViewport(
+      childManager: childManager,
+      offset: offset,
+      diameterRatio: diameterRatio,
+      perspective: perspective,
+      offAxisFraction: offAxisFraction,
+      useMagnifier: useMagnifier,
+      magnification: magnification,
+      overAndUnderCenterOpacity: overAndUnderCenterOpacity,
+      itemExtent: itemExtent,
+      squeeze: squeeze,
+      renderChildrenOutsideViewport: renderChildrenOutsideViewport,
+      clipBehavior: clipBehavior,
+    );
+  }
+}
+
+class CustomRenderListWheelViewport extends RenderListWheelViewport {
+  final wheelOffset = 12;
+  CustomRenderListWheelViewport({
+    required super.childManager,
+    required super.offset,
+    super.diameterRatio,
+    super.perspective,
+    super.offAxisFraction,
+    super.useMagnifier,
+    super.magnification,
+    super.overAndUnderCenterOpacity,
+    required super.itemExtent,
+    super.squeeze,
+    super.renderChildrenOutsideViewport,
+    super.clipBehavior,
+    super.children,
+  });
+
+  double get _topScrollMarginExtent {
+    assert(hasSize);
+    // Consider adding alignment options other than center.
+    return -size.height / 2.0 + itemExtent / 2.0;
+  }
+  @override @mustCallSuper
+  double _getUntransformedPaintingCoordinateY(double layoutCoordinateY) {
+    return layoutCoordinateY - _topScrollMarginExtent - offset.pixels +  wheelOffset ;
+  }
+  
+}
