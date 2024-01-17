@@ -568,11 +568,11 @@ class _BottomPickerState extends State<BottomPicker> {
         child: Column(
           children: [
             Container(
-                  height: 6,
+                  height: 5,
                   width: 60,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(3.0),
-                    color: Colors.grey[600],
+                    color: Colors.grey[500],
                   ),
             ),
             Padding(
