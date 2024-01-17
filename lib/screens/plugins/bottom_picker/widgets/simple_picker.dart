@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart' hide FixedExtentScrollController;
 import '../resources/custom_cupertino_picker.dart';
+import '../resources/custom_list_wheel_scroll_view.dart';
 
 class SimplePicker extends StatelessWidget {
   final int selectedItemIndex;
