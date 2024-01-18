@@ -36,10 +36,6 @@ class _SizeCompareState extends State<SizeCompare> {
   double _lastUpdatePointY = 0.0;
   double _deltaPointY = 0.0;
 
-  // Generating values from 0.5 to 1.5 with a step of 0.01
-  final decimalList = List.generate(101, (index) => Text('${(index + 50) / 100}',
-                      style: const TextStyle(fontSize: 14),)).toList();
-
   bool lock = false;
   @override
   void initState() {
@@ -62,6 +58,18 @@ class _SizeCompareState extends State<SizeCompare> {
   @override
   Widget build(BuildContext context) {
     BeetleWiki bt = beetleWikiBox.getAt(widget.index);
+    final double originalScale = MediaQuery.of(context).textScaleFactor;
+    // Generating values from 0.5 to 1.5 with a step of 0.01
+    final decimalList = List.generate(101, (index) {
+      double number = (index + 50) / 100;
+      String formattedNumber = number.toStringAsFixed(2);
+
+      return Text(
+        formattedNumber,
+        style: TextStyle(fontSize: 17 / originalScale),
+      );
+    }).toList();
+
     return Scaffold(
       body: GestureDetector(
         // onVerticalDragUpdate: (details) {
@@ -140,12 +148,15 @@ class _SizeCompareState extends State<SizeCompare> {
               children: [
                 Transform(
                   transform: Matrix4.identity()
-                    ..translate(_offsetX+MediaQuery.of(context).size.width * 0.5,
-                        _offsetY+MediaQuery.of(context).size.height * 0.342)
+                    ..translate(_offsetX + MediaQuery.of(context).size.width * 0.5,
+                        _offsetY + MediaQuery.of(context).size.height * 0.342)
                     ..rotateZ(_rotation)
                     ..scale(_scale)
-                    ..translate(-MediaQuery.of(context).size.width * 0.5,
-                        -MediaQuery.of(context).size.height * occupyRatio * 0.5),//setup rotate origin
+                    ..translate(
+                        -MediaQuery.of(context).size.width * 0.5,
+                        -MediaQuery.of(context).size.height *
+                            occupyRatio *
+                            0.5), //setup rotate origin
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height * occupyRatio,
                     width: double.maxFinite,
@@ -175,40 +186,40 @@ class _SizeCompareState extends State<SizeCompare> {
             onPressed: () => _showGuide(context),
             // icon: const Icon(Icons.arrow_back_rounded, size: 24),
             icon: const Icon(Icons.question_mark_rounded, size: 24),
-            text: Text("教學",
+            text: Text(
+              "教學",
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontFamily: "MPLUS",
                   fontSize: 14,
                   letterSpacing: 2,
-                  fontWeight: FontWeight.w500
-              ),
+                  fontWeight: FontWeight.w500),
             ),
           ),
           ActionButton(
             onPressed: () => _showNumberPicker(context, decimalList),
             icon: const Icon(UniconsLine.ruler, size: 24),
-            text: Text("校正",
+            text: Text(
+              "校正",
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontFamily: "MPLUS",
                   fontSize: 14,
                   letterSpacing: 2,
-                  fontWeight: FontWeight.w500
-              ),
+                  fontWeight: FontWeight.w500),
             ),
           ),
           ActionButton(
             onPressed: () => print("3"), //_showAction(context, 2),
             icon: const Icon(UniconsLine.camera, size: 24),
-            text: Text("拍攝",
+            text: Text(
+              "拍攝",
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontFamily: "MPLUS",
                   fontSize: 14,
                   letterSpacing: 2,
-                  fontWeight: FontWeight.w500
-              ),
+                  fontWeight: FontWeight.w500),
             ),
           ),
         ],
@@ -228,7 +239,8 @@ class _SizeCompareState extends State<SizeCompare> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(lock == false ? Icons.lock_outline_rounded : Icons.lock_open_rounded,
+          Icon(
+            lock == false ? Icons.lock_outline_rounded : Icons.lock_open_rounded,
             color: Colors.white,
             size: 24,
           ),
@@ -302,10 +314,10 @@ class _SizeCompareState extends State<SizeCompare> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Text("長按：鎖定/解除鎖定", style: TextStyle(fontFamily: "MPLUS")),
-                      Text("雙擊：重設視圖", style: TextStyle(fontFamily: "MPLUS")),
-                      Text("單指拖動：移動", style: TextStyle(fontFamily: "MPLUS")),
-                      Text("雙指拖動：旋轉/縮放", style: TextStyle(fontFamily: "MPLUS")),
+                      Text("長按：鎖定/解除鎖定"),//, style: TextStyle(fontFamily: "MPLUS")),
+                      Text("雙擊：重設視圖"),//, style: TextStyle(fontFamily: "MPLUS")),
+                      Text("單指拖動：移動"),//, style: TextStyle(fontFamily: "MPLUS")),
+                      Text("雙指拖動：旋轉/縮放"),//, style: TextStyle(fontFamily: "MPLUS")),
                     ],
                   ),
                 ),
@@ -344,9 +356,9 @@ class _SizeCompareState extends State<SizeCompare> {
       dismissable: true,
       items: items,
       title: '設定尺規係數',
-      titleStyle: const TextStyle(
-          fontFamily: "MPLUS", fontSize: 18, letterSpacing: 2, fontWeight: FontWeight.w500),
+      titleStyle: const TextStyle(fontSize: 18, letterSpacing: 2, fontWeight: FontWeight.w600),
       titleAlignment: CrossAxisAlignment.center,
+      titlePadding: const EdgeInsets.only(bottom: 12),
       onSubmit: (index) {
         print(index);
       },
@@ -358,12 +370,11 @@ class _SizeCompareState extends State<SizeCompare> {
           fontFamily: "MPLUS",
           fontSize: 16,
           letterSpacing: 6,
-          fontWeight: FontWeight.w500),
+          fontWeight: FontWeight.w600),
       buttonWidth: 240,
       buttonSingleColor: Colors.transparent,
-      selectedItemIndex: 5,
+      selectedItemIndex: 50,
       pickerTextStyle: const TextStyle(fontSize: 18, color: Colors.black),
     ).show(context);
   }
 }
-

@@ -546,7 +546,7 @@ class RenderListWheelViewport
   /// **untransformed plane's viewport painting coordinates**' y position given
   /// the current scroll offset.
   double _getUntransformedPaintingCoordinateY(double layoutCoordinateY) {
-    return layoutCoordinateY - _topScrollMarginExtent - offset.pixels + 6; //wheelOffset
+    return layoutCoordinateY - _topScrollMarginExtent - offset.pixels + 5.8; //wheelOffset
   }
 
   /// Given the _diameterRatio, return the largest absolute angle of the item

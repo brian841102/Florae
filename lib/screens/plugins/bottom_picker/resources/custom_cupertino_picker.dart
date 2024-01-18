@@ -383,11 +383,6 @@ class CupertinoPickerCustomSelectionOverlay extends StatelessWidget {
         ),
         color: CupertinoDynamicColor.resolve(background, context),
       ),
-      child: const Center(
-          child: Text(
-        '               x',
-        textAlign: TextAlign.center,
-      )),
     );
   }
 }

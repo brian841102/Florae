@@ -36,7 +36,7 @@ class BottomPickerButton extends StatelessWidget {
     return SizedBox(
       width: buttonWidth,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.only(top: 12, bottom: 20),
         child: ElevatedButton(
           onPressed: () => onClick.call(),
           style: ElevatedButton.styleFrom(

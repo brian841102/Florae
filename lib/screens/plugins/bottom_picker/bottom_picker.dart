@@ -55,7 +55,7 @@ class BottomPicker extends StatefulWidget {
       fontSize: 14,
       color: Colors.black,
     ),
-    this.itemExtent = 26.0,
+    this.itemExtent = 32.0,
     this.displayCloseIcon = true,
     this.closeIconColor = Colors.black,
     this.closeIconSize = 20,
@@ -580,7 +580,6 @@ class _BottomPickerState extends State<BottomPicker> {
                 top: 10,
                 left: 20,
                 right: 20,
-                //bottom: 20,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -736,10 +735,11 @@ class _BottomPickerState extends State<BottomPicker> {
                 style: widget.titleStyle,
               ),
             ),
-            Text(
-              widget.description,
-              style: widget.descriptionStyle,
-            ),
+            if (widget.description.isNotEmpty)
+              Text(
+                widget.description,
+                style: widget.descriptionStyle,
+              ),
           ],
         ),
       ),
