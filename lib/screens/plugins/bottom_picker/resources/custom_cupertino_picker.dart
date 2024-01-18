@@ -236,9 +236,10 @@ class _CustomCupertinoPickerState extends State<CustomCupertinoPicker> {
     final bool hasSuitableHapticHardware;
     switch (defaultTargetPlatform) {
       case TargetPlatform.iOS:
+      case TargetPlatform.android:
         hasSuitableHapticHardware = true;
         break;
-      case TargetPlatform.android:
+      //case TargetPlatform.android:
       case TargetPlatform.fuchsia:
       case TargetPlatform.linux:
       case TargetPlatform.macOS:
@@ -247,7 +248,12 @@ class _CustomCupertinoPickerState extends State<CustomCupertinoPicker> {
     }
     if (hasSuitableHapticHardware && index != _lastHapticIndex) {
       _lastHapticIndex = index;
-      HapticFeedback.selectionClick();
+      if (defaultTargetPlatform == TargetPlatform.iOS){
+        HapticFeedback.selectionClick();
+      }
+      else{
+        HapticFeedback.lightImpact();
+      }
     }
 
     widget.onSelectedItemChanged?.call(index);

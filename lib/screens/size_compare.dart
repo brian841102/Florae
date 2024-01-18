@@ -134,7 +134,7 @@ class _SizeCompareState extends State<SizeCompare> {
           //   behavior: SnackBarBehavior.floating,
           // );
           // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          HapticFeedback.heavyImpact();
+          HapticFeedback.vibrate();
           _showToast(lock);
           setState(() {
             lock = !lock;
@@ -356,7 +356,7 @@ class _SizeCompareState extends State<SizeCompare> {
       dismissable: true,
       items: items,
       title: '設定尺規係數',
-      titleStyle: const TextStyle(fontSize: 18, letterSpacing: 2, fontWeight: FontWeight.w600),
+      titleStyle: const TextStyle(fontSize: 18, letterSpacing: 2, fontWeight: FontWeight.bold),
       titleAlignment: CrossAxisAlignment.center,
       titlePadding: const EdgeInsets.only(bottom: 12),
       onSubmit: (index) {
@@ -370,7 +370,7 @@ class _SizeCompareState extends State<SizeCompare> {
           fontFamily: "MPLUS",
           fontSize: 16,
           letterSpacing: 6,
-          fontWeight: FontWeight.w600),
+          fontWeight: FontWeight.w500),
       buttonWidth: 240,
       buttonSingleColor: Colors.transparent,
       selectedItemIndex: 50,
