@@ -9,6 +9,7 @@ class SimplePicker extends StatelessWidget {
   final TextStyle textStyle;
   final double itemExtent;
   final Widget? selectionOverlay;
+  final bool cupertinoEnabled;
 
   const SimplePicker({
     Key? key,
@@ -18,25 +19,31 @@ class SimplePicker extends StatelessWidget {
     required this.textStyle,
     required this.itemExtent,
     this.selectionOverlay,
+    required this.cupertinoEnabled,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoTheme(
-      data: CupertinoThemeData(
-        textTheme: CupertinoTextThemeData(
-          pickerTextStyle: textStyle,
+    if (cupertinoEnabled){
+      return CupertinoTheme(
+        data: CupertinoThemeData(
+          textTheme: CupertinoTextThemeData(
+            pickerTextStyle: textStyle,
+          ),
         ),
-      ),
-      child: CustomCupertinoPicker(
-        itemExtent: itemExtent,
-        selectionOverlay: selectionOverlay ?? const CupertinoPickerCustomSelectionOverlay(),
-        scrollController: FixedExtentScrollController(
-          initialItem: selectedItemIndex,
+        child: CustomCupertinoPicker(
+          itemExtent: itemExtent,
+          selectionOverlay: selectionOverlay ?? const CupertinoPickerCustomSelectionOverlay(),
+          scrollController: FixedExtentScrollController(
+            initialItem: selectedItemIndex,
+          ),
+          onSelectedItemChanged: onChange,
+          children: items,
         ),
-        onSelectedItemChanged: onChange,
-        children: items,
-      ),
-    );
+      );
+    }
+    else{
+      return Text('haha');
+    }
   }
 }

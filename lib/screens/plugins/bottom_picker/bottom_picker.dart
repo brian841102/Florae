@@ -600,6 +600,7 @@ class _BottomPickerState extends State<BottomPicker> {
                       textStyle: widget.pickerTextStyle,
                       itemExtent: widget.itemExtent,
                       selectionOverlay: widget.selectionOverlay,
+                      cupertinoEnabled: false, //block cupeertino style picker
                     )
                   : widget.bottomPickerType == BottomPickerType.time
                       ? DatePicker(

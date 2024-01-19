@@ -7,6 +7,7 @@ ListWheelChildDelegate, FixedExtentMetrics, FixedExtentScrollPhysics;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:vibration/vibration.dart';
 import 'custom_list_wheel_scroll_view.dart';
 
 // Eyeballed values comparing with a native picker to produce the right
@@ -204,12 +205,23 @@ class CustomCupertinoPicker extends StatefulWidget {
 class _CustomCupertinoPickerState extends State<CustomCupertinoPicker> {
   int? _lastHapticIndex;
   FixedExtentScrollController? _controller;
+  late final bool hasSuitableHapticHardware;
 
   @override
   void initState() {
     super.initState();
     if (widget.scrollController == null) {
       _controller = FixedExtentScrollController();
+    }
+    // Only the haptic engine hardware on iOS devices would produce the
+    // intended effects.
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.iOS:
+      case TargetPlatform.android:
+        hasSuitableHapticHardware = true;
+        break;
+      default:
+        hasSuitableHapticHardware = false;
     }
   }
 
@@ -231,28 +243,14 @@ class _CustomCupertinoPickerState extends State<CustomCupertinoPicker> {
   }
 
   void _handleSelectedItemChanged(int index) {
-    // Only the haptic engine hardware on iOS devices would produce the
-    // intended effects.
-    final bool hasSuitableHapticHardware;
-    switch (defaultTargetPlatform) {
-      case TargetPlatform.iOS:
-      case TargetPlatform.android:
-        hasSuitableHapticHardware = true;
-        break;
-      //case TargetPlatform.android:
-      case TargetPlatform.fuchsia:
-      case TargetPlatform.linux:
-      case TargetPlatform.macOS:
-      case TargetPlatform.windows:
-        hasSuitableHapticHardware = false;
-    }
     if (hasSuitableHapticHardware && index != _lastHapticIndex) {
       _lastHapticIndex = index;
       if (defaultTargetPlatform == TargetPlatform.iOS){
         HapticFeedback.selectionClick();
       }
       else{
-        HapticFeedback.lightImpact();
+        Vibration.vibrate(duration: 40);
+        //HapticFeedback.lightImpact();
       }
     }
 
