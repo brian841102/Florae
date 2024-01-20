@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicons/unicons.dart';
-import 'package:flutter/cupertino.dart';
 import 'plugins/ruler.dart';
 import 'plugins/expandable_fab.dart';
 import 'plugins/bottom_picker/bottom_picker.dart';
@@ -60,13 +59,13 @@ class _SizeCompareState extends State<SizeCompare> {
     BeetleWiki bt = beetleWikiBox.getAt(widget.index);
     final double originalScale = MediaQuery.of(context).textScaleFactor;
     // Generating values from 0.5 to 1.5 with a step of 0.01
-    final decimalList = List.generate(101, (index) {
+    final decimalList = List.generate(151, (index) {
       double number = (index + 50) / 100;
       String formattedNumber = number.toStringAsFixed(2);
 
       return Text(
         formattedNumber,
-        style: TextStyle(fontSize: 17 / originalScale),
+        style: TextStyle(fontSize: 18 / originalScale),
       );
     }).toList();
 
@@ -351,12 +350,12 @@ class _SizeCompareState extends State<SizeCompare> {
 
   _showNumberPicker(BuildContext context, List<Text> items) {
     BottomPicker(
-      height: 280,
+      height: 240,
       displayCloseIcon: false,
       dismissable: true,
       items: items,
-      title: '設定尺規係數',
-      titleStyle: const TextStyle(fontSize: 18, letterSpacing: 2, fontWeight: FontWeight.bold),
+      title: '設定尺規縮放係數',
+      titleStyle: const TextStyle(fontSize: 19, letterSpacing: 2, fontWeight: FontWeight.bold),
       titleAlignment: CrossAxisAlignment.center,
       titlePadding: const EdgeInsets.only(bottom: 12),
       onSubmit: (index) {

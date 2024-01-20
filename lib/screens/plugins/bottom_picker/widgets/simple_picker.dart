@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart' hide FixedExtentScrollController;
 import '../resources/custom_cupertino_picker.dart';
 import '../resources/custom_list_wheel_scroll_view.dart';
+import '../../counter_view.dart';
 
 class SimplePicker extends StatelessWidget {
   final int selectedItemIndex;
@@ -43,7 +44,12 @@ class SimplePicker extends StatelessWidget {
       );
     }
     else{
-      return Text('haha');
+      return CounterView(
+        initNumber: selectedItemIndex,
+        minNumber: 0,
+        onSelectedItemChanged: onChange,
+        children: items,
+      );
     }
   }
 }
