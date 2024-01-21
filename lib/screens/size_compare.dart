@@ -62,10 +62,10 @@ class _SizeCompareState extends State<SizeCompare> {
   Widget build(BuildContext context) {
     BeetleWiki bt = beetleWikiBox.getAt(widget.index);
     final double originalScale = MediaQuery.of(context).textScaleFactor;
-    // Generating values from 0.5 to 1.5 with a step of 0.01
-    final decimalList = List.generate(151, (index) {
-      double number = (index + 50) / 100;
-      String formattedNumber = number.toStringAsFixed(2);
+    // Generating values from 0.8 to 1.2 with a step of 0.001
+    final decimalList = List.generate(401, (index) {
+      double number = (index + 800) / 1000; 
+      String formattedNumber = number.toStringAsFixed(3);
 
       return Text(
         formattedNumber,
@@ -377,21 +377,28 @@ class _SizeCompareState extends State<SizeCompare> {
       titlePadding: const EdgeInsets.only(bottom: 12),
       onSubmit: (index) async {
         final prefs = await SharedPreferences.getInstance();
-        _rulerMagnification.value = index * 0.01 + 0.5;
+        _rulerMagnification.value = index * 0.001 + 0.8;
+        await prefs.setDouble('ruler_magnification', _rulerMagnification.value);
+      },
+      onReset: (index) async {
+        final prefs = await SharedPreferences.getInstance();
+        _rulerMagnification.value = 1.000;
         await prefs.setDouble('ruler_magnification', _rulerMagnification.value);
       },
       displayButtonIcon: false,
       displaySubmitButton: true,
       buttonText: '儲存',
+      buttonTextReset: '重置',
       buttonTextStyle: const TextStyle(
           color: Colors.white,
           fontFamily: "MPLUS",
           fontSize: 16,
           letterSpacing: 6,
           fontWeight: FontWeight.w500),
-      buttonWidth: 240,
+      buttonWidth: 140,
       buttonSingleColor: Colors.transparent,
-      selectedItemIndex: ((_rulerMagnification.value - 0.5) / 0.01).round(),
+      buttonAlignment: MainAxisAlignment.spaceEvenly,
+      selectedItemIndex: ((_rulerMagnification.value - 0.8) / 0.001).round(),
       pickerTextStyle: const TextStyle(fontSize: 18, color: Colors.black),
     ).show(context);
   }

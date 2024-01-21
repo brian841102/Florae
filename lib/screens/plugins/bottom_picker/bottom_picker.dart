@@ -39,12 +39,14 @@ class BottomPicker extends StatefulWidget {
     this.dismissable = false,
     this.onChange,
     this.onSubmit,
+    this.onReset,
     this.onClose,
     this.bottomPickerTheme = BottomPickerTheme.blue,
     this.gradientColors,
     this.iconColor = Colors.white,
     this.selectedItemIndex = 0,
     this.buttonText,
+    this.buttonTextReset,
     this.buttonPadding,
     this.buttonWidth,
     this.buttonTextStyle,
@@ -87,6 +89,7 @@ class BottomPicker extends StatefulWidget {
     this.dismissable = false,
     this.onChange,
     this.onSubmit,
+    this.onReset,
     this.onClose,
     this.bottomPickerTheme = BottomPickerTheme.blue,
     this.gradientColors,
@@ -95,6 +98,7 @@ class BottomPicker extends StatefulWidget {
     this.minDateTime,
     this.maxDateTime,
     this.buttonText,
+    this.buttonTextReset,
     this.buttonPadding,
     this.buttonWidth,
     this.buttonTextStyle,
@@ -134,6 +138,7 @@ class BottomPicker extends StatefulWidget {
     this.dismissable = false,
     this.onChange,
     this.onSubmit,
+    this.onReset,
     this.onClose,
     this.bottomPickerTheme = BottomPickerTheme.blue,
     this.gradientColors,
@@ -144,6 +149,7 @@ class BottomPicker extends StatefulWidget {
     this.maxDateTime,
     this.use24hFormat = false,
     this.buttonText,
+    this.buttonTextReset,
     this.buttonPadding,
     this.buttonWidth,
     this.buttonTextStyle,
@@ -185,6 +191,7 @@ class BottomPicker extends StatefulWidget {
     this.dismissable = false,
     this.onChange,
     this.onSubmit,
+    this.onReset,
     this.onClose,
     this.bottomPickerTheme = BottomPickerTheme.blue,
     this.gradientColors,
@@ -192,6 +199,7 @@ class BottomPicker extends StatefulWidget {
     this.minuteInterval = 1,
     this.use24hFormat = false,
     this.buttonText,
+    this.buttonTextReset,
     this.buttonPadding,
     this.buttonWidth,
     this.buttonTextStyle,
@@ -235,6 +243,7 @@ class BottomPicker extends StatefulWidget {
     this.gradientColors,
     this.iconColor = Colors.white,
     this.buttonText,
+    this.buttonTextReset,
     this.buttonPadding,
     this.buttonWidth,
     this.buttonTextStyle,
@@ -266,6 +275,7 @@ class BottomPicker extends StatefulWidget {
     itemExtent = 0;
     onChange = null;
     onSubmit = null;
+    onReset = null;
     displaySubmitButton = true;
     assert(onRangeDateSubmitPressed != null);
     assertInitialValues();
@@ -323,6 +333,7 @@ class BottomPicker extends StatefulWidget {
   ///else it will return the index of the selected item
   ///
   late Function(dynamic)? onSubmit;
+  late Function(dynamic)? onReset;
 
   ///Invoked when clicking on the close button
   ///
@@ -395,6 +406,10 @@ class BottomPicker extends StatefulWidget {
   ///the text that will be applied to the button
   ///if the text is null the button will be rendered with an icon
   final String? buttonText;
+
+  ///the text that will be applied to the button
+  ///if the text is null the button will be rendered with an icon
+  final String? buttonTextReset;
 
   ///the padding that will be applied to the button
   ///if the padding is null the button will be rendered null
@@ -568,12 +583,12 @@ class _BottomPickerState extends State<BottomPicker> {
         child: Column(
           children: [
             Container(
-                  height: 5,
-                  width: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3.0),
-                    color: Colors.grey[500],
-                  ),
+              height: 5,
+              width: 60,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(3.0),
+                color: Colors.grey[500],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -653,6 +668,28 @@ class _BottomPickerState extends State<BottomPicker> {
               Row(
                 mainAxisAlignment: widget.buttonAlignment,
                 children: [
+                  const Spacer(flex: 2),
+                  SizedBox(
+                    width: widget.buttonWidth,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 12, bottom: 20),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          widget.onReset?.call(selectedItemIndex);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(widget.buttonPadding ?? 8.0),
+                          backgroundColor: Theme.of(context).colorScheme.tertiary,
+                        ),
+                        child: Text(
+                          widget.buttonTextReset!,
+                          style: widget.buttonTextStyle,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Spacer(flex: 1),
                   BottomPickerButton(
                     onClick: () {
                       if (widget.bottomPickerType ==
@@ -681,6 +718,7 @@ class _BottomPickerState extends State<BottomPicker> {
                     displayIcon: widget.displayButtonIcon,
                     solidColor: widget.buttonSingleColor,
                   ),
+                  const Spacer(flex: 2),
                 ],
               ),
           ],
