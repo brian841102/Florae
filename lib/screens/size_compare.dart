@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicons/unicons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'plugins/ruler.dart';
 import 'plugins/expandable_fab.dart';
 import 'plugins/bottom_picker/bottom_picker.dart';
@@ -36,6 +37,8 @@ class _SizeCompareState extends State<SizeCompare> {
   double _deltaPointY = 0.0;
 
   bool lock = false;
+
+  final ValueNotifier<double> _rulerMagnification = ValueNotifier<double>(1.0);
   @override
   void initState() {
     super.initState();
@@ -46,6 +49,7 @@ class _SizeCompareState extends State<SizeCompare> {
     // );
     fToast = FToast();
     fToast.init(context);
+    getSharedPrefs();
   }
 
   @override
@@ -139,43 +143,49 @@ class _SizeCompareState extends State<SizeCompare> {
             lock = !lock;
           });
         },
-        child: Ruler(
-          style: const TextStyle(color: Colors.black),
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Stack(
-              children: [
-                Transform(
-                  transform: Matrix4.identity()
-                    ..translate(_offsetX + MediaQuery.of(context).size.width * 0.5,
-                        _offsetY + MediaQuery.of(context).size.height * 0.342)
-                    ..rotateZ(_rotation)
-                    ..scale(_scale)
-                    ..translate(
-                        -MediaQuery.of(context).size.width * 0.5,
-                        -MediaQuery.of(context).size.height *
-                            occupyRatio *
-                            0.5), //setup rotate origin
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * occupyRatio,
-                    width: double.maxFinite,
-                    child: FittedBox(
-                      fit: BoxFit.fitHeight,
-                      child: Image.asset(bt.imagePathR),
+        child: ValueListenableBuilder<double>(
+          valueListenable: _rulerMagnification,
+          builder: (BuildContext context, double value, Widget? child) {
+            return Ruler(
+              style: const TextStyle(color: Colors.black),
+              rulerMagnification: _rulerMagnification.value,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Stack(
+                  children: [
+                    Transform(
+                      transform: Matrix4.identity()
+                        ..translate(_offsetX + MediaQuery.of(context).size.width * 0.5,
+                            _offsetY + MediaQuery.of(context).size.height * 0.342)
+                        ..rotateZ(_rotation)
+                        ..scale(_scale)
+                        ..translate(
+                            -MediaQuery.of(context).size.width * 0.5,
+                            -MediaQuery.of(context).size.height *
+                                occupyRatio *
+                                0.5), //setup rotate origin
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * occupyRatio,
+                        width: double.maxFinite,
+                        child: FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Image.asset(bt.imagePathR),
+                        ),
+                      ),
                     ),
-                  ),
+                    // SizedBox(
+                    //   height: 200 * bgScale,
+                    //   width: double.maxFinite,
+                    //   child: FittedBox(
+                    //     fit: BoxFit.fitHeight,
+                    //     child: Image.asset('assets/images/cii_r.png'),
+                    //   ),
+                    // ),
+                  ],
                 ),
-                // SizedBox(
-                //   height: 200 * bgScale,
-                //   width: double.maxFinite,
-                //   child: FittedBox(
-                //     fit: BoxFit.fitHeight,
-                //     child: Image.asset('assets/images/cii_r.png'),
-                //   ),
-                // ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
       floatingActionButton: ExpandableFab(
@@ -348,8 +358,15 @@ class _SizeCompareState extends State<SizeCompare> {
     );
   }
 
+  Future<void> getSharedPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _rulerMagnification.value = prefs.getDouble('ruler_magnification') ?? 1.0;
+    });
+  }
+
   _showNumberPicker(BuildContext context, List<Text> items) {
-    BottomPicker(
+    return BottomPicker(
       height: 240,
       displayCloseIcon: false,
       dismissable: true,
@@ -358,8 +375,10 @@ class _SizeCompareState extends State<SizeCompare> {
       titleStyle: const TextStyle(fontSize: 19, letterSpacing: 2, fontWeight: FontWeight.bold),
       titleAlignment: CrossAxisAlignment.center,
       titlePadding: const EdgeInsets.only(bottom: 12),
-      onSubmit: (index) {
-        print(index);
+      onSubmit: (index) async {
+        final prefs = await SharedPreferences.getInstance();
+        _rulerMagnification.value = index * 0.01 + 0.5;
+        await prefs.setDouble('ruler_magnification', _rulerMagnification.value);
       },
       displayButtonIcon: false,
       displaySubmitButton: true,
@@ -372,7 +391,7 @@ class _SizeCompareState extends State<SizeCompare> {
           fontWeight: FontWeight.w500),
       buttonWidth: 240,
       buttonSingleColor: Colors.transparent,
-      selectedItemIndex: 50,
+      selectedItemIndex: ((_rulerMagnification.value - 0.5) / 0.01).round(),
       pickerTextStyle: const TextStyle(fontSize: 18, color: Colors.black),
     ).show(context);
   }

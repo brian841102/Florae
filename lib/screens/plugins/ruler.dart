@@ -7,11 +7,13 @@ class Ruler extends StatelessWidget {
   final bool? showZero;
   final double? length;
   final Widget? child;
+  final double? rulerMagnification;
 
-  const Ruler({super.key, this.tickColor, this.style, this.showZero, this.length, this.child});
+  const Ruler({super.key, this.tickColor, this.style, this.showZero, this.length, this.child, this.rulerMagnification});
 
   @override
   Widget build(BuildContext context) {
+    final double dpi = 453 * (rulerMagnification ?? 1.0);
     return CustomPaint(
       foregroundPainter: _RulerPainter(
         context: context,
@@ -19,7 +21,8 @@ class Ruler extends StatelessWidget {
         style: style ?? const TextStyle(color: Colors.blue),
         showZero: showZero ?? true,
         length: length ?? MediaQuery.of(context).size.height * 0.9 /
-                (455.6 / MediaQuery.of(context).devicePixelRatio / 25.4),
+                (dpi / MediaQuery.of(context).devicePixelRatio / 25.4),
+        dpi: dpi
       ),
       child: child,
     );
@@ -32,6 +35,7 @@ class _RulerPainter extends CustomPainter {
   final TextStyle style;
   final bool showZero;
   final double length;
+  final double dpi;
 
   late double dpr;
   late double screenHeight;
@@ -41,7 +45,8 @@ class _RulerPainter extends CustomPainter {
       required this.tickColor,
       required this.style,
       required this.showZero,
-      required this.length}) {
+      required this.length,
+      required this.dpi}) {
     dpr = MediaQuery.of(context).devicePixelRatio;
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
@@ -65,7 +70,6 @@ class _RulerPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
 
-    double dpi = 455.6;
     double maxSize = length;
     //double maxSize = size.height / (dpi/dpr/25.4);
     //double maxSize = screenHeight / (dpi/dpr/25.4);
