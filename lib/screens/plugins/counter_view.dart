@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 import 'dart:async';
+import 'package:provider/provider.dart';
+import '../../states/ruler_magnification_provider.dart';
 
 class CounterView extends StatefulWidget {
   final int? initNumber;
-  final Function(int)? onSelectedItemChanged;   
+  final Function(int)? onSelectedItemChanged;
   final int? minNumber;
   final List<Widget> children;
 
@@ -42,6 +44,7 @@ class _CounterViewState extends State<CounterView> {
 
   @override
   Widget build(BuildContext context) {
+    //final double originalScale = MediaQuery.of(context).textScaleFactor;
     return Center(
       child: Container(
         width: 180,
@@ -56,6 +59,12 @@ class _CounterViewState extends State<CounterView> {
           children: [
             _createIncrementDecrementButton(Icons.remove, _decrement, _decrement),
             widget.children[_counter],
+            // Consumer<RulerMagnificationProvider>(
+            //   builder: (context, counter, child) => Text(
+            //     counter.rulerMagnification.toStringAsFixed(3),
+            //     style: TextStyle(fontSize: 18 / originalScale),
+            //   ),
+            // ),
             _createIncrementDecrementButton(Icons.add, _increment, _increment),
           ],
         ),
@@ -64,6 +73,8 @@ class _CounterViewState extends State<CounterView> {
   }
 
   void _increment() {
+    // var counter = context.read<RulerMagnificationProvider>();
+    // counter.increment();
     setState(() {
       if (_counter < widget.children.length - 1) {
         Vibration.vibrate(duration: 50);
@@ -74,6 +85,8 @@ class _CounterViewState extends State<CounterView> {
   }
 
   void _decrement() {
+    // var counter = context.read<RulerMagnificationProvider>();
+    // counter.decrement();
     setState(() {
       if (_counter > _minNumber) {
         Vibration.vibrate(duration: 50);

@@ -13,6 +13,8 @@ import 'package:florae/notifications.dart' as notify;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'states/ruler_magnification_provider.dart';
+import 'package:provider/provider.dart';
 
 const String beetleWikiBoxName = "beetleWikiBox";
 late ObjectBox objectbox;
@@ -37,6 +39,12 @@ Future<void> main() async {
   beetleWikiBox = await Hive.openBox(beetleWikiBoxName);
   await loadJsonDataToHive();
   runApp(const FloraeApp());
+  // runApp(
+  //   ChangeNotifierProvider(
+  //     create: (context) => RulerMagnificationProvider(),
+  //     child: const FloraeApp(),
+  //   ),
+  // );
 
   BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }

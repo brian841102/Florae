@@ -8,6 +8,8 @@ import 'plugins/expandable_fab.dart';
 import 'plugins/bottom_picker/bottom_picker.dart';
 import '../main.dart';
 import '../data/beetle_wiki.dart';
+import 'package:provider/provider.dart';
+import '../../states/ruler_magnification_provider.dart';
 
 class SizeCompare extends StatefulWidget {
   const SizeCompare({super.key, required this.index});
@@ -376,13 +378,17 @@ class _SizeCompareState extends State<SizeCompare> {
       titleAlignment: CrossAxisAlignment.center,
       titlePadding: const EdgeInsets.only(bottom: 12),
       onSubmit: (index) async {
-        final prefs = await SharedPreferences.getInstance();
         _rulerMagnification.value = index * 0.001 + 0.8;
+        // var counter = context.read<RulerMagnificationProvider>();
+        // counter.setValue(_rulerMagnification.value ); //save to provider
+        final prefs = await SharedPreferences.getInstance();
         await prefs.setDouble('ruler_magnification', _rulerMagnification.value);
       },
       onReset: (index) async {
-        final prefs = await SharedPreferences.getInstance();
         _rulerMagnification.value = 1.000;
+        // var counter = context.read<RulerMagnificationProvider>();
+        // counter.reset();//save to provider
+        final prefs = await SharedPreferences.getInstance();
         await prefs.setDouble('ruler_magnification', _rulerMagnification.value);
       },
       displayButtonIcon: false,
