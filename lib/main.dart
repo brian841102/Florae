@@ -209,7 +209,7 @@ class FloraeApp extends StatelessWidget {
               overlayColor: MaterialStatePropertyAll(Colors.black.withOpacity(0.1)),
               backgroundColor: const MaterialStatePropertyAll(Color.fromARGB(255, 30, 107, 63)),
               shape: MaterialStatePropertyAll(
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
               elevation: MaterialStateProperty.resolveWith<double>((Set<MaterialState> states) {
                 if (states.contains(MaterialState.pressed)) return 0.0; // Elevation when pressed
                 else return 0.0; // Elevation when not pressed

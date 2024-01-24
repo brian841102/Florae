@@ -92,7 +92,7 @@ class _CounterViewState extends State<CounterView> {
                      setSharedPrefs(200);//1.0
                   },
                   style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(12.0),
                   backgroundColor: Theme.of(context).colorScheme.tertiary,
                   ),
                   child: const Text('重置',
@@ -120,7 +120,7 @@ class _CounterViewState extends State<CounterView> {
                      _showToast();
                      Navigator.pop(context);
                   },
-                  style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(8.0)),
+                  style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(12.0)),
                   child: const Text('儲存',
                     style: TextStyle(
                       color: Colors.white,

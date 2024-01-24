@@ -301,8 +301,9 @@ class _SizeCompareState extends State<SizeCompare> {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
+        double padding = (MediaQuery.of(context).size.width - 140*2)*2/5;
         return SizedBox(
-          height: 250,
+          height: 280,
           width: double.maxFinite,
           child: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -328,13 +329,13 @@ class _SizeCompareState extends State<SizeCompare> {
                   ),
                 ),
                 SizedBox(
-                  width: 240,
+                  width: double.maxFinite,
                   child: Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
+                    padding: EdgeInsets.only(bottom: 20, left: padding, right: padding),
                     child: ElevatedButton(
                       onPressed: () => Navigator.pop(context),
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(12),
                       ),
                       child: const Text(
                         '返回',
