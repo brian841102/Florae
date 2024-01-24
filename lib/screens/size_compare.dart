@@ -40,7 +40,7 @@ class _SizeCompareState extends State<SizeCompare> {
 
   bool lock = false;
 
-  final ValueNotifier<double> _rulerMagnification = ValueNotifier<double>(1.0);
+  double rulerMagnification = 1.0;
   @override
   void initState() {
     super.initState();
@@ -145,49 +145,44 @@ class _SizeCompareState extends State<SizeCompare> {
             lock = !lock;
           });
         },
-        child: ValueListenableBuilder<double>(
-          valueListenable: _rulerMagnification,
-          builder: (BuildContext context, double value, Widget? child) {
-            return Ruler(
-              style: const TextStyle(color: Colors.black),
-              rulerMagnification: _rulerMagnification.value,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Stack(
-                  children: [
-                    Transform(
-                      transform: Matrix4.identity()
-                        ..translate(_offsetX + MediaQuery.of(context).size.width * 0.5,
-                            _offsetY + MediaQuery.of(context).size.height * 0.342)
-                        ..rotateZ(_rotation)
-                        ..scale(_scale)
-                        ..translate(
-                            -MediaQuery.of(context).size.width * 0.5,
-                            -MediaQuery.of(context).size.height *
-                                occupyRatio *
-                                0.5), //setup rotate origin
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height * occupyRatio,
-                        width: double.maxFinite,
-                        child: FittedBox(
-                          fit: BoxFit.fitHeight,
-                          child: Image.asset(bt.imagePathR),
-                        ),
-                      ),
+        child: Ruler(
+          style: const TextStyle(color: Colors.black),
+          rulerMagnification: context.watch<RulerMagnificationProvider>().rulerMagnification,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Stack(
+              children: [
+                Transform(
+                  transform: Matrix4.identity()
+                    ..translate(_offsetX + MediaQuery.of(context).size.width * 0.5,
+                        _offsetY + MediaQuery.of(context).size.height * 0.342)
+                    ..rotateZ(_rotation)
+                    ..scale(_scale)
+                    ..translate(
+                        -MediaQuery.of(context).size.width * 0.5,
+                        -MediaQuery.of(context).size.height *
+                            occupyRatio *
+                            0.5), //setup rotate origin
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * occupyRatio,
+                    width: double.maxFinite,
+                    child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Image.asset(bt.imagePathR),
                     ),
-                    // SizedBox(
-                    //   height: 200 * bgScale,
-                    //   width: double.maxFinite,
-                    //   child: FittedBox(
-                    //     fit: BoxFit.fitHeight,
-                    //     child: Image.asset('assets/images/cii_r.png'),
-                    //   ),
-                    // ),
-                  ],
+                  ),
                 ),
-              ),
-            );
-          },
+                // SizedBox(
+                //   height: 200 * bgScale,
+                //   width: double.maxFinite,
+                //   child: FittedBox(
+                //     fit: BoxFit.fitHeight,
+                //     child: Image.asset('assets/images/cii_r.png'),
+                //   ),
+                // ),
+              ],
+            ),
+          ),
         ),
       ),
       floatingActionButton: ExpandableFab(
@@ -363,49 +358,40 @@ class _SizeCompareState extends State<SizeCompare> {
   Future<void> getSharedPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _rulerMagnification.value = prefs.getDouble('ruler_magnification') ?? 1.0;
+      rulerMagnification = prefs.getDouble('ruler_magnification') ?? 1.0;
     });
   }
 
-  _showNumberPicker(BuildContext context, List<Text> items) {
-    return BottomPicker(
-      height: 240,
-      displayCloseIcon: false,
-      dismissable: true,
-      items: items,
-      title: '設定尺規縮放係數',
-      titleStyle: const TextStyle(fontSize: 19, letterSpacing: 2, fontWeight: FontWeight.bold),
-      titleAlignment: CrossAxisAlignment.center,
-      titlePadding: const EdgeInsets.only(bottom: 12),
-      onSubmit: (index) async {
-        _rulerMagnification.value = index * 0.001 + 0.8;
-        // var counter = context.read<RulerMagnificationProvider>();
-        // counter.setValue(_rulerMagnification.value ); //save to provider
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setDouble('ruler_magnification', _rulerMagnification.value);
-      },
-      onReset: (index) async {
-        _rulerMagnification.value = 1.000;
-        // var counter = context.read<RulerMagnificationProvider>();
-        // counter.reset();//save to provider
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setDouble('ruler_magnification', _rulerMagnification.value);
-      },
-      displayButtonIcon: false,
-      displaySubmitButton: true,
-      buttonText: '儲存',
-      buttonTextReset: '重置',
-      buttonTextStyle: const TextStyle(
-          color: Colors.white,
-          fontFamily: "MPLUS",
-          fontSize: 16,
-          letterSpacing: 6,
-          fontWeight: FontWeight.w500),
-      buttonWidth: 140,
-      buttonSingleColor: Colors.transparent,
-      buttonAlignment: MainAxisAlignment.spaceEvenly,
-      selectedItemIndex: ((_rulerMagnification.value - 0.8) / 0.001).round(),
-      pickerTextStyle: const TextStyle(fontSize: 18, color: Colors.black),
-    ).show(context);
+  Future<void> _showNumberPicker(BuildContext context, List<Text> items) async {
+    await getSharedPrefs();
+    if (context.mounted) {
+      return BottomPicker(
+        height: 240,
+        displayCloseIcon: false,
+        dismissable: true,
+        items: items,
+        title: '設定尺規縮放係數',
+        titleStyle: const TextStyle(fontSize: 19, letterSpacing: 2, fontWeight: FontWeight.bold),
+        titleAlignment: CrossAxisAlignment.center,
+        titlePadding: const EdgeInsets.only(bottom: 12),
+        // onSubmit: (index) {
+        // },
+        displayButtonIcon: false,
+        displaySubmitButton: false,
+        buttonText: '儲存',
+        buttonTextReset: '重置',
+        buttonTextStyle: const TextStyle(
+            color: Colors.white,
+            fontFamily: "MPLUS",
+            fontSize: 16,
+            letterSpacing: 6,
+            fontWeight: FontWeight.w500),
+        buttonWidth: 140,
+        buttonSingleColor: Colors.transparent,
+        buttonAlignment: MainAxisAlignment.spaceEvenly,
+        selectedItemIndex: ((rulerMagnification - 0.8) / 0.001).round(),
+        pickerTextStyle: const TextStyle(fontSize: 18, color: Colors.black),
+      ).show(context);
+    }
   }
 }

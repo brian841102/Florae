@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:provider/provider.dart';
 import '../../states/ruler_magnification_provider.dart';
@@ -42,35 +43,99 @@ class _CounterViewState extends State<CounterView> {
     super.dispose();
   }
 
+  Future<void> setSharedPrefs(int index) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('ruler_magnification', index * 0.001 + 0.8);
+  }
+
   @override
   Widget build(BuildContext context) {
-    //final double originalScale = MediaQuery.of(context).textScaleFactor;
-    return Center(
-      child: Container(
-        width: 180,
-        height: 48,
-        decoration: BoxDecoration(
-          border: Border.all(width: 1, color: Theme.of(context).colorScheme.outlineVariant),
-          borderRadius: BorderRadius.circular(25),
-          color: Theme.of(context).colorScheme.secondaryContainer, //Colors.grey[300],
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Center(
+          child: Container(
+            width: 180,
+            height: 48,
+            decoration: BoxDecoration(
+              border: Border.all(width: 1, color: Theme.of(context).colorScheme.outlineVariant),
+              borderRadius: BorderRadius.circular(25),
+              color: Theme.of(context).colorScheme.secondaryContainer, //Colors.grey[300],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _createIncrementDecrementButton(Icons.remove, _decrement, _decrement),
+                widget.children[_counter],
+                _createIncrementDecrementButton(Icons.add, _increment, _increment),
+              ],
+            ),
+          ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _createIncrementDecrementButton(Icons.remove, _decrement, _decrement),
-            widget.children[_counter],
-            // Consumer<RulerMagnificationProvider>(
-            //   builder: (context, counter, child) => Text(
-            //     counter.rulerMagnification.toStringAsFixed(3),
-            //     style: TextStyle(fontSize: 18 / originalScale),
-            //   ),
-            // ),
-            _createIncrementDecrementButton(Icons.add, _increment, _increment),
+            const Spacer(flex: 2),
+            SizedBox(
+              width:140,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 12, bottom: 6),
+                child: ElevatedButton(
+                  onPressed: () async{
+                     _reset();
+                     var counter = context.read<RulerMagnificationProvider>();
+                     counter.setValue(1.0); //save to provider
+                     setSharedPrefs(200);//1.0
+                  },
+                  style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(8.0),
+                  backgroundColor: Theme.of(context).colorScheme.tertiary,
+                  ),
+                  child: const Text('重置',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: "MPLUS",
+                      fontSize: 16,
+                      letterSpacing: 6,
+                      fontWeight: FontWeight.w500
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const Spacer(flex: 1),
+            SizedBox(
+              width:140,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 12, bottom: 6),
+                child: ElevatedButton(
+                  onPressed: () {
+                     var counter = context.read<RulerMagnificationProvider>();
+                     counter.setValue(_counter * 0.001 + 0.8); //save to provider
+                     setSharedPrefs(_counter);
+                     Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(8.0)),
+                  child: const Text('儲存',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: "MPLUS",
+                      fontSize: 16,
+                      letterSpacing: 6,
+                      fontWeight: FontWeight.w500
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const Spacer(flex: 2),
           ],
         ),
-      ),
+      ],
     );
   }
+
+
 
   void _increment() {
     // var counter = context.read<RulerMagnificationProvider>();
@@ -93,6 +158,12 @@ class _CounterViewState extends State<CounterView> {
         _counter--;
         _onSelectedItemChanged(_counter);
       }
+    });
+  }
+
+  void _reset() {
+    setState(() {
+      _counter = 200;//1.0
     });
   }
 

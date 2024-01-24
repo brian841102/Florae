@@ -38,13 +38,13 @@ Future<void> main() async {
   Hive.registerAdapter(SpanAdapter());
   beetleWikiBox = await Hive.openBox(beetleWikiBoxName);
   await loadJsonDataToHive();
-  runApp(const FloraeApp());
-  // runApp(
-  //   ChangeNotifierProvider(
-  //     create: (context) => RulerMagnificationProvider(),
-  //     child: const FloraeApp(),
-  //   ),
-  // );
+  //runApp(const FloraeApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => RulerMagnificationProvider(),
+      child: const FloraeApp(),
+    ),
+  );
 
   BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
