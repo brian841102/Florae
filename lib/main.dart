@@ -15,10 +15,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'states/ruler_magnification_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 const String beetleWikiBoxName = "beetleWikiBox";
 late ObjectBox objectbox;
 late Box beetleWikiBox;
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -136,13 +138,13 @@ class FloraeApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        builder: (BuildContext context, Widget? widget) {
-          ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
-            return ErrorPage(errorDetails: errorDetails);
-          };
+        // builder: (BuildContext context, Widget? widget) {
+        //   ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+        //     return ErrorPage(errorDetails: errorDetails);
+        //   };
 
-          return widget!;
-        },
+        //   return widget!;
+        // },
         supportedLocales: const [
           Locale('en'), // English
           Locale('es'), // Spanish
@@ -254,6 +256,9 @@ class FloraeApp extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: const MyHomePage(title: 'Today'));
+        home: const MyHomePage(title: 'Today'),
+        builder: FToastBuilder(),
+        navigatorKey: navigatorKey,
+    );
   }
 }

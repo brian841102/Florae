@@ -50,7 +50,7 @@ class _SizeCompareState extends State<SizeCompare> {
     //     const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     // );
     fToast = FToast();
-    fToast.init(context);
+    fToast.init(navigatorKey.currentContext!);
     getSharedPrefs();
   }
 

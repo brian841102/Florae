@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import '../../main.dart';
 import 'dart:async';
 import 'package:provider/provider.dart';
 import '../../states/ruler_magnification_provider.dart';
@@ -32,6 +34,8 @@ class _CounterViewState extends State<CounterView> {
   @override
   void initState() {
     super.initState();
+    fToast = FToast();
+    fToast.init(navigatorKey.currentContext!);
     _counter = widget.initNumber ?? 0;
     _onSelectedItemChanged = widget.onSelectedItemChanged ?? (int number) {};
     _minNumber = widget.minNumber ?? 0;
@@ -113,6 +117,7 @@ class _CounterViewState extends State<CounterView> {
                      var counter = context.read<RulerMagnificationProvider>();
                      counter.setValue(_counter * 0.001 + 0.8); //save to provider
                      setSharedPrefs(_counter);
+                     _showToast();
                      Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(8.0)),
@@ -204,6 +209,45 @@ class _CounterViewState extends State<CounterView> {
           size: 24.0,
         ),
       ),
+    );
+  }
+
+  late FToast fToast;
+  Container _toast() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 14.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.grey[800],
+      ),
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Icon(
+          //   Icons.lock_outline_rounded,
+          //   color: Colors.white,
+          //   size: 24,
+          // ),
+          // SizedBox(width: 6),
+          Text('已儲存',
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: "MPLUS",
+              fontSize: 16,
+              letterSpacing: 2,
+              fontWeight: FontWeight.w500
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _showToast() {
+    fToast.showToast(
+      child: _toast(),
+      gravity: ToastGravity.TOP,
+      toastDuration: const Duration(seconds: 2),
     );
   }
 }
