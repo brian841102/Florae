@@ -310,7 +310,7 @@ class _SizeCompareState extends State<SizeCompare> {
             child: Column(
               children: [
                 Container(
-                  height: 5,
+                  height: 4.5,
                   width: 60,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(3.0),
@@ -321,10 +321,10 @@ class _SizeCompareState extends State<SizeCompare> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Text("長按：鎖定/解除鎖定"),//, style: TextStyle(fontFamily: "MPLUS")),
-                      Text("雙擊：重設視圖"),//, style: TextStyle(fontFamily: "MPLUS")),
-                      Text("單指拖動：移動"),//, style: TextStyle(fontFamily: "MPLUS")),
-                      Text("雙指拖動：旋轉/縮放"),//, style: TextStyle(fontFamily: "MPLUS")),
+                      Text("長按：鎖定/解除鎖定"),
+                      Text("雙擊：重設視圖"),
+                      Text("單指拖動：移動"),
+                      Text("雙指拖動：旋轉/縮放"),
                     ],
                   ),
                 ),
@@ -374,7 +374,7 @@ class _SizeCompareState extends State<SizeCompare> {
         title: '設定尺規縮放係數',
         titleStyle: const TextStyle(fontSize: 19, letterSpacing: 2, fontWeight: FontWeight.bold),
         titleAlignment: CrossAxisAlignment.center,
-        titlePadding: const EdgeInsets.only(bottom: 12),
+        titlePadding: const EdgeInsets.only(bottom: 0, top: 0),
         // onSubmit: (index) {
         // },
         displayButtonIcon: false,

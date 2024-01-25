@@ -55,35 +55,37 @@ class _CounterViewState extends State<CounterView> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Center(
-          child: Container(
-            width: 180,
-            height: 48,
-            decoration: BoxDecoration(
-              border: Border.all(width: 1, color: Theme.of(context).colorScheme.outlineVariant),
-              borderRadius: BorderRadius.circular(25),
-              color: Theme.of(context).colorScheme.secondaryContainer, //Colors.grey[300],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _createIncrementDecrementButton(Icons.remove, _decrement, _decrement),
-                widget.children[_counter],
-                _createIncrementDecrementButton(Icons.add, _increment, _increment),
-              ],
+        Expanded(
+          child: Center(
+            child: Container(
+              width: 180,
+              height: 48,
+              decoration: BoxDecoration(
+                border: Border.all(width: 1, color: Theme.of(context).colorScheme.outlineVariant),
+                borderRadius: BorderRadius.circular(25),
+                color: Theme.of(context).colorScheme.secondaryContainer, //Colors.grey[300],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _createIncrementDecrementButton(Icons.remove, _decrement, _decrement),
+                  widget.children[_counter],
+                  _createIncrementDecrementButton(Icons.add, _increment, _increment),
+                ],
+              ),
             ),
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const Spacer(flex: 2),
-            SizedBox(
-              width:140,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 12, bottom: 6),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Spacer(flex: 2),
+              SizedBox(
+                width:140,
                 child: ElevatedButton(
                   onPressed: () async{
                      _reset();
@@ -106,12 +108,9 @@ class _CounterViewState extends State<CounterView> {
                   ),
                 ),
               ),
-            ),
-            const Spacer(flex: 1),
-            SizedBox(
-              width:140,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 12, bottom: 6),
+              const Spacer(flex: 1),
+              SizedBox(
+                width:140,
                 child: ElevatedButton(
                   onPressed: () {
                      var counter = context.read<RulerMagnificationProvider>();
@@ -132,9 +131,9 @@ class _CounterViewState extends State<CounterView> {
                   ),
                 ),
               ),
-            ),
-            const Spacer(flex: 2),
-          ],
+              const Spacer(flex: 2),
+            ],
+          ),
         ),
       ],
     );
@@ -143,8 +142,6 @@ class _CounterViewState extends State<CounterView> {
 
 
   void _increment() {
-    // var counter = context.read<RulerMagnificationProvider>();
-    // counter.increment();
     setState(() {
       if (_counter < widget.children.length - 1) {
         Vibration.vibrate(duration: 50);
@@ -155,8 +152,6 @@ class _CounterViewState extends State<CounterView> {
   }
 
   void _decrement() {
-    // var counter = context.read<RulerMagnificationProvider>();
-    // counter.decrement();
     setState(() {
       if (_counter > _minNumber) {
         Vibration.vibrate(duration: 50);
