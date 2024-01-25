@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:florae/screens/error.dart';
+import 'package:florae/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -256,7 +257,7 @@ class FloraeApp extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: const MyHomePage(title: 'Today'),
+        home: const SplashScreen(),//const MyHomePage(),
         builder: FToastBuilder(),
         navigatorKey: navigatorKey,
     );

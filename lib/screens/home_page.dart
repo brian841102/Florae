@@ -22,7 +22,7 @@ import 'wiki.dart';
 import 'plugins/animation_toolkit.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -33,7 +33,7 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
+  //final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
