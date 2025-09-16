@@ -12,32 +12,61 @@ import '../main.dart';
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
 
-class ExampleParallax extends StatelessWidget {
+class ExampleParallax extends StatefulWidget {
   const ExampleParallax({
     super.key,
   });
 
   @override
+  State<ExampleParallax> createState() => _ExampleParallaxState();
+}
+
+class _ExampleParallaxState extends State<ExampleParallax> {
+
+  @override
+  void initState() {
+    super.initState();
+    locations.sort((a, b) => a.name.compareTo(b.name)); // 預設按照名稱字母排序
+  }
+  void _onFavoriteChanged() {
+    setState(() {});
+  }
+  
+  Future<void> _refreshAndSort() async { // 下拉刷新才排序
+    await Future.delayed(const Duration(milliseconds: 300)); // 模擬刷新等待
+    setState(() {
+      // 如果列表中還有愛心，才置頂；否則全部按字母
+      final hasFavorites = locations.any((loc) => loc.isFavorite);
+      if (hasFavorites) {
+        locations.sort((a, b) {
+          if (a.isFavorite == b.isFavorite) return a.name.compareTo(b.name);
+          return a.isFavorite ? -1 : 1; // 愛心置頂
+        });
+      } else {
+        locations.sort((a, b) => a.name.compareTo(b.name)); // 全部字母排序
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // locations.sort((a, b) {
-    //   if (a.isFavorite && !b.isFavorite) return -1;
-    //   else if (!a.isFavorite && b.isFavorite) return 1;
-    //   else return 0;
-    // });
-    locations.sort((a, b) => a.isFavorite ? 1 : 0.compareTo(b.isFavorite ? 1 : 0));
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-        children: [
-          for (final location in locations)
-            LocationListItem(
-              imagePath: location.imagePath,
-              name: location.name,
-              country: location.place,
-              context: context,
-              locations: locations,
-            ),
-        ],
+    return RefreshIndicator(
+      onRefresh: _refreshAndSort,
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            for (final location in locations)
+              LocationListItem(
+                key: ValueKey(location.name),
+                imagePath: location.imagePath,
+                name: location.name,
+                country: location.place,
+                locations: locations,
+                onFavoriteChanged: _onFavoriteChanged,
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -49,15 +78,15 @@ class LocationListItem extends StatefulWidget {
     required this.imagePath,
     required this.name,
     required this.country,
-    required this.context,
     required this.locations,
+    required this.onFavoriteChanged,
   });
 
   final String imagePath;
   final String name;
   final String country;
-  final BuildContext context;
   final List<Location> locations;
+  final VoidCallback onFavoriteChanged;
   final GlobalKey _backgroundImageKey = GlobalKey();
 
   @override
@@ -65,7 +94,14 @@ class LocationListItem extends StatefulWidget {
 }
 
 class _LocationListItemState extends State<LocationListItem> {
-  bool isFavorite = false;
+
+  bool get _isFavorite {
+    final Location? location = widget.locations.cast<Location?>().firstWhere(
+          (loc) => loc?.name == widget.name,
+      orElse: () => null,
+    );
+    return location?.isFavorite ?? false;
+  }
 
   void _openWikiChild(BuildContext context) {
     Future.delayed(
@@ -92,6 +128,7 @@ class _LocationListItemState extends State<LocationListItem> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isFavorite = _isFavorite;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
       child: AspectRatio(
@@ -123,9 +160,9 @@ class _LocationListItemState extends State<LocationListItem> {
                 top: 10,
                 child: IconButton(
                   onPressed: () {
-                    setState(() {isFavorite = !isFavorite;});
                     final location = widget.locations.firstWhere((loc) => loc.name == widget.name);
-                    if (location != null) {location.isFavorite = isFavorite;}
+                    location.isFavorite = !location.isFavorite;
+                    widget.onFavoriteChanged();
                   },
                   icon: Icon(
                     isFavorite ? Icons.favorite : Icons.favorite_border,
