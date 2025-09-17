@@ -87,30 +87,44 @@ class _WikiDetailState extends State<WikiDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: DefaultTabController(
-        length: 2,
-        initialIndex: 0,
-        child: Container(
-          color: lightTeal, // Set the background color here
-          child: CustomScrollView(
-            shrinkWrap: true,
-            //cacheExtent: 500,
-            controller: _scrollController,
-            physics: const ClampingScrollPhysics(), //const BouncingScrollPhysics(),
-            slivers: [
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        backgroundColor: lightTeal,
+        body: NestedScrollView(
+          controller: _scrollController,
+          physics: const ClampingScrollPhysics(),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return [
               _buildAppBar(),
               SliverToBoxAdapter(child: Container(height: 12)),
               _buildTabBar(),
-              SliverToBoxAdapter(child: Container(height: 20)),
-              _buildCardRow(),
-              _buildBekuwaCard(),
-              SliverToBoxAdapter(child: Container(height: 12)),
-              _buildSnapshotCard(),
-              SliverToBoxAdapter(child: Container(height: 16)),
-              _buildListView(),
-              SliverToBoxAdapter(child: Container(height: 20)),
-              _buildCardView(),
+            ];
+          },
+          body: TabBarView(
+            children: [
+              Container(
+                color: lightTeal,
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(child: Container(height: 18)),
+                    _buildCardRow(),
+                    _buildBekuwaCard(),
+                    SliverToBoxAdapter(child: Container(height: 12)),
+                    _buildSnapshotCard(),
+                    SliverToBoxAdapter(child: Container(height: 16)),
+                    _buildListView(),
+                    SliverToBoxAdapter(child: Container(height: 20)),
+                    _buildCardView(),
+                  ],
+                ),
+              ),
+              Container(
+                color: lightTeal,
+                child: Center(
+                  child: Text("建構中"),
+                ),
+              ),
             ],
           ),
         ),
@@ -160,7 +174,7 @@ class _WikiDetailState extends State<WikiDetail> {
             ),
             tabs: const [
               Tab(child: Text('基本資料', style: TextStyle(fontFamily: 'MPLUS'))),
-              Tab(child: Text('飼育計畫(建構中)', style: TextStyle(fontFamily: 'MPLUS'))),
+              Tab(child: Text('飼育計畫', style: TextStyle(fontFamily: 'MPLUS'))),
             ],
           ),
         ),
@@ -782,7 +796,7 @@ class _WikiDetailState extends State<WikiDetail> {
       pinned: true,
       snap: false,
       foregroundColor: backButtonColor, // back button color
-      backgroundColor: Colors.transparent,
+      backgroundColor: lightTeal,
       floating: false,
       expandedHeight: MediaQuery.of(context).size.width * 1.2, //450
       stretch: true,
