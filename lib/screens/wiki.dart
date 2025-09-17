@@ -909,7 +909,7 @@ class _WikiChildState extends State<WikiChild> {
         fit: StackFit.expand,
         children: [
           ColorFiltered(
-            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.darken),
+            colorFilter: const ColorFilter.mode(Colors.transparent, BlendMode.darken),
             child: Image.asset(
               imagePath,
               fit: BoxFit.cover,
@@ -939,6 +939,7 @@ class _WikiChildState extends State<WikiChild> {
                     letterSpacing: 4,
                     fontFamily: 'MPLUS',
                     fontWeight: FontWeight.normal,
+                    color: Colors.white,
                   )
                 ),
                 Padding(
@@ -948,6 +949,7 @@ class _WikiChildState extends State<WikiChild> {
                       fontSize: 15,
                       letterSpacing: 2,
                       fontFamily: 'MPLUS',
+                      color: Colors.white,
                     )
                   ),
                 ),
