@@ -12,7 +12,7 @@ import 'data/beetle_wiki.dart';
 import 'screens/home_page.dart';
 import 'package:florae/notifications.dart' as notify;
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'states/ruler_magnification_provider.dart';
 import 'package:provider/provider.dart';
@@ -188,7 +188,7 @@ class FloraeApp extends StatelessWidget {
             backgroundColor: const Color.fromARGB(255, 0, 155, 115),
             splashColor: Colors.black.withOpacity(0.2),
           ),
-          dialogTheme: DialogTheme(
+          dialogTheme: DialogThemeData(
             elevation: 10,
             surfaceTintColor: Colors.white,
             backgroundColor: Colors.white,
@@ -217,7 +217,7 @@ class FloraeApp extends StatelessWidget {
               }),
             ),
           ),
-          cardTheme: const CardTheme(
+          cardTheme: const CardThemeData(
             surfaceTintColor: Colors.white,
             color: Colors.white,
           ),

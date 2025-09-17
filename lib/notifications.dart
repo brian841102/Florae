@@ -41,7 +41,7 @@ void _requestPermissions() {
       );
 
   flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-      AndroidFlutterLocalNotificationsPlugin>()?.requestPermission();
+      AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
 
 }
 
