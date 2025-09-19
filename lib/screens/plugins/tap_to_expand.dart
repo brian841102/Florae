@@ -33,8 +33,11 @@ class TapToExpand extends StatefulWidget {
   /// Used to set the duration of the animation.
   final Duration? duration;
 
-  /// Used to set the padding of the widget when it is closed.
+  /// Used to set the padding of the widget when it is opened.
   final double? onTapPadding;
+
+  /// Used to set the padding of the widget when it is closed.
+  final double? closedPadding;
 
   /// Used to set the border radius of the widget.
   final double? borderRadius;
@@ -55,6 +58,7 @@ class TapToExpand extends StatefulWidget {
     this.boxShadow,
     this.duration,
     this.onTapPadding,
+    this.closedPadding,
     this.borderRadius,
     this.scrollPhysics,
     this.trailing,
@@ -86,10 +90,10 @@ class _TapToExpandState extends State<TapToExpand> {
       child: AnimatedContainer(
         margin: EdgeInsets.symmetric(
           /// Used to set the padding of the widget when it is closed.
-          horizontal: isExpanded ? 30 : widget.onTapPadding ?? 10,
+          horizontal: isExpanded ?  widget.closedPadding ?? 30 : widget.onTapPadding ?? 10,
           vertical: 6,
         ),
-        padding: EdgeInsets.symmetric(vertical: (closedHeight-34-6)/2, horizontal: 20),
+        padding: EdgeInsets.symmetric(vertical: (closedHeight-34-6)/2, horizontal: 18),
         //alignment: isExpanded ? Alignment.bottomLeft : AlignmentDirectional.bottomEnd,
         curve: Curves.fastLinearToSlowEaseIn,
         duration: widget.duration ?? const Duration(milliseconds: 800),
@@ -199,7 +203,7 @@ class _TapToExpandState extends State<TapToExpand> {
                       ),
 
                       /// Used to add some space between the title and the content.
-                      isExpanded ? const SizedBox() : const SizedBox(height: 20),
+                      isExpanded ? const SizedBox() : const SizedBox(height: 15),
 
                       /// Used to show the content of the widget.
                       AnimatedCrossFade(
@@ -224,6 +228,7 @@ class _TapToExpandState extends State<TapToExpand> {
                         sizeCurve: Curves.fastLinearToSlowEaseIn,
                         alignment: AlignmentDirectional.bottomCenter,
                       ),
+                      isExpanded ? const SizedBox(height: 0) : const SizedBox(height: 5),
                     ],
                 ),
               ],

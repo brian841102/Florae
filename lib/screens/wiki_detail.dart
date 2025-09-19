@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hive/hive.dart';
+import 'package:flutter/cupertino.dart';
 import 'plugins/tap_to_expand.dart';
+import 'plugins/reorder_list.dart';
 import '../main.dart';
 import '../data/beetle_wiki.dart';
 import 'size_compare.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
@@ -39,9 +43,12 @@ class _WikiDetailState extends State<WikiDetail> {
   }
 
   void _setOffset() {
-    setState(() {
-      _offset = _scrollController.offset;
-    });
+    if (!mounted) return;
+    SchedulerBinding.instance.addPostFrameCallback((_) {if (mounted) {
+      setState(() {
+        _offset = _scrollController.offset;
+      });
+    }});
   }
 
   double _calculateOpacity(double zeroOpacityOffset, double fullOpacityOffset) {
@@ -107,23 +114,21 @@ class _WikiDetailState extends State<WikiDetail> {
                 color: lightTeal,
                 child: CustomScrollView(
                   slivers: [
-                    SliverToBoxAdapter(child: Container(height: 18)),
+                    const SliverToBoxAdapter(child: SizedBox(height: 18)),
                     _buildCardRow(),
                     _buildBekuwaCard(),
-                    SliverToBoxAdapter(child: Container(height: 12)),
+                    const SliverToBoxAdapter(child: SizedBox(height: 12)),
                     _buildSnapshotCard(),
-                    SliverToBoxAdapter(child: Container(height: 16)),
+                    const SliverToBoxAdapter(child: SizedBox(height: 16)),
                     _buildListView(),
-                    SliverToBoxAdapter(child: Container(height: 20)),
+                    const SliverToBoxAdapter(child: SizedBox(height: 20)),
                     _buildCardView(),
                   ],
                 ),
               ),
               Container(
                 color: lightTeal,
-                child: Center(
-                  child: Text("建構中"),
-                ),
+                child: _buildTabR(),
               ),
             ],
           ),
@@ -132,16 +137,6 @@ class _WikiDetailState extends State<WikiDetail> {
     );
   }
 
-  Widget _buildTabL() {
-    return ListView(
-      shrinkWrap: true,
-      children: [
-        _buildCardRow(),
-        //_buildCardView1(),
-        //_buildCardView(),
-      ],
-    );
-  }
 
   Widget _buildTabBar() {
     return SliverToBoxAdapter(
@@ -181,6 +176,138 @@ class _WikiDetailState extends State<WikiDetail> {
       ),
     );
   }
+
+
+  Widget _buildTabR() {
+    return Column(
+      children: [
+        const SizedBox(height: 12),
+        Expanded(
+          child: _buildCardView2(),
+        ),
+      ],
+    );
+  }
+
+
+  Widget _buildCardView2() {
+    return const ReorderableExample();
+  }
+  Widget _buildCardView1() {
+    const loremIpsum =
+        "我自己的CMF在不溫控的環境下，最大紀錄差不多就是7公分左右了，要8公分以上的話大概還是要靠溫控跟更好的食材吧。然後記得，飼育幼蟲的容器大小跟他羽化後的大小絕對有正相關，想養大蟲絕對不要混養跟用直徑小於10公分的盒子。比起產卵環境，幼蟲乾濕度就不是這麼挑，一般程度就好，以免太濕造成雜蟲孳生或木屑朽化。幼蟲食量不大，假設從分出公母的L3換木屑分裝飼養的話，不論公母蟲都可以一盒500cc就可以一瓶到底 (但是公蟲會較小隻)如果公蟲丟1000cc的方盒，甚至2200cc的大桶一罐到底，通常都可以有不錯的成績";
+
+    return ListView(
+      shrinkWrap: false,
+      children: [
+        TapToExpand(
+            color: lightTeal,
+            content: const Column(
+              children: <Widget>[
+                Text(
+                  loremIpsum,
+                  style: TextStyle(
+                    color: darkTeal,
+                    fontSize: 16,
+                    height: 1.7,
+                  ),
+                ),
+              ],
+            ),
+            title: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                '飼育計劃一',
+                style: TextStyle(
+                  color: darkTeal,
+                  fontSize: 18,
+                  fontFamily: 'MPLUS',
+                ),
+              ),
+            ),
+            boxShadow: const [BoxShadow(
+              color: Colors.black54,
+              blurRadius: 3,
+            )],
+            onTapPadding: 6,
+            closedPadding: 20,
+            closedHeight: 60,
+            scrollable: false,
+            borderRadius: 15,
+            openedHeight: 300,
+            logo: Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: darkTeal,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.bug_report_outlined,
+                  color: Colors.white,
+                  size: 25,
+                ),
+              ),
+            )
+        ),
+        TapToExpand(
+            color: lightTeal,
+            content: const Column(
+              children: <Widget>[
+                Text(
+                  loremIpsum,
+                  style: TextStyle(
+                    color: darkTeal,
+                    fontSize: 16,
+                    height: 1.7,
+                  ),
+                ),
+              ],
+            ),
+            title: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                '飼育計劃二',
+                style: TextStyle(
+                  color: darkTeal,
+                  fontSize: 18,
+                  fontFamily: 'MPLUS',
+                ),
+              ),
+            ),
+            boxShadow: const [BoxShadow(
+              color: Colors.black54,
+              blurRadius: 3,
+            )],
+            onTapPadding: 6,
+            closedPadding: 20,
+            closedHeight: 60,
+            scrollable: false,
+            borderRadius: 15,
+            openedHeight: 300,
+            logo: Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: darkTeal,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.bug_report_outlined,
+                  color: Colors.white,
+                  size: 25,
+                ),
+              ),
+            )
+        ),
+      ],
+    );
+  }
+
 
   Widget _buildCardRow() {
     BeetleWiki bt = beetleWikiBox.getAt(widget.index);
@@ -662,81 +789,6 @@ class _WikiDetailState extends State<WikiDetail> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildCardView1() {
-    const loremIpsum =
-        "我自己的CMF在不溫控的環境下，最大紀錄差不多就是7公分左右了，要8公分以上的話大概還是要靠溫控跟更好的食材吧。然後記得，飼育幼蟲的容器大小跟他羽化後的大小絕對有正相關，想養大蟲絕對不要混養跟用直徑小於10公分的盒子。比起產卵環境，幼蟲乾濕度就不是這麼挑，一般程度就好，以免太濕造成雜蟲孳生或木屑朽化。幼蟲食量不大，假設從分出公母的L3換木屑分裝飼養的話，不論公母蟲都可以一盒500cc就可以一瓶到底 (但是公蟲會較小隻)如果公蟲丟1000cc的方盒，甚至2200cc的大桶一罐到底，通常都可以有不錯的成績";
-
-    return ListView(
-      shrinkWrap: true,
-      children: [
-        TapToExpand(
-          content: const Column(
-            children: <Widget>[
-              Text(
-                loremIpsum,
-                style: TextStyle(
-                  color: darkTeal,
-                  fontSize: 16,
-                  height: 1.7,
-                ),
-              ),
-            ],
-          ),
-          title: const Text(
-            '幼蟲照護',
-            style: TextStyle(
-              color: darkTeal,
-              fontSize: 20,
-              fontFamily: 'MPLUS',
-            ),
-          ),
-          onTapPadding: 14,
-          closedHeight: 80,
-          scrollable: false,
-          borderRadius: 20,
-          openedHeight: 300,
-          logo: SvgPicture.asset(
-            "assets/images/babybottle.svg",
-            height: 36,
-            color: darkTeal,
-          ),
-        ),
-        TapToExpand(
-          content: const Column(
-            children: <Widget>[
-              Text(
-                loremIpsum,
-                style: TextStyle(
-                  color: darkTeal,
-                  fontSize: 16,
-                  height: 1.7,
-                ),
-              ),
-            ],
-          ),
-          title: const Text(
-            '幼蟲照護',
-            style: TextStyle(
-              color: darkTeal,
-              fontSize: 20,
-              fontFamily: 'MPLUS',
-            ),
-          ),
-          onTapPadding: 14,
-          closedHeight: 80,
-          scrollable: false,
-          borderRadius: 20,
-          openedHeight: 300,
-          logo: SvgPicture.asset(
-            "assets/images/babybottle.svg",
-            height: 36,
-            color: darkTeal,
-          ),
-        ),
-      ],
     );
   }
 
