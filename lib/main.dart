@@ -148,6 +148,7 @@ class FloraeApp extends StatelessWidget {
         // },
         supportedLocales: const [
           Locale('en'), // English
+          Locale('zh'), // Chinese
           Locale('es'), // Spanish
           Locale('fr'), // French
         ],

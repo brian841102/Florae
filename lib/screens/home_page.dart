@@ -184,13 +184,12 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SvgPicture.asset(
+            Image.asset(
               _selectedIndex == 0
-                  ? "assets/images/undraw_fall_thyk.svg"
-                  : "assets/images/undraw_blooming_re_2kc4.svg",
-              semanticsLabel: 'Fall',
+                  ? "assets/images/empty_list.png" //"assets/images/undraw_fall_thyk.svg"
+                  : "assets/images/empty_box.png", // "assets/images/undraw_blooming_re_2kc4.svg",
               alignment: Alignment.center,
-              height: 250,
+              height:300,
             ),
             Padding(
               padding: const EdgeInsets.all(10),
