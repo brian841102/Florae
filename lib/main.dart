@@ -223,7 +223,7 @@ class FloraeApp extends StatelessWidget {
             color: Colors.white,
           ),
           listTileTheme: const ListTileThemeData(
-            tileColor: Colors.white,
+            tileColor: Colors.transparent,
             selectedTileColor: Colors.white,
           ),
           inputDecorationTheme: InputDecorationTheme(

@@ -24,6 +24,9 @@ class TapToExpand extends StatefulWidget {
   /// Used to make the widget scrollable.
   final bool? scrollable;
 
+  /// Used to give the widget Inkwell.
+  final bool? useInkWell; 
+
   /// Used to set the height of the widget when it is closed.
   final double? closedHeight;
 
@@ -53,6 +56,7 @@ class TapToExpand extends StatefulWidget {
     this.logo,
     this.color,
     this.scrollable,
+    this.useInkWell,
     this.closedHeight,
     this.openedHeight,
     this.boxShadow,
@@ -182,23 +186,23 @@ class _TapToExpandState extends State<TapToExpand> {
                           const SizedBox(width: 5),
                           widget.title,
                           const Spacer(),
-                          //const Expanded(child: SizedBox()),
-                          InkWell(
-                            onTap: () {
-                              HapticFeedback.mediumImpact();
-                              setState(() {
-                                isExpanded = !isExpanded;
-                              });
-                            },
-                            customBorder: const CircleBorder(),
-                            child: CircleAvatar(
-                              radius: 20,
-                              backgroundColor: darkTeal.withOpacity(0.15),
-                              child: isExpanded
-                                  ? const Icon(Icons.keyboard_arrow_down, color: darkTeal, size: 27)
-                                  : const Icon(Icons.keyboard_arrow_up, color: darkTeal, size: 27)
+                          if (widget.useInkWell ?? true) // 根據 useInkWell 決定是否顯示箭頭
+                            InkWell(
+                              onTap: () {
+                                HapticFeedback.mediumImpact();
+                                setState(() {
+                                  isExpanded = !isExpanded;
+                                });
+                              },
+                              customBorder: const CircleBorder(),
+                              child: CircleAvatar(
+                                radius: 20,
+                                backgroundColor: darkTeal.withOpacity(0.15),
+                                child: isExpanded
+                                    ? const Icon(Icons.keyboard_arrow_down, color: darkTeal, size: 27)
+                                    : const Icon(Icons.keyboard_arrow_up, color: darkTeal, size: 27),
+                              ),
                             ),
-                          ),
                         ],
                       ),
 

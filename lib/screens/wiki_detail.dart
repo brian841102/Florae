@@ -8,6 +8,7 @@ import 'plugins/reorder_list.dart';
 import '../main.dart';
 import '../data/beetle_wiki.dart';
 import 'size_compare.dart';
+import 'care_plan_search.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 
@@ -28,6 +29,7 @@ class _WikiDetailState extends State<WikiDetail> {
   late double titleOpacity;
   late double subTitleOpacity;
   double _offset = 0.0;
+  bool _isCustomSortEnabled = false;
 
   @override
   void initState() {
@@ -181,14 +183,201 @@ class _WikiDetailState extends State<WikiDetail> {
   Widget _buildTabR() {
     return Column(
       children: [
-        const SizedBox(height: 12),
-        Expanded(
-          child: _buildCardView2(),
+        const SizedBox(height: 15),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+                    readOnly: true,
+                    onTap: () {
+                      // 收回鍵盤
+                      FocusScope.of(context).unfocus();
+                      // 跳轉到全新頁面
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          opaque: true, // 背景被新頁覆蓋
+                          pageBuilder: (_, __, ___) => const CarePlanSearch(),
+                          transitionsBuilder: (_, animation, __, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    style: const TextStyle(fontSize: 16),
+                    decoration: InputDecoration(
+                      hintText: '搜尋飼育計畫...',
+                      hintStyle: TextStyle(color: Colors.grey[500]),
+                      prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 14,
+                      ),
+                    ),
+                  ),
+
+                ),
+              ),
+              const SizedBox(width: 12),
+
+              // 排序按鈕
+              Container(
+                decoration: BoxDecoration(
+                  color: darkTeal.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.15),
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.sort,
+                    color: Colors.white,
+                  ),
+                  tooltip: '切換排序',
+                  onPressed: () => _showGuide(context),
+                ),
+              ),
+            ],
+          ),
         ),
+        const SizedBox(height: 15),
+
+        // 下方卡片列表
+        Expanded(child: _buildCardView2()),
       ],
     );
   }
 
+  _showGuide(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        final Color highlightColor = darkTeal.withOpacity(0.3); // 反白顏色
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+          height: 250,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  height: 4.5,
+                  width: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3.0),
+                    color: Colors.grey[500],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 18),
+              const Text(
+                '排序依據',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+
+              // 字母排序
+              Container(
+                decoration: BoxDecoration(
+                  color: !_isCustomSortEnabled ? highlightColor : Colors.transparent,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: Material(
+                  color: Colors.transparent, // 保留 Container 顏色
+                  borderRadius: BorderRadius.circular(50),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(50), // 水波紋圓角
+                    splashColor: darkTeal.withOpacity(0.2),  // 水波紋顏色
+                    highlightColor: Colors.transparent,      // 點擊高亮取消
+                    onTap: () {
+                      setState(() {
+                        _isCustomSortEnabled = false;
+                      });
+                      Navigator.pop(context);
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.sort_by_alpha,
+                        color: !_isCustomSortEnabled ? darkTeal : Colors.grey,
+                      ),
+                      title: Text(
+                        '字母排序',
+                        style: TextStyle(
+                          color: !_isCustomSortEnabled ? darkTeal : Colors.black87,
+                          fontWeight: !_isCustomSortEnabled ? FontWeight.bold : FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // 自定排序
+              Container(
+                decoration: BoxDecoration(
+                  color: _isCustomSortEnabled ? highlightColor : Colors.transparent,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: Material(
+                  color: Colors.transparent, // 保留 Container 顏色
+                  borderRadius: BorderRadius.circular(50),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(50), // 水波紋圓角
+                    splashColor: darkTeal.withOpacity(0.2), // 水波紋顏色
+                    highlightColor: Colors.transparent,      // 點擊高亮顏色
+                    onTap: () {
+                      setState(() {
+                        _isCustomSortEnabled = true;
+                      });
+                      Navigator.pop(context);
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.list_alt,
+                        color: _isCustomSortEnabled ? darkTeal : Colors.black45,
+                      ),
+                      title: Text(
+                        '自定排序',
+                        style: TextStyle(
+                          color: _isCustomSortEnabled ? darkTeal : Colors.black87,
+                          fontWeight: _isCustomSortEnabled ? FontWeight.bold : FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   Widget _buildCardView2() {
     return const ReorderableExample();

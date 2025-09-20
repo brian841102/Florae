@@ -29,32 +29,60 @@ class _ReorderableExampleState extends State<ReorderableExample> {
     final Color itemColor = widget.color ?? Colors.white;
 
 
-    final List<TapToExpand> cards = <TapToExpand>[
+    final List<Widget> cards = <Widget>[
       for (int index = 0; index < _items.length; index += 1)
-        TapToExpand(
+        Container(
           key: Key('$index'),
-          color: itemColor,
-          title: Text(
-            'Card ${_items[index]}', 
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          content: Container(
-            height: 80,
-            alignment: Alignment.center,
-            child: Text(
-              '這是展開後的內容 for item ${_items[index]}',
-              style: const TextStyle(fontSize: 14),
-            ),
+          margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+          child: Stack(
+            children: [
+              TapToExpand(
+                useInkWell: false,
+                color: itemColor,
+                title: Text(
+                  'Card ${_items[index]}',
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                content: Container(
+                  height: 80,
+                  alignment: Alignment.center,
+                  child: Text(
+                    '這是展開後的內容 for item ${_items[index]}',
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    blurRadius: 2,
+                    offset: const Offset(0, 2),
+                  )
+                ],
+                onTapPadding: 6,
+                closedPadding: 20,
+                closedHeight: 80,
+                scrollable: false,
+                borderRadius: 15,
+                openedHeight: 300,
+              ),
+
+              // 拖曳手把
+              Positioned(
+                right: 20,
+                top: 0,
+                bottom: 0,
+                child: ReorderableDragStartListener(
+                  index: index,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    alignment: Alignment.center,
+                    child: const Icon(Icons.drag_indicator_sharp, color: Colors.grey),
+                  ),
+                ),
+              ),
+            ],
           ),
-          boxShadow: [BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 2,
-            offset: const Offset(0, 2),)],
-          onTapPadding: 6,
-          closedPadding: 20,
-          closedHeight: 60,
-          scrollable: false,
-          borderRadius: 15,
-          openedHeight: 300,
         ),
     ];
 
@@ -74,20 +102,7 @@ class _ReorderableExampleState extends State<ReorderableExample> {
               borderRadius: BorderRadius.circular(15),
               color: Colors.transparent,
               shadowColor: Colors.transparent,
-              child: TapToExpand(
-                color: cards[index].color,
-                title: cards[index].title,
-                content: cards[index].content,
-                boxShadow: [BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
-                  blurRadius: 2,
-                  offset: const Offset(0, 2),)],
-                onTapPadding: 6,
-                closedPadding: 20,
-                closedHeight: 60,
-                scrollable: false,
-                borderRadius: 15,
-              ),
+              child: child,
             ),
           );
         },
@@ -96,6 +111,7 @@ class _ReorderableExampleState extends State<ReorderableExample> {
     }
 
     return ReorderableListView(
+      buildDefaultDragHandles: false,
       padding: const EdgeInsets.symmetric(horizontal: 0),
       proxyDecorator: proxyDecorator,
       onReorder: (int oldIndex, int newIndex) {
