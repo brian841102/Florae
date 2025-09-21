@@ -48,7 +48,12 @@ class TapToExpand extends StatefulWidget {
   /// Used to set the physics of the scrollable widget.
   final ScrollPhysics? scrollPhysics;
 
-  /// A constructor.
+  /// 展開狀態回調
+  final ValueChanged<bool>? onExpansionChanged;
+
+  /// 外部控制展開狀態
+  final bool? isExpanded;
+
   const TapToExpand({
     super.key,
     required this.content,
@@ -66,14 +71,36 @@ class TapToExpand extends StatefulWidget {
     this.borderRadius,
     this.scrollPhysics,
     this.trailing,
+    this.onExpansionChanged,
+    this.isExpanded,
   });
   @override
   State<TapToExpand> createState() => _TapToExpandState();
 }
 
 class _TapToExpandState extends State<TapToExpand> {
-  bool isExpanded = true;
+  late bool _internalExpanded;
   //double contentHeight = 0; TODO: make contentHeight dynamic adjust openedHeight
+
+  @override
+  void initState() {
+    super.initState();
+    _internalExpanded = widget.isExpanded ?? true;
+  }
+
+  bool get isExpanded => widget.isExpanded ?? _internalExpanded;
+
+  void _toggleExpand() {
+    HapticFeedback.mediumImpact();
+    setState(() {
+      if (widget.isExpanded == null) { // 使用內部狀態
+        _internalExpanded = !_internalExpanded;
+        widget.onExpansionChanged?.call(_internalExpanded);
+      } else {                         // 外部控制，僅呼叫回調
+        widget.onExpansionChanged?.call(!widget.isExpanded!);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,13 +111,7 @@ class _TapToExpandState extends State<TapToExpand> {
     return InkWell(
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
-      onTap: () {
-        HapticFeedback.mediumImpact();
-        /// Changing the state of the widget.
-        setState(() {
-          isExpanded = !isExpanded;
-        });
-      },
+      onTap: _toggleExpand,
       child: AnimatedContainer(
         margin: EdgeInsets.symmetric(
           /// Used to set the padding of the widget when it is closed.
@@ -189,10 +210,7 @@ class _TapToExpandState extends State<TapToExpand> {
                           if (widget.useInkWell ?? true) // 根據 useInkWell 決定是否顯示箭頭
                             InkWell(
                               onTap: () {
-                                HapticFeedback.mediumImpact();
-                                setState(() {
-                                  isExpanded = !isExpanded;
-                                });
+                                _toggleExpand();
                               },
                               customBorder: const CircleBorder(),
                               child: CircleAvatar(

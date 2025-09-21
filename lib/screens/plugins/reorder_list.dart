@@ -23,6 +23,7 @@ class ReorderableExample extends StatefulWidget {
 
 class _ReorderableExampleState extends State<ReorderableExample> {
   final List<int> _items = List<int>.generate(10, (int index) => index);
+  final Set<int> _expandedItems = {};
 
   @override
   Widget build(BuildContext context) {
@@ -65,22 +66,34 @@ class _ReorderableExampleState extends State<ReorderableExample> {
                 scrollable: false,
                 borderRadius: 15,
                 openedHeight: 300,
+                isExpanded: !_expandedItems.contains(index),
+                onExpansionChanged: (expanded) {
+                  setState(() {
+                    if (!expanded) {
+                      _expandedItems.add(index);
+                    } else {
+                      _expandedItems.remove(index);
+                    }
+                  });
+                },
               ),
 
-              // 拖曳手把
-              Positioned(
-                right: 20,
-                top: 0,
-                bottom: 0,
-                child: ReorderableDragStartListener(
-                  index: index,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    alignment: Alignment.center,
-                    child: const Icon(Icons.drag_indicator_sharp, color: Colors.grey),
+              // 拖曳手把：只在未展開時顯示
+              if (!_expandedItems.contains(index))
+                Positioned(
+                  right: 20,
+                  top: 0,
+                  bottom: 0,
+                  child: ReorderableDragStartListener(
+                    enabled: _expandedItems.isEmpty,
+                    index: index,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      alignment: Alignment.center,
+                      child: const Icon(Icons.drag_indicator_sharp, color: Colors.grey),
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
