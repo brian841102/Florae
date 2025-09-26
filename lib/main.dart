@@ -17,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'states/ruler_magnification_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const String beetleWikiBoxName = "beetleWikiBox";
 late ObjectBox objectbox;
@@ -41,6 +42,7 @@ Future<void> main() async {
   Hive.registerAdapter(SpanAdapter());
   beetleWikiBox = await Hive.openBox(beetleWikiBoxName);
   await loadJsonDataToHive();
+  await ScreenUtil.ensureScreenSize();
   //runApp(const FloraeApp());
   runApp(
     ChangeNotifierProvider(
@@ -131,6 +133,7 @@ class FloraeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
     const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
+    ScreenUtil.init(context);
     return MaterialApp(
         title: 'Florae',
         localizationsDelegates: const [

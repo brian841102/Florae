@@ -11,6 +11,20 @@ import 'size_compare.dart';
 import 'care_plan_search.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'widgets/weather_details_card.dart';
+import 'widgets/weather_details_item.dart';
+import 'widgets/sun_rise_set_item.dart';
+import 'widgets/weather_row_data.dart';
+import 'widgets/forecast_hour_item.dart';
+import 'widgets/weather_card.dart';
+import '../data/models/weather_details_model.dart';
+import '../data/models/weather_model.dart';
+import '../utils/constants.dart';
+import '../utils/extensions.dart';
+import '../config/translations/strings_enum.dart';
+
 
 const Color darkTeal = Color.fromARGB(255, 0, 90, 48);
 const Color lightTeal = Color.fromARGB(255, 244, 255, 252);
@@ -123,7 +137,29 @@ class _WikiDetailState extends State<WikiDetail> {
                     _buildSnapshotCard(),
                     const SliverToBoxAdapter(child: SizedBox(height: 16)),
                     _buildListView(),
-                    const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                    const SliverToBoxAdapter(child: SizedBox(height: 10)),
+                    SliverToBoxAdapter(child: Row(
+                      children: [
+                        const SizedBox(width: 20),
+                        Text('棲息地天氣',
+                          style: TextStyle(fontSize: 24, color: darkTeal.withOpacity(0.9),
+                          fontWeight:FontWeight.w500, fontFamily: 'MPLUS'),
+                        ),
+                        Expanded(child: Divider(thickness: 2, indent: 12, color: darkTeal.withOpacity(0.3))),
+                        const SizedBox(width: 25)
+                      ])),
+                    _buildWeatherCardView(),
+                    SliverToBoxAdapter(child: Row(
+                      children: [
+                        const SizedBox(width: 20),
+                        Text('飼育文章', 
+                          style: TextStyle(fontSize: 24, color: darkTeal.withOpacity(0.9),
+                          fontWeight:FontWeight.w500, fontFamily: 'MPLUS'),
+                        ),
+                        Expanded(child: Divider(thickness: 2, indent: 12, color: darkTeal.withOpacity(0.3))),
+                        const SizedBox(width: 25)
+                      ])),
+                    const SliverToBoxAdapter(child: SizedBox(height: 5)),
                     _buildCardView(),
                   ],
                 ),
@@ -376,6 +412,350 @@ class _WikiDetailState extends State<WikiDetail> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildWeatherCardView() {
+    final weatherDetails = WeatherDetailsModel.fromJson({
+      "location": {
+        "name": "Taipei",
+        "region": "Taipei",
+        "country": "Taiwan",
+        "lat": 25.03,
+        "lon": 121.56,
+        "tz_id": "Asia/Taipei",
+        "localtime_epoch": 1695552052,
+        "localtime": "2025-09-23 13:40"
+      },
+      "current": {
+        "last_updated_epoch": 1695551400,
+        "last_updated": "2025-09-23 13:30",
+        "temp_c": 30.0,
+        "temp_f": 86.0,
+        "is_day": 1,
+        "condition": {
+          "text": "Sunny",
+          "icon": "//cdn.weatherapi.com/weather/64x64/day/113.png",
+          "code": 1000
+        },
+        "wind_mph": 10.5,
+        "wind_kph": 16.9,
+        "wind_degree": 310,
+        "wind_dir": "NW",
+        "pressure_mb": 1010.0,
+        "pressure_in": 29.82,
+        "precip_mm": 0.0,
+        "precip_in": 0.0,
+        "humidity": 60,
+        "cloud": 0,
+        "feelslike_c": 30.6,
+        "feelslike_f": 87.1,
+        "vis_km": 10.0,
+        "vis_miles": 6.0,
+        "uv": 7.0,
+        "gust_mph": 12.3,
+        "gust_kph": 19.8
+      },
+      "forecast": {
+        "forecastday": [
+          {
+            "date": "2025-09-23",
+            "date_epoch": 1695513600,
+            "day": {
+              "maxtemp_c": 30.9,
+              "maxtemp_f": 84.1,
+              "mintemp_c": 25.0,
+              "mintemp_f": 77.0,
+              "avgtemp_c": 27.0,
+              "avgtemp_f": 80.5,
+              "maxwind_mph": 10.7,
+              "maxwind_kph": 17.3,
+              "totalprecip_mm": 0.0,
+              "totalprecip_in": 0.0,
+              "totalsnow_cm": 0.0,
+              "avgvis_km": 10.0,
+              "avgvis_miles": 6.0,
+              "avghumidity": 65.0,
+              "daily_will_it_rain": 0,
+              "daily_chance_of_rain": 0,
+              "daily_will_it_snow": 0,
+              "daily_chance_of_snow": 0,
+              "condition": {
+                "text": "Sunny",
+                "icon": "//cdn.weatherapi.com/weather/64x64/day/113.png",
+                "code": 1000
+              },
+              "uv": 7.0
+            },
+            "astro": {
+                "sunrise": "06:31 AM",
+                "sunset": "06:36 PM",
+                "moonrise": "03:27 PM",
+                "moonset": "12:20 AM",
+                "moon_phase": "Waxing Gibbous",
+                "moon_illumination": "63",
+                "is_moon_up": 0,
+                "is_sun_up": 0
+            },
+            "hour": [
+              {
+                "time_epoch": 1695502800,
+                "time": "2023-09-24 00:00",
+                "temp_c": 26.2,
+                "temp_f": 79.1,
+                "is_day": 0,
+                "condition": {
+                    "text": "Clear",
+                    "icon": "//cdn.weatherapi.com/weather/64x64/night/113.png",
+                    "code": 1000
+                },
+                "wind_mph": 3.4,
+                "wind_kph": 5.4,
+                "wind_degree": 314,
+                "wind_dir": "NW",
+                "pressure_mb": 1011.0,
+                "pressure_in": 29.85,
+                "precip_mm": 0.0,
+                "precip_in": 0.0,
+                "humidity": 73,
+                "cloud": 0,
+                "feelslike_c": 28.2,
+                "feelslike_f": 82.8,
+                "windchill_c": 26.2,
+                "windchill_f": 79.1,
+                "heatindex_c": 28.2,
+                "heatindex_f": 82.8,
+                "dewpoint_c": 20.9,
+                "dewpoint_f": 69.6,
+                "will_it_rain": 0,
+                "chance_of_rain": 0,
+                "will_it_snow": 0,
+                "chance_of_snow": 0,
+                "vis_km": 10.0,
+                "vis_miles": 6.0,
+                "gust_mph": 4.9,
+                "gust_kph": 7.9,
+                "uv": 1.0
+              },
+            ]
+          }
+        ]
+      }
+    });
+
+    final Weather = WeatherModel.fromJson({
+      "location": {
+        "name": "登波火山",
+        "region": "Taipei",
+        "country": "印尼",
+        "lat": 25.03,
+        "lon": 121.56,
+        "tz_id": "Asia/Taipei",
+        "localtime_epoch": 1695552052,
+        "localtime": "2025-09-23 13:40"
+      },
+      "current": {
+        "last_updated_epoch": 1695551400,
+        "last_updated": "2025-09-23 13:30",
+        "temp_c": 19.0,
+        "temp_f": 86.0,
+        "is_day": 1,
+        "condition": {
+          "text": "旱季",
+          "icon": "//cdn.weatherapi.com/weather/64x64/day/113.png",
+          "code": 1000
+        },
+        "wind_mph": 10.5,
+        "wind_kph": 16.9,
+        "wind_degree": 310,
+        "wind_dir": "NW",
+        "pressure_mb": 1010.0,
+        "pressure_in": 29.82,
+        "precip_mm": 0.0,
+        "precip_in": 0.0,
+        "humidity": 60,
+        "cloud": 0,
+        "feelslike_c": 30.6,
+        "feelslike_f": 87.1,
+        "vis_km": 10.0,
+        "vis_miles": 6.0,
+        "uv": 7.0,
+        "gust_mph": 12.3,
+        "gust_kph": 19.8
+      },
+    });
+    final forecastDay = weatherDetails.forecast.forecastday.first;
+    final theme = Theme.of(context);
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+        child: WeatherCard(weather: Weather),
+        // child: WeatherDetailsCard(
+        //   weatherDetails: weatherDetails,
+        //   forecastDay: forecastDay,
+        // ),
+        // child: Container(
+        //     padding: EdgeInsets.all(20.r),
+        //     decoration: BoxDecoration(
+        //       color: darkTeal.withOpacity(0.5),
+        //       borderRadius: BorderRadius.only(
+        //         topLeft: Radius.circular(15.r),
+        //         topRight: Radius.circular(15.r),
+        //         bottomRight: Radius.circular(15.r),
+        //         bottomLeft: Radius.circular(15.r),
+        //       ),
+        //     ),
+        //     child: Column(
+        //       crossAxisAlignment: CrossAxisAlignment.start,
+        //       children: [
+        //         Text(Strings.weatherNow, style: theme.textTheme.displaySmall),
+        //         16.verticalSpace,
+        //         SingleChildScrollView(
+        //           scrollDirection: Axis.horizontal,
+        //           child: Row(
+        //             children: [
+        //               WeatherDetailsItem(
+        //                 title: Strings.wind,
+        //                 icon: Constants.wind,
+        //                 value: weatherDetails.current.windMph.toInt().toString(),
+        //                 text: 'mph',
+        //               ),
+        //               16.horizontalSpace,
+        //               WeatherDetailsItem(
+        //                 title: Strings.pressure,
+        //                 icon: Constants.pressure,
+        //                 value: weatherDetails.current.pressureIn.toInt().toString(),
+        //                 text: 'inHg',
+        //                 isHalfCircle: true,
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //         20.verticalSpace,
+        //         Text(Strings.hoursForecast, style: theme.textTheme.displaySmall),
+        //         16.verticalSpace,
+        //         SizedBox(
+        //           height: 100.h,
+        //           child: ListView.builder(
+        //             scrollDirection: Axis.horizontal,
+        //             itemCount: forecastDay.hour.length,
+        //             itemBuilder: (context, index) => ForecastHourItem(
+        //               hour: forecastDay.hour[index],
+        //             ),
+        //           ),
+        //         ),
+        //         16.verticalSpace,
+        //         Row(
+        //           mainAxisSize: MainAxisSize.min,
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             Expanded(
+        //               flex: 5,
+        //               child: Column(
+        //                 crossAxisAlignment: CrossAxisAlignment.start,
+        //                 children: [
+        //                   Container(
+        //                     width: double.infinity,
+        //                     padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
+        //                     decoration: BoxDecoration(
+        //                       color: theme.cardColor,
+        //                       borderRadius: BorderRadius.circular(15.r),
+        //                     ),
+        //                     child: Row(
+        //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //                       children: [
+        //                         Column(
+        //                           crossAxisAlignment: CrossAxisAlignment.start,
+        //                           children: [
+        //                             Text(
+        //                               weatherDetails.current.windDir.getWindDir(),
+        //                               style: theme.textTheme.displayMedium?.copyWith(
+        //                                 fontSize: 14.sp,
+        //                               ),
+        //                             ),
+        //                             15.verticalSpace,
+        //                             Text(
+        //                               '${forecastDay.day.maxwindKph} ${Strings.kmh}',
+        //                               style: theme.textTheme.displayMedium?.copyWith(
+        //                                 fontSize: 14.sp,
+        //                               ),
+        //                             ),
+        //                           ],
+        //                         ),
+        //                         // RotationTransition(
+        //                         //   turns: AlwaysStoppedAnimation(weatherDetails.current.windDegree / 360),
+        //                         //   child: Icon(Icons.north, size: 30, color: theme.iconTheme.color),
+        //                         // ),
+        //                       ],
+        //                     ),
+        //                   ),
+        //                   10.verticalSpace,
+        //                   Container(
+        //                     padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
+        //                     decoration: BoxDecoration(
+        //                       color: theme.cardColor,
+        //                       borderRadius: BorderRadius.circular(15.r),
+        //                     ),
+        //                     child: Column(
+        //                       crossAxisAlignment: CrossAxisAlignment.start,
+        //                       children: [
+        //                         SunRiseSetItem(
+        //                           text: Strings.sunrise,
+        //                           value: forecastDay.astro.sunrise.formatTime(),
+        //                         ),
+        //                         5.verticalSpace,
+        //                         SunRiseSetItem(
+        //                           text: Strings.sunset,
+        //                           value: forecastDay.astro.sunset.formatTime(),
+        //                         ),
+        //                       ],
+        //                     ),
+        //                   ),
+        //                 ],
+        //               ),
+        //             ),
+        //             10.horizontalSpace,
+        //             Expanded(
+        //               flex: 6,
+        //               child: Container(
+        //                 padding: EdgeInsets.fromLTRB(15.w, 23.h, 15.w, 23.h),
+        //                 decoration: BoxDecoration(
+        //                   color: theme.cardColor,
+        //                   borderRadius: BorderRadius.circular(15.r),
+        //                 ),
+        //                 child: Column(
+        //                   mainAxisSize: MainAxisSize.min,
+        //                   mainAxisAlignment: MainAxisAlignment.start,
+        //                   children: [
+        //                     WeatherRowData(
+        //                       text: Strings.humidity,
+        //                       value: '${forecastDay.day.avghumidity.toInt()}%',
+        //                     ),
+        //                     5.verticalSpace,
+        //                     WeatherRowData(
+        //                       text: Strings.realFeel,
+        //                       value: '${forecastDay.day.avgtempC.toInt()}°',
+        //                     ),
+        //                     5.verticalSpace,
+        //                     WeatherRowData(
+        //                       text: Strings.uv,
+        //                       value: '${forecastDay.day.uv.toInt()}',
+        //                     ),
+        //                     5.verticalSpace,
+        //                     WeatherRowData(
+        //                       text: Strings.chanceOfRain,
+        //                       value: '${forecastDay.day.dailyChanceOfRain}%',
+        //                     ),
+        //                   ],
+        //                 ),
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+      ),
     );
   }
 
