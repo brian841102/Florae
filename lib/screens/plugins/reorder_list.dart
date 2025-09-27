@@ -22,10 +22,26 @@ class ReorderableExample extends StatefulWidget {
   State<ReorderableExample> createState() => _ReorderableExampleState();
 }
 
-class _ReorderableExampleState extends State<ReorderableExample> {
+class _ReorderableExampleState extends State<ReorderableExample> with SingleTickerProviderStateMixin {
   final List<int> _items = List<int>.generate(10, (int index) => index);
   final Set<int> _expandedItems = {};
   bool _isDraggingMode = false; // 控制是否進入拖動模式
+  late AnimationController _shadowController;
+
+  @override
+  void initState() {
+    super.initState();
+    _shadowController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    )..repeat(reverse: true); // 呼吸動畫
+  }
+
+  @override
+  void dispose() {
+    _shadowController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,82 +50,90 @@ class _ReorderableExampleState extends State<ReorderableExample> {
 
     final List<Widget> cards = <Widget>[
       for (int index = 0; index < _items.length; index += 1)
-        Container(
-          key: Key('$index'),
-          margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
-          child: GestureDetector(
-            onLongPress: () {
-              setState(() {
-                HapticFeedback.heavyImpact();
-                _isDraggingMode = true; // 長按進入拖動模式
-              });
-            },
-            child: Stack(
-              children: [
-                TapToExpand(
-                  useInkWell: false,
-                  color: itemColor,
-                  title: Text(
-                    'Card ${_items[index]}',
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  content: Container(
-                    height: 80,
-                    alignment: Alignment.center,
-                    child: Text(
-                      '這是展開後的內容 for item ${_items[index]}',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: _isDraggingMode
-                          ? Colors.teal.withOpacity(0.6) // 拖動模式下藍色陰影
-                          : Colors.black.withOpacity(0.3),
-                      blurRadius: _isDraggingMode ? 6 : 2, // 陰影加深
-                      offset: const Offset(0, 2),
-                    )
-                  ],
-                  onTapPadding: 6,
-                  closedPadding: 20,
-                  closedHeight: 80,
-                  scrollable: false,
-                  borderRadius: 15,
-                  openedHeight: 300,
-                  isExpanded: !_expandedItems.contains(index),
-                  onExpansionChanged: (expanded) {
-                    if (_isDraggingMode) return; // 拖動模式下禁用展開
-                    setState(() {
-                      if (!expanded) {
-                        _expandedItems.add(index);
-                      } else {
-                        _expandedItems.remove(index);
-                      }
-                    });
-                  },
-                ),
-
-                // 拖曳手把：只在拖動模式下顯示
-                if (_isDraggingMode)
-                  Positioned(
-                    right: 20,
-                    top: 0,
-                    bottom: 0,
-                    child: ReorderableDragStartListener(
-                      enabled: _isDraggingMode,
-                      index: index,
-                      child: Container(
-                        width: 60,  // 控制可拖動區域寬度
-                        color: Colors.transparent, // 保持透明但可點擊
-                        alignment: Alignment.center,
-                        child: const Icon(Icons.drag_indicator_sharp, color: Colors.grey),
+        AnimatedBuilder(
+          key: ValueKey(_items[index]),
+          animation: _shadowController,
+          builder: (context, child) {
+            double t = _shadowController.value;
+            double blur = lerpDouble(2, 4, t)!; // 呼吸模糊
+            return Container(
+              key: Key('$index'),
+              margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+              child: GestureDetector(
+                onLongPress: () {
+                  setState(() {
+                    HapticFeedback.heavyImpact();
+                    _isDraggingMode = true; // 長按進入拖動模式
+                  });
+                },
+                child: Stack(
+                  children: [
+                    TapToExpand(
+                      useInkWell: false,
+                      color: itemColor,
+                      title: Text(
+                        'Card ${_items[index]}',
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
+                      content: Container(
+                        height: 80,
+                        alignment: Alignment.center,
+                        child: Text(
+                          '這是展開後的內容 for item ${_items[index]}',
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: _isDraggingMode
+                              ? Colors.teal.withOpacity(0.6) // 拖動模式下陰影
+                              : Colors.black.withOpacity(0.3),
+                          blurRadius: _isDraggingMode ? blur : 2, // 陰影加深
+                          offset: const Offset(0, 2),
+                        )
+                      ],
+                      onTapPadding: 6,
+                      closedPadding: 20,
+                      closedHeight: 80,
+                      scrollable: false,
+                      borderRadius: 15,
+                      openedHeight: 300,
+                      isExpanded: !_expandedItems.contains(index),
+                      onExpansionChanged: (expanded) {
+                        if (_isDraggingMode) return; // 拖動模式下禁用展開
+                        setState(() {
+                          if (!expanded) {
+                            _expandedItems.add(index);
+                          } else {
+                            _expandedItems.remove(index);
+                          }
+                        });
+                      },
                     ),
-                  ),
-              ],
-            ),
-          ),
+            
+                    // 拖曳手把：只在拖動模式下顯示
+                    if (_isDraggingMode)
+                      Positioned(
+                        right: 20,
+                        top: 0,
+                        bottom: 0,
+                        child: ReorderableDragStartListener(
+                          enabled: _isDraggingMode,
+                          index: index,
+                          child: Container(
+                            width: 60,  // 控制可拖動區域寬度
+                            color: Colors.transparent, // 保持透明但可點擊
+                            alignment: Alignment.center,
+                            child: const Icon(Icons.drag_indicator_sharp, color: Colors.grey),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            );
+          }
         ),
     ];
 
